@@ -95,7 +95,11 @@
             transition:opacity 0.8s ease;
         }
         .attractor-overlay.active{opacity:1;pointer-events:all}
-        .attractor-logo{font-size:5rem;animation:attractorPulse 2s ease-in-out infinite}
+        .attractor-logo-img{
+    width: var(--attractor-logo-size);
+    height: auto;
+    animation: attractorPulse 2s ease-in-out infinite;
+}
         .attractor-title{font-size:2.5rem;font-weight:700;color:white;letter-spacing:-0.04em}
         .attractor-subtitle{font-size:1.25rem;color:rgba(255,255,255,0.6)}
         .attractor-tap{font-size:1rem;color:rgba(255,255,255,0.5);animation:attractorBounce 2s ease-in-out infinite;margin-top:2rem}
@@ -560,7 +564,7 @@
     <!-- ATTRACTOR OVERLAY -->
     <div class="attractor-overlay" id="attractorOverlay">
         <div class="attractor-particles" id="attractorParticles"></div>
-        <div class="attractor-logo">🖥️</div>
+        <img src="logo.png" alt="Infinity Corp" class="attractor-logo-img">
         <div class="attractor-title">Demonstração de Aplicação - Totem</div>
         <div class="attractor-subtitle">Autoatendimento Inteligente</div>
         <div class="attractor-tap">👆 Toque na tela para começar</div>
@@ -1255,15 +1259,16 @@
         }
 
         function applyDiscount() {
-            const input = document.getElementById('discountInput');
-            const val = input ? input.value.toUpperCase() : '';
-            if (val === 'PROMO10') AppState.ff.discount = 10;
-            else if (val === 'PROMO20') AppState.ff.discount = 20;
-            else if (val === 'PROMO50') AppState.ff.discount = 50;
-            else AppState.ff.discount = 0;
-            showToast(AppState.ff.discount > 0 ? `Cupom ${val} aplicado!` : 'Cupom inválido', AppState.ff.discount > 0 ? 'success' : 'error');
-            renderFastFoodStep();
-        }
+    const input = document.getElementById('discountInput');
+    const val = input ? input.value.toUpperCase() : '';
+    if (val === 'PROMO10') AppState.ff.discount = 10;
+    else if (val === 'PROMO20') AppState.ff.discount = 20;
+    else if (val === 'PROMO50') AppState.ff.discount = 50;
+    else if (val === 'INFINITYCORP') AppState.ff.discount = 100;   // ← ADICIONE ESTA LINHA
+    else AppState.ff.discount = 0;
+    showToast(AppState.ff.discount > 0 ? `Cupom ${val} aplicado!` : 'Cupom inválido', AppState.ff.discount > 0 ? 'success' : 'error');
+    renderFastFoodStep();
+}
 
         function selectPayment(method) {
             AppState.ff.paymentMethod = method;
