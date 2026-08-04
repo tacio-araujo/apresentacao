@@ -1716,44 +1716,46 @@
         // ATTRACTOR MODE
         // ============================================================
         function startAttractorMode() {
-            document.getElementById('attractorOverlay').classList.add('active');
-            spawnAttractorParticles();
-        }
+    document.getElementById('attractorOverlay').classList.add('active');
+    spawnAttractorParticles();
+}
 
-        function stopAttractorMode() {
-            document.getElementById('attractorOverlay').classList.remove('active');
-            resetInactivityTimer();
-        }
+function stopAttractorMode() {
+    document.getElementById('attractorOverlay').classList.remove('active');
+    // NÃO chama resetInactivityTimer aqui — isso causava o loop
+}
 
-        document.getElementById('attractorOverlay').addEventListener('click', stopAttractorMode);
+document.getElementById('attractorOverlay').addEventListener('click', stopAttractorMode);
 
-        function spawnAttractorParticles() {
-            const container = document.getElementById('attractorParticles');
-            container.innerHTML = '';
-            const colors = ['#2563EB', '#7C3AED', '#10B981', '#F97316', '#FBBF24', '#EC4899'];
-            for (let i = 0; i < 30; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'attractor-particle';
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.width = (Math.random() * 8 + 4) + 'px';
-                particle.style.height = particle.style.width;
-                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
-                particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
-                particle.style.animationDelay = Math.random() * 5 + 's';
-                container.appendChild(particle);
-            }
-        }
+function spawnAttractorParticles() {
+    const container = document.getElementById('attractorParticles');
+    container.innerHTML = '';
+    const colors = ['#2563EB', '#7C3AED', '#10B981', '#F97316', '#FBBF24', '#EC4899'];
+    for (let i = 0; i < 30; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'attractor-particle';
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.width = (Math.random() * 8 + 4) + 'px';
+        particle.style.height = particle.style.width;
+        particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+        particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+        particle.style.animationDelay = Math.random() * 5 + 's';
+        container.appendChild(particle);
+    }
+}
 
-        function resetInactivityTimer() {
-            clearTimeout(AppState.inactivityTimeout);
-            clearTimeout(AppState.attractorTimeout);
-            stopAttractorMode();
-            AppState.attractorTimeout = setTimeout(startAttractorMode, ATTRACTOR_DELAY);
-            AppState.inactivityTimeout = setTimeout(() => {
-                goHome();
-                startAttractorMode();
-            }, RESET_DELAY);
-        }
+function resetInactivityTimer() {
+    clearTimeout(AppState.inactivityTimeout);
+    clearTimeout(AppState.attractorTimeout);
+    // Em vez de chamar stopAttractorMode(), apenas esconde o overlay diretamente:
+    document.getElementById('attractorOverlay').classList.remove('active');
+    AppState.attractorTimeout = setTimeout(startAttractorMode, ATTRACTOR_DELAY);
+    AppState.inactivityTimeout = setTimeout(() => {
+        goHome();
+        startAttractorMode();
+    }, RESET_DELAY);
+}
+
 
         // ============================================================
         // CLICK SOUND
