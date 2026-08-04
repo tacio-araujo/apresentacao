@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MyHub Totem - Autoatendimento Interativo</title>
+    <title>Demonstração de Aplicação - Totem - Autoatendimento Interativo</title>
     <style>
         /* ============================================================
            CSS CUSTOM PROPERTIES & THEME
@@ -67,7 +67,6 @@
             --white: #1E293B;
         }
 
-        /* RESET & BASE */
         *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
         html{font-size:16px;scroll-behavior:smooth}
         body{
@@ -86,7 +85,6 @@
         button{cursor:pointer;font-family:var(--font);border:none;outline:none}
         input,select,textarea{font-family:var(--font)}
 
-        /* ATTRACTOR MODE */
         .attractor-overlay{
             position:fixed;inset:0;z-index:9999;
             background:linear-gradient(135deg,#0F172A 0%,#1E293B 40%,#0F172A 100%);
@@ -112,12 +110,8 @@
             100%{transform:translateY(-10vh) rotate(720deg);opacity:0}
         }
 
-        /* APP CONTAINER */
         .app-container{max-width:1920px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column}
-        .screen{
-            display:none;flex-direction:column;
-            padding:1.5rem 2rem;flex:1;
-        }
+        .screen{display:none;flex-direction:column;padding:1.5rem 2rem;flex:1}
         .screen.active{display:flex;animation:screenEnter 0.45s cubic-bezier(0.4,0,0.2,1)}
         .screen.active.exiting{animation:screenExit 0.3s cubic-bezier(0.4,0,0.2,1) forwards}
 
@@ -130,7 +124,6 @@
             to{opacity:0;transform:translateY(-16px) scale(0.99)}
         }
 
-        /* HEADER */
         .app-header{
             display:flex;align-items:center;justify-content:space-between;
             padding:1rem 2rem;
@@ -159,12 +152,11 @@
         .btn-icon:hover{background:var(--gray-100);transform:translateY(-1px);box-shadow:var(--shadow)}
         .btn-icon:active{transform:scale(0.94)}
 
-        /* HOME */
+        /* FULLSCREEN BUTTON ICON */
+        .btn-icon .fs-icon { font-size:1.1rem; line-height:1; }
+
         .home-content{flex:1;display:flex;align-items:center;justify-content:center;padding:2rem}
-        .home-grid{
-            display:grid;grid-template-columns:repeat(3,1fr);
-            gap:2rem;max-width:1400px;width:100%;
-        }
+        .home-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;max-width:1400px;width:100%}
         @media(max-width:1100px){.home-grid{grid-template-columns:1fr;max-width:500px}}
         .home-card{
             background:var(--surface-glass);
@@ -194,12 +186,8 @@
         .card-accent.purple{background:var(--purple)}
         .card-accent.green{background:var(--green)}
 
-        /* FLOW SCREENS */
         .flow-container{flex:1;display:flex;flex-direction:column;max-width:1400px;margin:0 auto;width:100%}
-        .flow-header{
-            display:flex;align-items:center;gap:1rem;padding:1.5rem 0;
-            flex-wrap:wrap;
-        }
+        .flow-header{display:flex;align-items:center;gap:1rem;padding:1.5rem 0;flex-wrap:wrap}
         .btn-back{
             display:flex;align-items:center;gap:0.5rem;padding:0.75rem 1.25rem;
             border-radius:var(--radius);font-size:0.95rem;font-weight:600;
@@ -212,20 +200,14 @@
         .breadcrumbs{display:flex;align-items:center;gap:0.35rem;font-size:0.85rem;color:var(--text-secondary);flex-wrap:wrap}
         .breadcrumbs span.active{color:var(--blue);font-weight:600}
         .breadcrumbs .sep{color:var(--gray-400)}
-        .progress-bar-container{
-            flex:1;min-width:200px;height:8px;
-            background:var(--gray-200);border-radius:99px;overflow:hidden;
-        }
+        .progress-bar-container{flex:1;min-width:200px;height:8px;background:var(--gray-200);border-radius:99px;overflow:hidden}
         .progress-bar-fill{
             height:100%;border-radius:99px;
             background:linear-gradient(90deg,var(--blue),var(--purple));
             transition:width 0.5s cubic-bezier(0.4,0,0.2,1);
         }
         .flow-body{flex:1;overflow-y:auto;padding:0.5rem 0;min-height:0}
-        .flow-footer{
-            display:flex;justify-content:space-between;align-items:center;
-            padding:1.25rem 0;gap:1rem;
-        }
+        .flow-footer{display:flex;justify-content:space-between;align-items:center;padding:1.25rem 0;gap:1rem}
         .btn-primary{
             padding:1rem 2.5rem;border-radius:99px;
             background:linear-gradient(135deg,var(--blue),var(--blue-dark));
@@ -248,11 +230,7 @@
         .btn-secondary:hover{border-color:var(--blue);color:var(--blue);box-shadow:var(--shadow)}
         .btn-secondary:active{transform:scale(0.96)}
 
-        /* CARDS */
-        .cards-grid{
-            display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
-            gap:1.5rem;
-        }
+        .cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1.5rem}
         .card{
             background:var(--surface-glass);
             backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
@@ -263,16 +241,12 @@
         }
         .card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
         .card:active{transform:scale(0.97)}
-        .card.selected{
-            border:2px solid var(--blue);
-            box-shadow:0 0 0 4px rgba(37,99,235,0.15);
-        }
+        .card.selected{border:2px solid var(--blue);box-shadow:0 0 0 4px rgba(37,99,235,0.15)}
         .card-icon{font-size:3rem;margin-bottom:0.75rem;display:block}
         .card h3{font-size:1.15rem;font-weight:700;margin-bottom:0.35rem}
         .card p{font-size:0.85rem;color:var(--text-secondary);line-height:1.4}
         .card-price{font-size:1.25rem;font-weight:800;color:var(--blue);margin-top:0.75rem}
 
-        /* PRODUCT CARDS */
         .product-card{
             background:var(--surface-glass);
             backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
@@ -306,7 +280,6 @@
         .btn-add.added{background:var(--green);animation:popAdd 0.4s ease}
         @keyframes popAdd{0%{transform:scale(1)}50%{transform:scale(1.25)}100%{transform:scale(1)}}
 
-        /* CUSTOM OPTIONS */
         .custom-options{display:flex;flex-direction:column;gap:0.75rem}
         .custom-option{
             display:flex;align-items:center;justify-content:space-between;
@@ -335,7 +308,6 @@
         }
         .toggle-switch.active::after{transform:translateX(24px)}
 
-        /* CART */
         .cart-list{display:flex;flex-direction:column;gap:1rem}
         .cart-item{
             display:flex;align-items:center;gap:1.25rem;
@@ -383,7 +355,6 @@
             background:var(--green);color:white;font-weight:700;font-size:0.9rem;
         }
 
-        /* PAYMENT */
         .payment-methods{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem}
         .payment-method{
             padding:2rem 1.5rem;text-align:center;border-radius:var(--radius-lg);
@@ -406,7 +377,7 @@
             100%{transform:translateY(60px);opacity:0}
         }
 
-        /* VEHICLE */
+        /* VEHICLE SVG CAR */
         .vehicle-preview{
             background:var(--surface-glass);backdrop-filter:blur(12px);
             border-radius:var(--radius-xl);padding:2rem;text-align:center;
@@ -414,7 +385,15 @@
             border:1px solid rgba(255,255,255,0.08);
             transition:background 0.5s ease;
         }
-        .vehicle-svg{font-size:10rem;transition:all 0.5s ease;display:block}
+        .vehicle-svg-container {
+            display:inline-block;
+            transition:color 0.5s ease;
+            filter:drop-shadow(0 10px 25px rgba(0,0,0,0.18));
+        }
+        .vehicle-svg-container svg {
+            width:200px;
+            height:auto;
+        }
         .color-swatches{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center}
         .color-swatch{
             width:56px;height:56px;border-radius:50%;cursor:pointer;
@@ -427,10 +406,10 @@
             position:absolute;inset:0;display:flex;align-items:center;
             justify-content:center;color:white;font-weight:700;font-size:1.2rem;
             opacity:0;transition:opacity var(--transition-fast);
+            text-shadow:0 1px 2px rgba(0,0,0,0.5);
         }
         .color-swatch.selected .check{opacity:1}
 
-        /* CLINIC / TICKET */
         .ticket{
             background:white;border-radius:var(--radius-lg);
             padding:2rem;text-align:center;box-shadow:var(--shadow-lg);
@@ -468,7 +447,6 @@
         }
         @keyframes blinkCall{0%,100%{opacity:1}50%{opacity:0.4}}
 
-        /* MODALS & TOASTS */
         .modal-overlay{
             position:fixed;inset:0;z-index:200;
             background:rgba(0,0,0,0.5);backdrop-filter:blur(4px);
@@ -504,7 +482,6 @@
         @keyframes toastIn{from{transform:translateX(120%);opacity:0}to{transform:translateX(0);opacity:1}}
         @keyframes toastOut{from{transform:translateX(0);opacity:1}to{transform:translateX(120%);opacity:0}}
 
-        /* CONFETTI */
         .confetti-piece{
             position:fixed;z-index:250;pointer-events:none;
             animation:confettiFall linear forwards;
@@ -515,7 +492,6 @@
             100%{transform:translateY(110vh) rotate(720deg);opacity:0}
         }
 
-        /* RIPPLE */
         .ripple{position:relative;overflow:hidden}
         .ripple-effect{
             position:absolute;border-radius:50%;
@@ -525,7 +501,6 @@
         }
         @keyframes rippleAnim{to{transform:scale(4);opacity:0}}
 
-        /* SKELETON */
         .skeleton{
             background:linear-gradient(90deg,var(--gray-200) 25%,var(--gray-100) 50%,var(--gray-200) 75%);
             background-size:200% 100%;animation:skeletonShimmer 1.5s infinite;
@@ -533,13 +508,11 @@
         }
         @keyframes skeletonShimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
 
-        /* STAR RATING */
         .star-rating{display:flex;gap:0.35rem;justify-content:center;font-size:2.5rem}
         .star-rating .star{cursor:pointer;transition:all var(--transition-fast);color:var(--gray-300)}
         .star-rating .star.active{color:#FBBF24;transform:scale(1.15)}
         .star-rating .star:hover{transform:scale(1.2)}
 
-        /* PRODUCTION */
         .factory-scene{text-align:center;padding:2rem}
         .factory-line{
             display:flex;align-items:center;justify-content:center;
@@ -548,7 +521,6 @@
         .factory-step{opacity:0.3;transition:opacity 0.8s ease}
         .factory-step.done{opacity:1}
 
-        /* QR */
         .qr-code{
             width:150px;height:150px;margin:1rem auto;
             background:white;border-radius:var(--radius);
@@ -558,7 +530,6 @@
         .qr-dot{background:#000;border-radius:2px}
         .qr-dot.empty{background:transparent}
 
-        /* CHECKBOX */
         .checkbox-custom{
             width:24px;height:24px;border-radius:6px;
             border:2px solid var(--gray-300);display:flex;
@@ -568,20 +539,18 @@
         }
         .checkbox-custom.checked{background:var(--blue);border-color:var(--blue);color:white}
 
-        /* SCROLLBAR */
         ::-webkit-scrollbar{width:8px}
         ::-webkit-scrollbar-track{background:transparent}
         ::-webkit-scrollbar-thumb{background:var(--gray-300);border-radius:99px}
         ::-webkit-scrollbar-thumb:hover{background:var(--gray-400)}
 
-        /* RESPONSIVE */
         @media(max-width:768px){
             .screen{padding:1rem}
             .home-grid{grid-template-columns:1fr}
             .cards-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}
             .flow-footer{flex-direction:column}
             .btn-primary,.btn-secondary{width:100%;text-align:center}
-            .vehicle-svg{font-size:6rem}
+            .vehicle-svg-container svg{width:140px}
             .payment-methods{grid-template-columns:repeat(2,1fr)}
         }
     </style>
@@ -592,7 +561,7 @@
     <div class="attractor-overlay" id="attractorOverlay">
         <div class="attractor-particles" id="attractorParticles"></div>
         <div class="attractor-logo">🖥️</div>
-        <div class="attractor-title">MyHub Totem</div>
+        <div class="attractor-title">Demonstração de Aplicação - Totem</div>
         <div class="attractor-subtitle">Autoatendimento Inteligente</div>
         <div class="attractor-tap">👆 Toque na tela para começar</div>
     </div>
@@ -610,8 +579,11 @@
 
         <!-- HEADER -->
         <header class="app-header">
-            <div class="header-logo">⚡ MyHub Totem</div>
+            <div class="header-logo">⚡ Amostras de Aplicação Totem 🚀</div>
             <div class="header-actions">
+                <button class="btn-icon ripple" id="btnFullscreen" title="Tela cheia">
+                    <span class="fs-icon">⛶</span>
+                </button>
                 <button class="btn-icon ripple" id="btnDarkMode" title="Modo escuro">🌙</button>
                 <button class="btn-icon ripple" id="btnHome" title="Tela inicial">🏠</button>
             </div>
@@ -690,6 +662,43 @@
 
     </div>
 
+    <!-- SVG CAR TEMPLATE (hidden, used as reference) -->
+    <svg style="display:none" xmlns="http://www.w3.org/2000/svg">
+        <symbol id="carSvg" viewBox="0 0 200 120">
+            <!-- car body -->
+            <rect x="8" y="35" width="184" height="52" rx="18" fill="currentColor" />
+            <!-- cabin upper -->
+            <path d="M58 35 L75 6 L130 6 L148 35" fill="currentColor" fill-opacity="0.80" />
+            <!-- front window -->
+            <path d="M108 10 L126 10 L142 32 L105 32 Z" fill="rgba(255,255,255,0.35)" />
+            <!-- rear window -->
+            <path d="M78 10 L96 10 L98 32 L76 32 Z" fill="rgba(255,255,255,0.35)" />
+            <!-- front wheel -->
+            <circle cx="148" cy="92" r="22" fill="#2D2D2D" stroke="#555" stroke-width="3"/>
+            <circle cx="148" cy="92" r="10" fill="#888" />
+            <circle cx="148" cy="92" r="4" fill="#BBB" />
+            <!-- rear wheel -->
+            <circle cx="52" cy="92" r="22" fill="#2D2D2D" stroke="#555" stroke-width="3"/>
+            <circle cx="52" cy="92" r="10" fill="#888" />
+            <circle cx="52" cy="92" r="4" fill="#BBB" />
+            <!-- headlight -->
+            <rect x="188" y="43" width="10" height="18" rx="4" fill="#FFE066" opacity="0.9" />
+            <!-- taillight -->
+            <rect x="2" y="43" width="8" height="18" rx="3" fill="#FF4444" opacity="0.8" />
+            <!-- front bumper -->
+            <rect x="186" y="63" width="10" height="18" rx="4" fill="currentColor" opacity="0.6" />
+            <!-- rear bumper -->
+            <rect x="4" y="63" width="10" height="18" rx="4" fill="currentColor" opacity="0.6" />
+            <!-- door line -->
+            <line x1="96" y1="38" x2="96" y2="80" stroke="rgba(0,0,0,0.15)" stroke-width="2" />
+            <!-- door handle -->
+            <rect x="100" y="52" width="16" height="4" rx="2" fill="rgba(0,0,0,0.2)" />
+            <rect x="80" y="52" width="14" height="4" rx="2" fill="rgba(0,0,0,0.2)" />
+            <!-- mirror -->
+            <rect x="148" y="30" width="10" height="14" rx="3" fill="currentColor" opacity="0.7" />
+        </symbol>
+    </svg>
+
     <script>
         // ============================================================
         // APP STATE
@@ -706,6 +715,193 @@
 
         const ATTRACTOR_DELAY = 60000;
         const RESET_DELAY = 180000;
+
+        // ============================================================
+        // SVG CAR HELPER
+        // ============================================================
+        function renderCarSVG(color = '#c0392b') {
+    const id = 'car' + Date.now();
+    return `<svg viewBox="0 0 500 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:420px;height:auto;filter:drop-shadow(0 10px 15px rgba(0,0,0,0.25));">
+        <defs>
+            <linearGradient id="body${id}" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="${color}" stop-opacity="1"/>
+                <stop offset="50%" stop-color="${color}" stop-opacity="0.92"/>
+                <stop offset="100%" stop-color="${color}" stop-opacity="0.7"/>
+            </linearGradient>
+            <linearGradient id="bodyHL${id}" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#ffffff" stop-opacity="0.35"/>
+                <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+            </linearGradient>
+            <linearGradient id="glass${id}" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#b8d8e8" stop-opacity="0.95"/>
+                <stop offset="50%" stop-color="#6a8fa3" stop-opacity="0.85"/>
+                <stop offset="100%" stop-color="#2c3e50" stop-opacity="0.95"/>
+            </linearGradient>
+            <radialGradient id="rim${id}" cx="0.5" cy="0.5" r="0.5">
+                <stop offset="0%" stop-color="#e0e0e0"/>
+                <stop offset="70%" stop-color="#8a8a8a"/>
+                <stop offset="100%" stop-color="#3a3a3a"/>
+            </radialGradient>
+            <radialGradient id="tire${id}" cx="0.5" cy="0.5" r="0.5">
+                <stop offset="60%" stop-color="#1a1a1a"/>
+                <stop offset="100%" stop-color="#000000"/>
+            </radialGradient>
+            <radialGradient id="headlight${id}" cx="0.3" cy="0.5" r="0.7">
+                <stop offset="0%" stop-color="#ffffff"/>
+                <stop offset="40%" stop-color="#fff8d0"/>
+                <stop offset="100%" stop-color="#d4c070"/>
+            </radialGradient>
+            <radialGradient id="taillight${id}" cx="0.7" cy="0.5" r="0.7">
+                <stop offset="0%" stop-color="#ff6060"/>
+                <stop offset="100%" stop-color="#8b0000"/>
+            </radialGradient>
+        </defs>
+
+        <!-- Sombra no chão -->
+        <ellipse cx="250" cy="200" rx="210" ry="12" fill="#000" opacity="0.3"/>
+
+        <!-- Parte inferior / saia lateral -->
+        <path d="M 55 160 Q 55 175 75 178 L 425 178 Q 445 175 445 160 L 445 150 L 55 150 Z"
+              fill="#1a1a1a"/>
+
+        <!-- Carroceria principal -->
+        <path d="M 50 150
+                 Q 45 140 55 130
+                 L 95 125
+                 Q 110 95 145 80
+                 L 210 70
+                 Q 240 65 275 65
+                 L 330 70
+                 Q 370 78 395 100
+                 L 430 125
+                 Q 450 130 450 145
+                 L 450 155
+                 Q 450 165 440 165
+                 L 60 165
+                 Q 50 165 50 155 Z"
+              fill="url(#body${id})" stroke="#000" stroke-opacity="0.25" stroke-width="0.8"/>
+
+        <!-- Reflexo superior da carroceria -->
+        <path d="M 60 130
+                 Q 110 95 145 82
+                 L 210 72
+                 Q 240 67 275 67
+                 L 330 72
+                 Q 370 80 395 102
+                 L 420 125
+                 Q 300 115 180 115 Z"
+              fill="url(#bodyHL${id})" opacity="0.7"/>
+
+        <!-- Linha de caráter lateral -->
+        <path d="M 70 140 L 440 140" stroke="#000" stroke-opacity="0.15" stroke-width="1" fill="none"/>
+
+        <!-- Vidros -->
+        <!-- Para-brisa -->
+        <path d="M 150 82 Q 165 78 180 76 L 225 73 L 230 115 L 135 118 Q 140 95 150 82 Z"
+              fill="url(#glass${id})" stroke="#000" stroke-opacity="0.4" stroke-width="1"/>
+        <!-- Vidro lateral dianteiro -->
+        <path d="M 235 73 L 295 73 L 295 115 L 235 115 Z"
+              fill="url(#glass${id})" stroke="#000" stroke-opacity="0.4" stroke-width="1"/>
+        <!-- Vidro lateral traseiro -->
+        <path d="M 300 73 Q 340 78 370 95 L 380 115 L 300 115 Z"
+              fill="url(#glass${id})" stroke="#000" stroke-opacity="0.4" stroke-width="1"/>
+
+        <!-- Colunas -->
+        <rect x="228" y="73" width="5" height="42" fill="#1a1a1a" opacity="0.7"/>
+        <rect x="296" y="73" width="5" height="42" fill="#1a1a1a" opacity="0.7"/>
+
+        <!-- Farol dianteiro -->
+        <path d="M 60 132 Q 55 138 60 145 L 95 145 L 95 128 Z"
+              fill="url(#headlight${id})" stroke="#333" stroke-width="0.8"/>
+        <circle cx="75" cy="138" r="4" fill="#fff" opacity="0.8"/>
+
+        <!-- Lanterna traseira -->
+        <path d="M 430 128 L 445 132 Q 450 138 445 145 L 425 145 Z"
+              fill="url(#taillight${id})" stroke="#333" stroke-width="0.8"/>
+
+        <!-- Grade frontal -->
+        <rect x="58" y="148" width="35" height="8" rx="2" fill="#0a0a0a"/>
+        <line x1="62" y1="152" x2="89" y2="152" stroke="#333" stroke-width="0.5"/>
+
+        <!-- Retrovisor -->
+        <path d="M 145 100 Q 138 98 135 102 L 135 112 Q 138 115 145 113 Z"
+              fill="url(#body${id})" stroke="#000" stroke-opacity="0.4" stroke-width="0.8"/>
+
+        <!-- Maçanetas -->
+        <rect x="245" y="128" width="14" height="3" rx="1.5" fill="#000" opacity="0.4"/>
+        <rect x="315" y="128" width="14" height="3" rx="1.5" fill="#000" opacity="0.4"/>
+
+        <!-- Roda dianteira -->
+        <g>
+            <circle cx="130" cy="170" r="32" fill="url(#tire${id})"/>
+            <circle cx="130" cy="170" r="22" fill="url(#rim${id})"/>
+            <circle cx="130" cy="170" r="18" fill="none" stroke="#555" stroke-width="0.5"/>
+            <!-- Raios -->
+            ${[0,60,120,180,240,300].map(a => {
+                const r1=6, r2=18;
+                const x1 = 130 + r1*Math.cos(a*Math.PI/180);
+                const y1 = 170 + r1*Math.sin(a*Math.PI/180);
+                const x2 = 130 + r2*Math.cos(a*Math.PI/180);
+                const y2 = 170 + r2*Math.sin(a*Math.PI/180);
+                return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#2a2a2a" stroke-width="2.5" stroke-linecap="round"/>`;
+            }).join('')}
+            <circle cx="130" cy="170" r="5" fill="#1a1a1a"/>
+            <circle cx="130" cy="170" r="2" fill="#888"/>
+        </g>
+
+        <!-- Roda traseira -->
+        <g>
+            <circle cx="370" cy="170" r="32" fill="url(#tire${id})"/>
+            <circle cx="370" cy="170" r="22" fill="url(#rim${id})"/>
+            <circle cx="370" cy="170" r="18" fill="none" stroke="#555" stroke-width="0.5"/>
+            ${[0,60,120,180,240,300].map(a => {
+                const r1=6, r2=18;
+                const x1 = 370 + r1*Math.cos(a*Math.PI/180);
+                const y1 = 170 + r1*Math.sin(a*Math.PI/180);
+                const x2 = 370 + r2*Math.cos(a*Math.PI/180);
+                const y2 = 170 + r2*Math.sin(a*Math.PI/180);
+                return `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#2a2a2a" stroke-width="2.5" stroke-linecap="round"/>`;
+            }).join('')}
+            <circle cx="370" cy="170" r="5" fill="#1a1a1a"/>
+            <circle cx="370" cy="170" r="2" fill="#888"/>
+        </g>
+
+        <!-- Passagem de roda (arco sobre os pneus) -->
+        <path d="M 95 165 Q 130 135 165 165" fill="none" stroke="#000" stroke-opacity="0.3" stroke-width="1.5"/>
+        <path d="M 335 165 Q 370 135 405 165" fill="none" stroke="#000" stroke-opacity="0.3" stroke-width="1.5"/>
+    </svg>`;
+}
+
+
+        function isLightColor(hex) {
+            const r = parseInt(hex.slice(1,3), 16);
+            const g = parseInt(hex.slice(3,5), 16);
+            const b = parseInt(hex.slice(5,7), 16);
+            return (r * 0.299 + g * 0.587 + b * 0.114) > 150;
+        }
+
+        // ============================================================
+        // FULLSCREEN
+        // ============================================================
+        function toggleFullscreen() {
+            if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+                const el = document.documentElement;
+                if (el.requestFullscreen) el.requestFullscreen();
+                else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+                document.getElementById('btnFullscreen').querySelector('.fs-icon').textContent = '⛶';
+            } else {
+                if (document.exitFullscreen) document.exitFullscreen();
+                else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+                document.getElementById('btnFullscreen').querySelector('.fs-icon').textContent = '⛶';
+            }
+        }
+
+        document.addEventListener('fullscreenchange', () => {
+            const icon = document.getElementById('btnFullscreen')?.querySelector('.fs-icon');
+            if (icon) {
+                icon.textContent = document.fullscreenElement ? '⛶' : '⛶';
+            }
+        });
 
         // ============================================================
         // NAVIGATION
@@ -991,10 +1187,13 @@
             }
         }
 
+        // ═══ AUTO-AVANÇO: seleciona categoria e já vai para produtos ═══
         function selectFFCategory(catId) {
             AppState.ff.category = catId;
             renderFastFoodStep();
             playClickFeedback();
+            // Pequeno delay para mostrar a seleção visualmente
+            setTimeout(() => flowNext(), 350);
         }
 
         function addToCart(id, name, price, img) {
@@ -1070,6 +1269,7 @@
             AppState.ff.paymentMethod = method;
             renderFastFoodStep();
             playClickFeedback();
+            setTimeout(() => simulatePayment(), 150);
         }
 
         function simulatePayment() {
@@ -1231,14 +1431,17 @@
                     break;
 
                 case 2:
+                    // ═══ COR EXTERNA COM SVG ═══
+                    const colorName = VH_COLORS.find(c => c.hex === AppState.vh.extColor)?.name || 'Branco';
+                    const checkColor = isLightColor(AppState.vh.extColor) ? '#1A1A1A' : '#FFFFFF';
                     bodyHTML = `<h2 style="margin-bottom:1.5rem;font-size:1.5rem;">Cor Externa</h2>
                         <div class="vehicle-preview">
-                            <span class="vehicle-svg" style="color:${AppState.vh.extColor};filter:drop-shadow(0 10px 30px ${AppState.vh.extColor}44)">🚗</span>
-                            <p style="margin-top:0.75rem;font-weight:600;font-size:1.1rem">${VH_COLORS.find(c => c.hex === AppState.vh.extColor)?.name || 'Branco'}</p>
+                            ${renderCarSVG(AppState.vh.extColor)}
+                            <p style="margin-top:0.75rem;font-weight:600;font-size:1.1rem">${colorName}</p>
                         </div>
                         <div class="color-swatches">${VH_COLORS.map(c => `
                             <div class="color-swatch ${AppState.vh.extColor === c.hex ? 'selected' : ''}" style="background:${c.hex}${c.hex === '#FFFFFF' ? ';border:2px solid #E2E8F0' : ''}" onclick="selectVHColor('${c.hex}')" title="${c.name}">
-                                <span class="check">✓</span>
+                                <span class="check" style="color:${isLightColor(c.hex) ? '#1A1A1A' : '#FFFFFF'}">✓</span>
                             </div>`).join('')}</div>`;
                     footerHTML = `<button class="btn-secondary" onclick="flowBack()">← Voltar</button>
                         <button class="btn-primary" onclick="flowNext()">Próximo →</button>`;
@@ -1247,7 +1450,7 @@
                 case 3:
                     bodyHTML = `<h2 style="margin-bottom:1.5rem;font-size:1.5rem;">Cor Interna</h2>
                         <div class="vehicle-preview">
-                            <span class="vehicle-svg" style="color:${AppState.vh.extColor}">🚗</span>
+                            ${renderCarSVG(AppState.vh.extColor)}
                             <div style="width:200px;height:20px;background:${VH_INTERIORS.find(i => i.name === AppState.vh.intColor)?.color || '#1A1A1A'};margin:0.5rem auto;border-radius:99px"></div>
                             <p style="font-weight:600;font-size:1.1rem">${AppState.vh.intColor}</p>
                         </div>
@@ -1261,20 +1464,20 @@
                         <button class="btn-primary" onclick="flowNext()">Próximo →</button>`;
                     break;
 
-                case 4:
-                    bodyHTML = `<h2 style="margin-bottom:1.5rem;font-size:1.5rem;">Escolha as Rodas</h2>
-                        <div class="vehicle-preview">
-                            <span class="vehicle-svg" style="color:${AppState.vh.extColor}">🚗</span>
-                            <p style="font-weight:600;font-size:1.1rem;margin-top:0.5rem">Rodas ${AppState.vh.wheels}</p>
-                        </div>
-                        <div class="cards-grid">${VH_WHEELS_OPTIONS.map(w => `
-                            <div class="card ripple ${AppState.vh.wheels === w ? 'selected' : ''}" onclick="selectVHWheels('${w}')">
-                                <span class="card-icon">🛞</span><h3>Rodas ${w}</h3>
-                                <div class="card-price">${VH_WHEELS_PRICES[w] > 0 ? '+ R$ ' + VH_WHEELS_PRICES[w].toLocaleString('pt-BR') : 'Incluso'}</div>
-                            </div>`).join('')}</div>`;
-                    footerHTML = `<button class="btn-secondary" onclick="flowBack()">← Voltar</button>
-                        <button class="btn-primary" onclick="flowNext()">Próximo →</button>`;
-                    break;
+                                    // ═══ RODAS ═══
+                    case 4:
+    bodyHTML = `<h2 style="margin-bottom:1.5rem;font-size:1.5rem;">Escolha as Rodas</h2>
+        <div class="vehicle-preview">
+            ${renderCarSVG(AppState.vh.extColor)}
+            <p style="font-weight:600;font-size:1.1rem;margin-top:0.5rem">Rodas ${AppState.vh.wheels}</p>
+        </div>
+        <div class="cards-grid">${VH_WHEELS_OPTIONS.map((w, idx) => `
+            <div class="card ripple ${AppState.vh.wheels === w ? 'selected' : ''}" onclick="selectVHWheels(${idx})">
+                <span class="card-icon">🛞</span><h3>Rodas ${w}</h3>
+                <div class="card-price">${(VH_WHEELS_PRICES[w] || 0) > 0 ? '+ R$ ' + (VH_WHEELS_PRICES[w] || 0).toLocaleString('pt-BR') : 'Incluso'}</div>
+            </div>`).join('')}</div>`;
+    break;
+
 
                 case 5:
                     bodyHTML = `<h2 style="margin-bottom:1.5rem;font-size:1.5rem;">Pacotes e Acessórios</h2>
@@ -1293,7 +1496,7 @@
                     const deliveryDays = Math.floor(Math.random() * 60 + 30);
                     bodyHTML = `<h2 style="margin-bottom:1.5rem;font-size:1.5rem;">📋 Resumo do Pedido</h2>
                         <div class="vehicle-preview">
-                            <span class="vehicle-svg" style="color:${AppState.vh.extColor}">🚗</span>
+                            ${renderCarSVG(AppState.vh.extColor)}
                         </div>
                         <div style="max-width:600px;margin:0 auto">
                             ${[
@@ -1350,11 +1553,47 @@
             footer.innerHTML = footerHTML;
         }
 
-        function selectVHModel(id) { AppState.vh.model = id; renderVehicleStep(); playClickFeedback(); }
-        function selectVHEngine(id) { AppState.vh.engine = id; renderVehicleStep(); playClickFeedback(); }
-        function selectVHColor(hex) { AppState.vh.extColor = hex; renderVehicleStep(); playClickFeedback(); }
-        function selectVHInterior(name) { AppState.vh.intColor = name; renderVehicleStep(); playClickFeedback(); }
-        function selectVHWheels(w) { AppState.vh.wheels = w; renderVehicleStep(); playClickFeedback(); }
+        // ═══ AUTO-AVANÇO: seleciona e já segue ═══
+        function selectVHModel(id) {
+            AppState.vh.model = id;
+            renderVehicleStep();
+            playClickFeedback();
+            setTimeout(() => flowNext(), 350);
+        }
+        function selectVHEngine(id) {
+            AppState.vh.engine = id;
+            renderVehicleStep();
+            playClickFeedback();
+            setTimeout(() => flowNext(), 350);
+        }
+        function selectVHColor(hex) {
+            AppState.vh.extColor = hex;
+            renderVehicleStep();
+            playClickFeedback();
+            setTimeout(() => flowNext(), 350);
+        }
+        function selectVHInterior(name) {
+            AppState.vh.intColor = name;
+            renderVehicleStep();
+            playClickFeedback();
+            setTimeout(() => flowNext(), 350);
+
+        function escQuote(s) {
+    return s.replace(/"/g, '__ASPA__');
+}
+function unescQuote(s) {
+    return s.replace(/__ASPA__/g, '"');
+}
+    
+        }
+      function selectVHWheels(idx) {
+    AppState.vh.wheels = VH_WHEELS_OPTIONS[idx];
+    renderVehicleStep();
+    playClickFeedback();
+    setTimeout(() => flowNext(), 350);
+}
+
+
         function toggleVHPackage(id) {
             const idx = AppState.vh.packages.indexOf(id);
             if (idx >= 0) AppState.vh.packages.splice(idx, 1);
@@ -1576,7 +1815,14 @@
             footer.innerHTML = footerHTML;
         }
 
-        function selectCLService(id) { AppState.cl.serviceType = id; renderClinicStep(); playClickFeedback(); }
+        // ═══ AUTO-AVANÇO: seleciona atendimento e já gera senha ═══
+        function selectCLService(id) {
+            AppState.cl.serviceType = id;
+            renderClinicStep();
+            playClickFeedback();
+            setTimeout(() => generateTicket(), 350);
+        }
+
         function generateTicket() { flowNext(); }
 
         function animateWaitingList(tickets) {
@@ -1708,6 +1954,11 @@
         } catch(e) {}
 
         // ============================================================
+        // FULLSCREEN BUTTON
+        // ============================================================
+        document.getElementById('btnFullscreen').addEventListener('click', toggleFullscreen);
+
+        // ============================================================
         // HOME BUTTON
         // ============================================================
         document.getElementById('btnHome').addEventListener('click', goHome);
@@ -1716,46 +1967,43 @@
         // ATTRACTOR MODE
         // ============================================================
         function startAttractorMode() {
-    document.getElementById('attractorOverlay').classList.add('active');
-    spawnAttractorParticles();
-}
+            document.getElementById('attractorOverlay').classList.add('active');
+            spawnAttractorParticles();
+        }
 
-function stopAttractorMode() {
-    document.getElementById('attractorOverlay').classList.remove('active');
-    // NÃO chama resetInactivityTimer aqui — isso causava o loop
-}
+        function stopAttractorMode() {
+            document.getElementById('attractorOverlay').classList.remove('active');
+        }
 
-document.getElementById('attractorOverlay').addEventListener('click', stopAttractorMode);
+        document.getElementById('attractorOverlay').addEventListener('click', stopAttractorMode);
 
-function spawnAttractorParticles() {
-    const container = document.getElementById('attractorParticles');
-    container.innerHTML = '';
-    const colors = ['#2563EB', '#7C3AED', '#10B981', '#F97316', '#FBBF24', '#EC4899'];
-    for (let i = 0; i < 30; i++) {
-        const particle = document.createElement('div');
-        particle.className = 'attractor-particle';
-        particle.style.left = Math.random() * 100 + '%';
-        particle.style.width = (Math.random() * 8 + 4) + 'px';
-        particle.style.height = particle.style.width;
-        particle.style.background = colors[Math.floor(Math.random() * colors.length)];
-        particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
-        particle.style.animationDelay = Math.random() * 5 + 's';
-        container.appendChild(particle);
-    }
-}
+        function spawnAttractorParticles() {
+            const container = document.getElementById('attractorParticles');
+            container.innerHTML = '';
+            const colors = ['#2563EB', '#7C3AED', '#10B981', '#F97316', '#FBBF24', '#EC4899'];
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'attractor-particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.width = (Math.random() * 8 + 4) + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                particle.style.animationDelay = Math.random() * 5 + 's';
+                container.appendChild(particle);
+            }
+        }
 
-function resetInactivityTimer() {
-    clearTimeout(AppState.inactivityTimeout);
-    clearTimeout(AppState.attractorTimeout);
-    // Em vez de chamar stopAttractorMode(), apenas esconde o overlay diretamente:
-    document.getElementById('attractorOverlay').classList.remove('active');
-    AppState.attractorTimeout = setTimeout(startAttractorMode, ATTRACTOR_DELAY);
-    AppState.inactivityTimeout = setTimeout(() => {
-        goHome();
-        startAttractorMode();
-    }, RESET_DELAY);
-}
-
+        function resetInactivityTimer() {
+            clearTimeout(AppState.inactivityTimeout);
+            clearTimeout(AppState.attractorTimeout);
+            document.getElementById('attractorOverlay').classList.remove('active');
+            AppState.attractorTimeout = setTimeout(startAttractorMode, ATTRACTOR_DELAY);
+            AppState.inactivityTimeout = setTimeout(() => {
+                goHome();
+                startAttractorMode();
+            }, RESET_DELAY);
+        }
 
         // ============================================================
         // CLICK SOUND
@@ -1798,7 +2046,7 @@ function resetInactivityTimer() {
         }
 
         initApp();
-        console.log('🚀 MyHub Totem iniciado');
+        console.log('🚀 Amostras de Aplicação Totem iniciado');
     </script>
 </body>
 </html>
