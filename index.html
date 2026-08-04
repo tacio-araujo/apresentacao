@@ -1,0 +1,1987 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyHub Totem - Autoatendimento Interativo</title>
+    <style>
+        /* ============================================================
+           CSS CUSTOM PROPERTIES & THEME
+           ============================================================ */
+        :root {
+            --blue: #2563EB;
+            --blue-light: #3B82F6;
+            --blue-dark: #1D4ED8;
+            --purple: #7C3AED;
+            --purple-light: #8B5CF6;
+            --green: #10B981;
+            --green-light: #34D399;
+            --orange: #F97316;
+            --orange-light: #FB923C;
+            --gray-50: #F8FAFC;
+            --gray-100: #F1F5F9;
+            --gray-200: #E2E8F0;
+            --gray-300: #CBD5E1;
+            --gray-400: #94A3B8;
+            --gray-500: #64748B;
+            --gray-600: #475569;
+            --gray-700: #334155;
+            --gray-800: #1E293B;
+            --gray-900: #0F172A;
+            --white: #FFFFFF;
+            --bg: #F0F4FF;
+            --surface: #FFFFFF;
+            --surface-glass: rgba(255,255,255,0.72);
+            --text: #1E293B;
+            --text-secondary: #64748B;
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+            --shadow: 0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -2px rgba(0,0,0,0.05);
+            --shadow-md: 0 10px 25px -5px rgba(0,0,0,0.08), 0 4px 10px -6px rgba(0,0,0,0.04);
+            --shadow-lg: 0 20px 50px -12px rgba(0,0,0,0.12);
+            --shadow-xl: 0 25px 60px -15px rgba(0,0,0,0.18);
+            --radius-sm: 12px;
+            --radius: 16px;
+            --radius-lg: 24px;
+            --radius-xl: 32px;
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            --font: 'Segoe UI', 'Inter', system-ui, -apple-system, sans-serif;
+        }
+
+        [data-theme="dark"] {
+            --bg: #0F172A;
+            --surface: #1E293B;
+            --surface-glass: rgba(30,41,59,0.75);
+            --text: #F1F5F9;
+            --text-secondary: #94A3B8;
+            --gray-50: #1E293B;
+            --gray-100: #334155;
+            --gray-200: #475569;
+            --gray-300: #64748B;
+            --shadow-sm: 0 1px 2px rgba(0,0,0,0.3);
+            --shadow: 0 4px 6px -1px rgba(0,0,0,0.4);
+            --shadow-md: 0 10px 25px -5px rgba(0,0,0,0.5);
+            --shadow-lg: 0 20px 50px -12px rgba(0,0,0,0.6);
+            --shadow-xl: 0 25px 60px -15px rgba(0,0,0,0.7);
+            --white: #1E293B;
+        }
+
+        /* ============================================================
+           RESET & BASE
+           ============================================================ */
+        *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+        html{font-size:16px;scroll-behavior:smooth}
+        body{
+            font-family:var(--font);
+            background:var(--bg);
+            color:var(--text);
+            min-height:100vh;
+            overflow-x:hidden;
+            transition:background var(--transition),color var(--transition);
+            background-image:
+                radial-gradient(ellipse at 20% 20%, rgba(37,99,235,0.06) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 70%, rgba(124,58,237,0.05) 0%, transparent 60%),
+                radial-gradient(ellipse at 50% 50%, rgba(16,185,129,0.04) 0%, transparent 60%);
+            background-attachment: fixed;
+        }
+        button{cursor:pointer;font-family:var(--font);border:none;outline:none}
+        input,select,textarea{font-family:var(--font)}
+
+        /* ============================================================
+           ATTRACTOR MODE (TELA DE DESCANSO)
+           ============================================================ */
+        .attractor-overlay{
+            position:fixed;inset:0;z-index:9999;
+            background:linear-gradient(135deg,#0F172A 0%,#1E293B 40%,#0F172A 100%);
+            display:flex;align-items:center;justify-content:center;
+            flex-direction:column;gap:2rem;
+            cursor:pointer;
+            opacity:0;pointer-events:none;
+            transition:opacity 0.8s ease;
+        }
+        .attractor-overlay.active{opacity:1;pointer-events:all}
+        .attractor-logo{
+            font-size:5rem;animation:attractorPulse 2s ease-in-out infinite;
+        }
+        .attractor-title{
+            font-size:2.5rem;font-weight:700;color:white;
+            letter-spacing:-0.04em;
+            animation:attractorFadeInUp 0.8s ease;
+        }
+        .attractor-subtitle{
+            font-size:1.25rem;color:rgba(255,255,255,0.6);
+            animation:attractorFadeInUp 0.8s ease 0.2s both;
+        }
+        .attractor-tap{
+            font-size:1rem;color:rgba(255,255,255,0.5);
+            animation:attractorBounce 2s ease-in-out infinite;
+            margin-top:2rem;
+        }
+        .attractor-particles{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+        .attractor-particle{
+            position:absolute;border-radius:50%;
+            animation:attractorFloat linear infinite;
+        }
+
+        @keyframes attractorPulse{
+            0%,100%{transform:scale(1);opacity:0.9}
+            50%{transform:scale(1.08);opacity:1}
+        }
+        @keyframes attractorFadeInUp{
+            from{opacity:0;transform:translateY(20px)}
+            to{opacity:1;transform:translateY(0)}
+        }
+        @keyframes attractorBounce{
+            0%,100%{transform:translateY(0)}
+            50%{transform:translateY(-8px)}
+        }
+        @keyframes attractorFloat{
+            0%{transform:translateY(100vh) rotate(0deg);opacity:0}
+            10%{opacity:1}
+            90%{opacity:1}
+            100%{transform:translateY(-10vh) rotate(720deg);opacity:0}
+        }
+
+        /* ============================================================
+           MAIN CONTAINER
+           ============================================================ */
+        .app-container{
+            max-width:1920px;margin:0 auto;min-height:100vh;
+            display:flex;flex-direction:column;
+        }
+        .screen{
+            display:none;flex-direction:column;
+            padding:1.5rem 2rem;flex:1;
+            animation:screenEnter 0.45s cubic-bezier(0.4,0,0.2,1);
+        }
+        .screen.active{display:flex}
+        @keyframes screenEnter{
+            from{opacity:0;transform:translateY(16px) scale(0.99)}
+            to{opacity:1;transform:translateY(0) scale(1)}
+        }
+        @keyframes screenExit{
+            from{opacity:1;transform:translateY(0) scale(1)}
+            to{opacity:0;transform:translateY(-16px) scale(0.99)}
+        }
+        .screen.exiting{animation:screenExit 0.3s cubic-bezier(0.4,0,0.2,1) forwards}
+
+        /* ============================================================
+           HEADER & NAV
+           ============================================================ */
+        .app-header{
+            display:flex;align-items:center;justify-content:space-between;
+            padding:1rem 2rem;
+            background:var(--surface-glass);
+            backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+            border-bottom:1px solid rgba(0,0,0,0.06);
+            position:sticky;top:0;z-index:100;
+            transition:background var(--transition);
+        }
+        .header-logo{
+            font-size:1.5rem;font-weight:800;
+            background:linear-gradient(135deg,var(--blue),var(--purple));
+            -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+            background-clip:text;
+            letter-spacing:-0.03em;
+        }
+        .header-actions{display:flex;gap:0.75rem;align-items:center}
+        .btn-icon{
+            width:44px;height:44px;border-radius:50%;
+            display:flex;align-items:center;justify-content:center;
+            background:var(--surface);color:var(--text);
+            box-shadow:var(--shadow-sm);font-size:1.2rem;
+            transition:all var(--transition-fast);
+            border:1px solid var(--gray-200);
+            position:relative;overflow:hidden;
+        }
+        .btn-icon:hover{background:var(--gray-100);transform:translateY(-1px);box-shadow:var(--shadow)}
+        .btn-icon:active{transform:scale(0.94)}
+
+        /* ============================================================
+           HOME SCREEN
+           ============================================================ */
+        .home-content{
+            flex:1;display:flex;align-items:center;justify-content:center;
+            padding:2rem;
+        }
+        .home-grid{
+            display:grid;grid-template-columns:repeat(3,1fr);
+            gap:2rem;max-width:1400px;width:100%;
+        }
+        @media(max-width:1100px){.home-grid{grid-template-columns:1fr;max-width:500px}}
+        .home-card{
+            background:var(--surface-glass);
+            backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+            border-radius:var(--radius-xl);
+            padding:3rem 2rem;
+            text-align:center;
+            cursor:pointer;
+            box-shadow:var(--shadow-md);
+            transition:all var(--transition);
+            border:1px solid rgba(255,255,255,0.1);
+            position:relative;overflow:hidden;
+        }
+        .home-card::before{
+            content:'';position:absolute;inset:0;
+            background:linear-gradient(135deg,transparent,rgba(255,255,255,0.05));
+            opacity:0;transition:opacity var(--transition);
+        }
+        .home-card:hover{
+            transform:translateY(-8px);
+            box-shadow:var(--shadow-xl);
+        }
+        .home-card:hover::before{opacity:1}
+        .home-card:active{transform:translateY(-2px) scale(0.98)}
+        .home-card-icon{font-size:4.5rem;margin-bottom:1.5rem;display:block;
+            animation:floatIcon 3s ease-in-out infinite;
+        }
+        .home-card:nth-child(2) .home-card-icon{animation-delay:0.5s}
+        .home-card:nth-child(3) .home-card-icon{animation-delay:1s}
+        @keyframes floatIcon{
+            0%,100%{transform:translateY(0)}
+            50%{transform:translateY(-10px)}
+        }
+        .home-card h2{font-size:1.75rem;font-weight:700;margin-bottom:0.5rem;letter-spacing:-0.02em}
+        .home-card p{color:var(--text-secondary);font-size:1rem;line-height:1.5}
+        .home-card .card-accent{
+            position:absolute;bottom:0;left:0;right:0;height:4px;
+            border-radius:0 0 var(--radius-xl) var(--radius-xl);
+        }
+        .card-accent.blue{background:var(--blue)}
+        .card-accent.purple{background:var(--purple)}
+        .card-accent.green{background:var(--green)}
+
+        /* ============================================================
+           FLOW SCREENS (SHARED)
+           ============================================================ */
+        .flow-container{flex:1;display:flex;flex-direction:column;max-width:1400px;margin:0 auto;width:100%}
+        .flow-header{
+            display:flex;align-items:center;gap:1rem;padding:1.5rem 0;
+            flex-wrap:wrap;
+        }
+        .btn-back{
+            display:flex;align-items:center;gap:0.5rem;padding:0.75rem 1.25rem;
+            border-radius:var(--radius);font-size:0.95rem;font-weight:600;
+            background:var(--surface);color:var(--text);
+            box-shadow:var(--shadow-sm);border:1px solid var(--gray-200);
+            transition:all var(--transition-fast);
+        }
+        .btn-back:hover{background:var(--gray-100);box-shadow:var(--shadow)}
+        .btn-back:active{transform:scale(0.96)}
+        .breadcrumbs{display:flex;align-items:center;gap:0.35rem;font-size:0.85rem;color:var(--text-secondary);flex-wrap:wrap}
+        .breadcrumbs span.active{color:var(--blue);font-weight:600}
+        .breadcrumbs .sep{color:var(--gray-400)}
+        .progress-bar-container{
+            flex:1;min-width:200px;height:8px;
+            background:var(--gray-200);border-radius:99px;overflow:hidden;
+        }
+        .progress-bar-fill{
+            height:100%;border-radius:99px;
+            background:linear-gradient(90deg,var(--blue),var(--purple));
+            transition:width 0.5s cubic-bezier(0.4,0,0.2,1);
+        }
+        .flow-body{flex:1;overflow-y:auto;padding:0.5rem 0}
+        .flow-footer{
+            display:flex;justify-content:space-between;align-items:center;
+            padding:1.25rem 0;gap:1rem;
+        }
+        .btn-primary{
+            padding:1rem 2.5rem;border-radius:99px;
+            background:linear-gradient(135deg,var(--blue),var(--blue-dark));
+            color:white;font-weight:700;font-size:1.05rem;
+            box-shadow:0 4px 15px rgba(37,99,235,0.35);
+            transition:all var(--transition-fast);
+            position:relative;overflow:hidden;
+            letter-spacing:-0.01em;
+        }
+        .btn-primary:hover{box-shadow:0 6px 25px rgba(37,99,235,0.45);transform:translateY(-2px)}
+        .btn-primary:active{transform:scale(0.96)}
+        .btn-primary:disabled{opacity:0.5;cursor:not-allowed;transform:none}
+        .btn-secondary{
+            padding:0.85rem 1.75rem;border-radius:99px;
+            background:var(--surface);color:var(--text);
+            font-weight:600;font-size:0.95rem;
+            box-shadow:var(--shadow-sm);border:2px solid var(--gray-200);
+            transition:all var(--transition-fast);
+        }
+        .btn-secondary:hover{border-color:var(--blue);color:var(--blue);box-shadow:var(--shadow)}
+        .btn-secondary:active{transform:scale(0.96)}
+
+        /* ============================================================
+           CARDS GRID
+           ============================================================ */
+        .cards-grid{
+            display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
+            gap:1.5rem;
+        }
+        .card{
+            background:var(--surface-glass);
+            backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+            border-radius:var(--radius-lg);padding:1.75rem;
+            box-shadow:var(--shadow);border:1px solid rgba(255,255,255,0.08);
+            transition:all var(--transition-fast);
+            cursor:pointer;text-align:center;
+        }
+        .card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+        .card:active{transform:scale(0.97)}
+        .card.selected{
+            border:2px solid var(--blue);
+            box-shadow:0 0 0 4px rgba(37,99,235,0.15);
+        }
+        .card-icon{font-size:3rem;margin-bottom:0.75rem;display:block}
+        .card h3{font-size:1.15rem;font-weight:700;margin-bottom:0.35rem}
+        .card p{font-size:0.85rem;color:var(--text-secondary);line-height:1.4}
+        .card-price{font-size:1.25rem;font-weight:800;color:var(--blue);margin-top:0.75rem}
+
+        /* ============================================================
+           PRODUCT CARDS (FAST FOOD)
+           ============================================================ */
+        .product-card{
+            background:var(--surface-glass);
+            backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+            border-radius:var(--radius-lg);overflow:hidden;
+            box-shadow:var(--shadow);border:1px solid rgba(255,255,255,0.08);
+            transition:all var(--transition-fast);
+            display:flex;flex-direction:column;
+        }
+        .product-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+        .product-img{
+            height:160px;display:flex;align-items:center;justify-content:center;
+            font-size:5rem;background:var(--gray-100);position:relative;
+            overflow:hidden;
+        }
+        .product-img .img-badge{
+            position:absolute;top:10px;right:10px;
+            background:var(--orange);color:white;font-size:0.7rem;
+            font-weight:700;padding:4px 10px;border-radius:99px;
+        }
+        .product-info{padding:1.25rem;flex:1;display:flex;flex-direction:column}
+        .product-info h3{font-size:1.1rem;font-weight:700;margin-bottom:0.25rem}
+        .product-info .desc{font-size:0.85rem;color:var(--text-secondary);flex:1}
+        .product-info .price-row{
+            display:flex;align-items:center;justify-content:space-between;
+            margin-top:1rem;
+        }
+        .product-info .price{font-size:1.4rem;font-weight:800;color:var(--green)}
+        .btn-add{
+            padding:0.6rem 1.2rem;border-radius:99px;
+            background:var(--blue);color:white;font-weight:700;font-size:0.9rem;
+            transition:all var(--transition-fast);
+        }
+        .btn-add:hover{background:var(--blue-dark);transform:scale(1.04)}
+        .btn-add:active{transform:scale(0.92)}
+        .btn-add.added{
+            background:var(--green);animation:popAdd 0.4s ease;
+        }
+        @keyframes popAdd{
+            0%{transform:scale(1)}
+            50%{transform:scale(1.25)}
+            100%{transform:scale(1)}
+        }
+
+        /* ============================================================
+           CUSTOMIZATION OPTIONS
+           ============================================================ */
+        .custom-options{display:flex;flex-direction:column;gap:0.75rem}
+        .custom-option{
+            display:flex;align-items:center;justify-content:space-between;
+            padding:1rem 1.25rem;background:var(--surface);
+            border-radius:var(--radius);box-shadow:var(--shadow-sm);
+            border:1px solid var(--gray-200);cursor:pointer;
+            transition:all var(--transition-fast);
+        }
+        .custom-option:hover{box-shadow:var(--shadow);border-color:var(--blue)}
+        .custom-option.selected{border-color:var(--blue);background:rgba(37,99,235,0.04)}
+        .custom-option .opt-left{display:flex;align-items:center;gap:0.75rem}
+        .custom-option .opt-icon{font-size:1.5rem}
+        .custom-option .opt-info h4{font-weight:600;font-size:0.95rem}
+        .custom-option .opt-info span{font-size:0.8rem;color:var(--text-secondary)}
+        .custom-option .opt-price{font-weight:700;color:var(--blue)}
+        .toggle-switch{
+            width:52px;height:28px;border-radius:99px;
+            background:var(--gray-300);position:relative;cursor:pointer;
+            transition:background var(--transition-fast);
+        }
+        .toggle-switch.active{background:var(--blue)}
+        .toggle-switch::after{
+            content:'';position:absolute;top:3px;left:3px;
+            width:22px;height:22px;border-radius:50%;background:white;
+            transition:transform var(--transition-fast);box-shadow:0 1px 3px rgba(0,0,0,0.2);
+        }
+        .toggle-switch.active::after{transform:translateX(24px)}
+
+        /* ============================================================
+           CART
+           ============================================================ */
+        .cart-list{display:flex;flex-direction:column;gap:1rem}
+        .cart-item{
+            display:flex;align-items:center;gap:1.25rem;
+            padding:1.25rem;background:var(--surface);
+            border-radius:var(--radius);box-shadow:var(--shadow-sm);
+            border:1px solid var(--gray-200);
+        }
+        .cart-item-img{font-size:3rem;min-width:60px;text-align:center}
+        .cart-item-info{flex:1}
+        .cart-item-info h4{font-weight:600;margin-bottom:0.15rem}
+        .cart-item-info .customs{font-size:0.8rem;color:var(--text-secondary)}
+        .cart-item-qty{
+            display:flex;align-items:center;gap:0.5rem;
+        }
+        .qty-btn{
+            width:32px;height:32px;border-radius:50%;
+            background:var(--gray-100);display:flex;align-items:center;
+            justify-content:center;font-weight:700;font-size:1.1rem;
+            transition:all var(--transition-fast);
+        }
+        .qty-btn:hover{background:var(--gray-200)}
+        .qty-btn:active{transform:scale(0.9)}
+        .cart-item-price{font-weight:800;font-size:1.15rem;color:var(--green);min-width:80px;text-align:right}
+        .cart-item-remove{
+            color:#EF4444;font-size:0.85rem;font-weight:600;cursor:pointer;
+            padding:0.4rem 0.8rem;border-radius:99px;transition:all var(--transition-fast);
+            background:rgba(239,68,68,0.08);
+        }
+        .cart-item-remove:hover{background:rgba(239,68,68,0.15)}
+        .cart-summary{
+            margin-top:1.5rem;padding:1.5rem;
+            background:var(--surface-glass);backdrop-filter:blur(12px);
+            border-radius:var(--radius-lg);border:1px solid rgba(255,255,255,0.08);
+        }
+        .cart-summary .row{display:flex;justify-content:space-between;padding:0.4rem 0;font-size:0.95rem}
+        .cart-summary .row.total{font-size:1.4rem;font-weight:800;border-top:2px dashed var(--gray-200);margin-top:0.5rem;padding-top:1rem}
+        .discount-input{
+            display:flex;gap:0.5rem;margin:0.75rem 0;
+        }
+        .discount-input input{
+            flex:1;padding:0.7rem 1rem;border-radius:99px;
+            border:2px solid var(--gray-200);font-size:0.9rem;
+            background:var(--surface);color:var(--text);
+            transition:border-color var(--transition-fast);
+        }
+        .discount-input input:focus{border-color:var(--blue);outline:none}
+        .discount-input button{
+            padding:0.7rem 1.25rem;border-radius:99px;
+            background:var(--green);color:white;font-weight:700;font-size:0.9rem;
+        }
+
+        /* ============================================================
+           PAYMENT
+           ============================================================ */
+        .payment-methods{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem}
+        .payment-method{
+            padding:2rem 1.5rem;text-align:center;border-radius:var(--radius-lg);
+            background:var(--surface);box-shadow:var(--shadow-sm);
+            border:2px solid var(--gray-200);cursor:pointer;
+            transition:all var(--transition-fast);font-size:2.5rem;
+        }
+        .payment-method:hover{border-color:var(--blue);box-shadow:var(--shadow-md);transform:translateY(-3px)}
+        .payment-method.selected{border-color:var(--blue);background:rgba(37,99,235,0.05);box-shadow:0 0 0 6px rgba(37,99,235,0.08)}
+        .payment-method span{display:block;font-size:0.9rem;font-weight:600;margin-top:0.5rem;color:var(--text)}
+        .card-simulation{
+            padding:3rem;text-align:center;background:var(--surface);
+            border-radius:var(--radius-xl);box-shadow:var(--shadow-lg);
+        }
+        .card-machine{font-size:6rem;animation:cardInsert 1.5s ease}
+        @keyframes cardInsert{
+            0%{transform:translateY(-60px);opacity:0}
+            40%{transform:translateY(0);opacity:1}
+            60%{transform:translateY(0)}
+            100%{transform:translateY(60px);opacity:0}
+        }
+
+        /* ============================================================
+           VEHICLE CONFIGURATOR
+           ============================================================ */
+        .vehicle-preview{
+            background:var(--surface-glass);backdrop-filter:blur(12px);
+            border-radius:var(--radius-xl);padding:2rem;text-align:center;
+            box-shadow:var(--shadow-md);margin-bottom:1.5rem;
+            border:1px solid rgba(255,255,255,0.08);
+            transition:background 0.5s ease;
+        }
+        .vehicle-svg{font-size:10rem;transition:all 0.5s ease;display:block}
+        .color-swatches{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center}
+        .color-swatch{
+            width:56px;height:56px;border-radius:50%;cursor:pointer;
+            border:3px solid transparent;transition:all var(--transition-fast);
+            box-shadow:var(--shadow);position:relative;
+        }
+        .color-swatch:hover{transform:scale(1.15)}
+        .color-swatch.selected{border-color:var(--blue);box-shadow:0 0 0 5px rgba(37,99,235,0.2);transform:scale(1.1)}
+        .color-swatch .check{
+            position:absolute;inset:0;display:flex;align-items:center;
+            justify-content:center;color:white;font-weight:700;font-size:1.2rem;
+            opacity:0;transition:opacity var(--transition-fast);
+        }
+        .color-swatch.selected .check{opacity:1}
+
+        /* ============================================================
+           CLINIC / TICKET
+           ============================================================ */
+        .ticket{
+            background:white;border-radius:var(--radius-lg);
+            padding:2rem;text-align:center;box-shadow:var(--shadow-lg);
+            border:3px dashed var(--gray-300);max-width:400px;margin:0 auto;
+            position:relative;overflow:hidden;
+        }
+        .ticket::before,.ticket::after{
+            content:'';position:absolute;width:30px;height:30px;
+            background:var(--bg);border-radius:50%;top:50%;
+        }
+        .ticket::before{left:-15px;transform:translateY(-50%)}
+        .ticket::after{right:-15px;transform:translateY(-50%)}
+        .ticket-number{
+            font-size:3.5rem;font-weight:900;letter-spacing:0.1em;
+            background:linear-gradient(135deg,var(--blue),var(--purple));
+            -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+            background-clip:text;
+        }
+        .waiting-panel{
+            background:var(--surface-glass);backdrop-filter:blur(12px);
+            border-radius:var(--radius-xl);padding:2rem;
+            box-shadow:var(--shadow-lg);max-width:600px;margin:0 auto;
+        }
+        .waiting-list{display:flex;flex-direction:column;gap:0.5rem}
+        .waiting-item{
+            display:flex;justify-content:space-between;align-items:center;
+            padding:0.75rem 1rem;border-radius:var(--radius-sm);
+            background:var(--surface);font-weight:500;font-size:0.9rem;
+            transition:all var(--transition-fast);
+        }
+        .waiting-item.called{
+            background:var(--blue);color:white;font-weight:700;
+            animation:blinkCall 0.8s ease-in-out 3;
+        }
+        @keyframes blinkCall{
+            0%,100%{opacity:1}
+            50%{opacity:0.4}
+        }
+
+        /* ============================================================
+           MODALS & TOASTS
+           ============================================================ */
+        .modal-overlay{
+            position:fixed;inset:0;z-index:200;
+            background:rgba(0,0,0,0.5);backdrop-filter:blur(4px);
+            display:flex;align-items:center;justify-content:center;
+            opacity:0;pointer-events:none;
+            transition:opacity var(--transition);
+        }
+        .modal-overlay.active{opacity:1;pointer-events:all}
+        .modal{
+            background:var(--surface);border-radius:var(--radius-xl);
+            padding:2.5rem;max-width:500px;width:90%;text-align:center;
+            box-shadow:var(--shadow-xl);
+            transform:translateY(20px) scale(0.95);
+            transition:transform var(--transition);
+        }
+        .modal-overlay.active .modal{transform:translateY(0) scale(1)}
+        .modal-icon{font-size:5rem;margin-bottom:1rem}
+        .modal h2{font-size:1.5rem;font-weight:700;margin-bottom:0.5rem}
+        .toast-container{
+            position:fixed;top:20px;right:20px;z-index:300;
+            display:flex;flex-direction:column;gap:0.75rem;
+        }
+        .toast{
+            padding:1rem 1.5rem;border-radius:var(--radius);
+            background:var(--surface);box-shadow:var(--shadow-lg);
+            display:flex;align-items:center;gap:0.75rem;font-weight:600;
+            animation:toastIn 0.4s ease,toastOut 0.4s ease 2.5s forwards;
+            border-left:4px solid var(--blue);
+            max-width:380px;
+        }
+        .toast.success{border-left-color:var(--green)}
+        .toast.error{border-left-color:#EF4444}
+        @keyframes toastIn{from{transform:translateX(120%);opacity:0}to{transform:translateX(0);opacity:1}}
+        @keyframes toastOut{from{transform:translateX(0);opacity:1}to{transform:translateX(120%);opacity:0}}
+
+        /* ============================================================
+           CONFETTI
+           ============================================================ */
+        .confetti-piece{
+            position:fixed;z-index:250;pointer-events:none;
+            animation:confettiFall linear forwards;
+        }
+        @keyframes confettiFall{
+            0%{transform:translateY(-100px) rotate(0deg);opacity:1}
+            80%{opacity:1}
+            100%{transform:translateY(110vh) rotate(720deg);opacity:0}
+        }
+
+        /* ============================================================
+           RIPPLE EFFECT
+           ============================================================ */
+        .ripple{position:relative;overflow:hidden}
+        .ripple-effect{
+            position:absolute;border-radius:50%;
+            background:rgba(255,255,255,0.5);
+            transform:scale(0);animation:rippleAnim 0.6s ease forwards;
+            pointer-events:none;
+        }
+        @keyframes rippleAnim{to{transform:scale(4);opacity:0}}
+
+        /* ============================================================
+           SKELETON LOADING
+           ============================================================ */
+        .skeleton{
+            background:linear-gradient(90deg,var(--gray-200) 25%,var(--gray-100) 50%,var(--gray-200) 75%);
+            background-size:200% 100%;animation:skeletonShimmer 1.5s infinite;
+            border-radius:var(--radius-sm);
+        }
+        @keyframes skeletonShimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+        /* ============================================================
+           STAR RATING
+           ============================================================ */
+        .star-rating{display:flex;gap:0.35rem;justify-content:center;font-size:2.5rem}
+        .star-rating .star{cursor:pointer;transition:all var(--transition-fast);color:var(--gray-300)}
+        .star-rating .star.active{color:#FBBF24;transform:scale(1.15)}
+        .star-rating .star:hover{transform:scale(1.2)}
+
+        /* ============================================================
+           PRODUCTION ANIMATION
+           ============================================================ */
+        .factory-scene{
+            text-align:center;padding:2rem;
+        }
+        .factory-line{
+            display:flex;align-items:center;justify-content:center;
+            gap:0.5rem;flex-wrap:wrap;font-size:2rem;
+        }
+        .factory-step{
+            opacity:0.3;transition:opacity 0.8s ease;
+        }
+        .factory-step.done{opacity:1}
+
+        /* ============================================================
+           SCROLLBAR
+           ============================================================ */
+        ::-webkit-scrollbar{width:8px}
+        ::-webkit-scrollbar-track{background:transparent}
+        ::-webkit-scrollbar-thumb{background:var(--gray-300);border-radius:99px}
+        ::-webkit-scrollbar-thumb:hover{background:var(--gray-400)}
+
+        /* ============================================================
+           RESPONSIVE
+           ============================================================ */
+        @media(max-width:768px){
+            .screen{padding:1rem}
+            .home-grid{grid-template-columns:1fr}
+            .cards-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}
+            .flow-footer{flex-direction:column}
+            .btn-primary,.btn-secondary{width:100%;text-align:center}
+            .vehicle-svg{font-size:6rem}
+            .payment-methods{grid-template-columns:repeat(2,1fr)}
+        }
+
+        /* ============================================================
+           QR CODE (FAKE)
+           ============================================================ */
+        .qr-code{
+            width:150px;height:150px;margin:1rem auto;
+            background:white;border-radius:var(--radius);
+            display:grid;grid-template-columns:repeat(5,1fr);
+            grid-template-rows:repeat(5,1fr);gap:4px;padding:12px;
+        }
+        .qr-dot{background:#000;border-radius:2px}
+        .qr-dot.empty{background:transparent}
+
+        /* Checkbox custom */
+        .checkbox-custom{
+            width:24px;height:24px;border-radius:6px;
+            border:2px solid var(--gray-300);display:flex;
+            align-items:center;justify-content:center;
+            cursor:pointer;transition:all var(--transition-fast);
+            font-size:0.8rem;color:transparent;
+        }
+        .checkbox-custom.checked{background:var(--blue);border-color:var(--blue);color:white}
+    </style>
+</head>
+<body>
+
+    <!-- ============================================================
+    ATTRACTOR OVERLAY (TELA DE DESCANSO)
+    ============================================================ -->
+    <div class="attractor-overlay" id="attractorOverlay">
+        <div class="attractor-particles" id="attractorParticles"></div>
+        <div class="attractor-logo">🖥️</div>
+        <div class="attractor-title">MyHub Totem</div>
+        <div class="attractor-subtitle">Autoatendimento Inteligente</div>
+        <div class="attractor-tap">👆 Toque na tela para começar</div>
+    </div>
+
+    <!-- ============================================================
+    TOAST CONTAINER
+    ============================================================ -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- ============================================================
+    MODAL OVERLAY
+    ============================================================ -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal" id="modalContent"></div>
+    </div>
+
+    <!-- ============================================================
+    APP CONTAINER
+    ============================================================ -->
+    <div class="app-container" id="appContainer">
+
+        <!-- HEADER -->
+        <header class="app-header">
+            <div class="header-logo">⚡ MyHub Totem</div>
+            <div class="header-actions">
+                <button class="btn-icon ripple" id="btnDarkMode" title="Modo escuro">🌙</button>
+                <button class="btn-icon ripple" id="btnHome" title="Tela inicial">🏠</button>
+            </div>
+        </header>
+
+        <!-- ============================================================
+        SCREEN: HOME
+        ============================================================ -->
+        <div class="screen active" id="screenHome">
+            <div class="home-content">
+                <div class="home-grid">
+                    <div class="home-card ripple" onclick="startFlow('fastfood')">
+                        <span class="home-card-icon">🍔</span>
+                        <h2>Fast Food</h2>
+                        <p>Monte seu pedido completo com personalização, carrinho e pagamento</p>
+                        <div class="card-accent blue"></div>
+                    </div>
+                    <div class="home-card ripple" onclick="startFlow('vehicle')">
+                        <span class="home-card-icon">🚗</span>
+                        <h2>Personalização de Veículo</h2>
+                        <p>Configure seu carro dos sonhos: modelo, cor, motorização e acessórios</p>
+                        <div class="card-accent purple"></div>
+                    </div>
+                    <div class="home-card ripple" onclick="startFlow('clinic')">
+                        <span class="home-card-icon">🏥</span>
+                        <h2>Atendimento Clínico</h2>
+                        <p>Agendamento, senha digital, exames e avaliação do atendimento</p>
+                        <div class="card-accent green"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================
+        SCREEN: FAST FOOD FLOW
+        ============================================================ -->
+        <div class="screen" id="screenFastFood">
+            <div class="flow-container">
+                <div class="flow-header">
+                    <button class="btn-back ripple" onclick="flowBack()">← Voltar</button>
+                    <div class="breadcrumbs" id="ffBreadcrumbs">
+                        <span class="active">Categoria</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar-fill" id="ffProgress" style="width:0%"></div>
+                    </div>
+                </div>
+                <div class="flow-body" id="ffBody"></div>
+                <div class="flow-footer" id="ffFooter"></div>
+            </div>
+        </div>
+
+        <!-- ============================================================
+        SCREEN: VEHICLE FLOW
+        ============================================================ -->
+        <div class="screen" id="screenVehicle">
+            <div class="flow-container">
+                <div class="flow-header">
+                    <button class="btn-back ripple" onclick="flowBack()">← Voltar</button>
+                    <div class="breadcrumbs" id="vhBreadcrumbs">
+                        <span class="active">Modelo</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar-fill" id="vhProgress" style="width:0%"></div>
+                    </div>
+                </div>
+                <div class="flow-body" id="vhBody"></div>
+                <div class="flow-footer" id="vhFooter"></div>
+            </div>
+        </div>
+
+        <!-- ============================================================
+        SCREEN: CLINIC FLOW
+        ============================================================ -->
+        <div class="screen" id="screenClinic">
+            <div class="flow-container">
+                <div class="flow-header">
+                    <button class="btn-back ripple" onclick="flowBack()">← Voltar</button>
+                    <div class="breadcrumbs" id="clBreadcrumbs">
+                        <span class="active">Atendimento</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar-fill" id="clProgress" style="width:0%"></div>
+                    </div>
+                </div>
+                <div class="flow-body" id="clBody"></div>
+                <div class="flow-footer" id="clFooter"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // ============================================================
+        // APP STATE MANAGER
+        // ============================================================
+        const AppState = {
+            currentFlow: null, // 'fastfood' | 'vehicle' | 'clinic'
+            currentStep: 0,
+            // Fast Food State
+            ff: {
+                category: null,
+                products: [], // {id, name, price, qty, customs:[], img}
+                cart: [], // {productId, qty, customs, subtotal}
+                discount: 0,
+                paymentMethod: null,
+                orderNumber: null,
+            },
+            // Vehicle State
+            vh: {
+                model: null,
+                engine: null,
+                extColor: '#FFFFFF',
+                intColor: 'Preto',
+                wheels: '18"',
+                packages: [],
+                orderNumber: null,
+            },
+            // Clinic State
+            cl: {
+                serviceType: null,
+                ticketNumber: null,
+                patientName: '',
+                specialty: '',
+                doctor: '',
+                symptoms: '',
+                exams: [],
+                rating: 0,
+            },
+            // Attractor timeout
+            attractorTimeout: null,
+            inactivityTimeout: null,
+        };
+
+        const ATTRACTOR_DELAY = 60000; // 60 segundos para tela de descanso
+        const RESET_DELAY = 180000; // 3 minutos para reset
+
+        // ============================================================
+        // SCREEN NAVIGATION
+        // ============================================================
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(s => {
+                s.classList.add('exiting');
+                setTimeout(() => {
+                    s.classList.remove('active', 'exiting');
+                }, 300);
+            });
+            setTimeout(() => {
+                const screen = document.getElementById(screenId);
+                if (screen) screen.classList.add('active');
+            }, 310);
+            resetInactivityTimer();
+        }
+
+        function startFlow(flowType) {
+            AppState.currentFlow = flowType;
+            AppState.currentStep = 0;
+            // Reset flow state
+            if (flowType === 'fastfood') {
+                AppState.ff = { category: null, products: [], cart: [], discount: 0, paymentMethod: null,
+                orderNumber: null };
+                showScreen('screenFastFood');
+                renderFastFoodStep();
+            } else if (flowType === 'vehicle') {
+                AppState.vh = { model: null, engine: null, extColor: '#FFFFFF', intColor: 'Preto', wheels: '18"',
+                    packages: [], orderNumber: null };
+                showScreen('screenVehicle');
+                renderVehicleStep();
+            } else if (flowType === 'clinic') {
+                AppState.cl = { serviceType: null, ticketNumber: null, patientName: '', specialty: '', doctor: '',
+                    symptoms: '', exams: [], rating: 0 };
+                showScreen('screenClinic');
+                renderClinicStep();
+            }
+            resetInactivityTimer();
+        }
+
+        function goHome() {
+            AppState.currentFlow = null;
+            AppState.currentStep = 0;
+            showScreen('screenHome');
+            resetInactivityTimer();
+        }
+
+        function flowBack() {
+            if (AppState.currentStep > 0) {
+                AppState.currentStep--;
+                if (AppState.currentFlow === 'fastfood') renderFastFoodStep();
+                else if (AppState.currentFlow === 'vehicle') renderVehicleStep();
+                else if (AppState.currentFlow === 'clinic') renderClinicStep();
+            } else {
+                goHome();
+            }
+            resetInactivityTimer();
+        }
+
+        function flowNext() {
+            AppState.currentStep++;
+            if (AppState.currentFlow === 'fastfood') renderFastFoodStep();
+            else if (AppState.currentFlow === 'vehicle') renderVehicleStep();
+            else if (AppState.currentFlow === 'clinic') renderClinicStep();
+            resetInactivityTimer();
+        }
+
+        function goToStep(step) {
+            AppState.currentStep = step;
+            if (AppState.currentFlow === 'fastfood') renderFastFoodStep();
+            else if (AppState.currentFlow === 'vehicle') renderVehicleStep();
+            else if (AppState.currentFlow === 'clinic') renderClinicStep();
+            resetInactivityTimer();
+        }
+
+        // ============================================================
+        // FAST FOOD FLOW
+        // ============================================================
+        const FF_STEPS = ['Categoria', 'Produtos', 'Personalização', 'Carrinho', 'Pagamento', 'Confirmação'];
+        const FF_CATEGORIES = [
+            { id: 'burgers', name: 'Hambúrgueres', icon: '🍔', desc: 'Clássicos e premium' },
+            { id: 'combos', name: 'Combos', icon: '🍟', desc: 'Lanche + batata + bebida' },
+            { id: 'fries', name: 'Batatas', icon: '🍟', desc: 'Diversos tamanhos' },
+            { id: 'drinks', name: 'Bebidas', icon: '🥤', desc: 'Refrigerantes e sucos' },
+            { id: 'desserts', name: 'Sobremesas', icon: '🍦', desc: 'Doces deliciosos' },
+            { id: 'sauces', name: 'Molhos', icon: '🧈', desc: 'Para acompanhar' },
+            { id: 'promos', name: 'Promoções', icon: '🎯', desc: 'Ofertas especiais' },
+        ];
+        const FF_PRODUCTS = {
+            burgers: [
+                { id: 'b1', name: 'Classic Burger', desc: 'Carne 180g, queijo, alface, tomate', price: 28.90,
+                    img: '🍔' },
+                { id: 'b2', name: 'Bacon Supreme', desc: 'Carne 200g, bacon crispy, cheddar', price: 35.90, img: '🥓' },
+                { id: 'b3', name: 'Duplo Cheddar', desc: 'Duas carnes, cheddar cremoso', price: 39.90, img: '🧀' },
+                { id: 'b4', name: 'Veggie Burger', desc: 'Hambúrguer de grão-de-bico', price: 32.90, img: '🥬' },
+            ],
+            combos: [
+                { id: 'c1', name: 'Combo Clássico', desc: 'Burger + Batata M + Refri', price: 42.90, img: '🍔🍟🥤' },
+                { id: 'c2', name: 'Combo Família', desc: '4 Burgers + Batata G + 4 Refris', price: 99.90, img: '👨‍👩‍👧‍👦' },
+            ],
+            fries: [
+                { id: 'f1', name: 'Batata Pequena', desc: 'Porção individual', price: 12.90, img: '🍟' },
+                { id: 'f2', name: 'Batata Grande', desc: 'Para compartilhar', price: 22.90, img: '🍟' },
+                { id: 'f3', name: 'Batata com Cheddar', desc: 'Cobertura de cheddar e bacon', price: 28.90, img: '🧀🍟' },
+            ],
+            drinks: [
+                { id: 'd1', name: 'Refrigerante 350ml', desc: 'Coca-Cola, Guaraná, Fanta', price: 8.90, img: '🥤' },
+                { id: 'd2', name: 'Suco Natural 500ml', desc: 'Laranja, Abacaxi, Manga', price: 14.90, img: '🧃' },
+                { id: 'd3', name: 'Milkshake 400ml', desc: 'Chocolate, Morango, Baunilha', price: 18.90, img: '🥛' },
+            ],
+            desserts: [
+                { id: 's1', name: 'Sundae', desc: 'Sorvete com calda', price: 15.90, img: '🍦' },
+                { id: 's2', name: 'Torta de Maçã', desc: 'Fatia quente com canela', price: 12.90, img: '🥧' },
+            ],
+            sauces: [
+                { id: 'sa1', name: 'Molho Especial', desc: 'Receita da casa', price: 3.90, img: '🧈' },
+                { id: 'sa2', name: 'BBQ Defumado', desc: 'Molho barbecue artesanal', price: 4.90, img: '🍖' },
+            ],
+            promos: [
+                { id: 'p1', name: 'Promo Dupla', desc: '2 Burgers pelo preço de 1', price: 32.90, img: '🎯', badge: '-50%' },
+            ],
+        };
+        const BURGER_CUSTOMS = [
+            { id: 'bacon', name: 'Adicionar Bacon', price: 6.00, icon: '🥓' },
+            { id: 'onion', name: 'Remover Cebola', price: 0, icon: '🧅' },
+            { id: 'pickles', name: 'Sem Picles', price: 0, icon: '🥒' },
+            { id: 'extraCheese', name: 'Queijo Extra', price: 4.00, icon: '🧀' },
+            { id: 'specialSauce', name: 'Molho Especial', price: 3.00, icon: '✨' },
+            { id: 'brioche', name: 'Pão Brioche', price: 3.00, icon: '🍞' },
+            { id: 'doubleMeat', name: 'Carne Dupla', price: 12.00, icon: '🥩' },
+            { id: 'veggie', name: 'Opção Vegetariana', price: 0, icon: '🥬' },
+        ];
+
+        function renderFastFoodStep() {
+            const step = AppState.currentStep;
+            const body = document.getElementById('ffBody');
+            const footer = document.getElementById('ffFooter');
+            const progress = document.getElementById('ffProgress');
+            const breadcrumbs = document.getElementById('ffBreadcrumbs');
+
+            // Update progress & breadcrumbs
+            const totalSteps = FF_STEPS.length;
+            progress.style.width = ((step / (totalSteps - 1)) * 100) + '%';
+            breadcrumbs.innerHTML = FF_STEPS.map((s, i) => {
+                const cls = i === step ? 'active' : (i < step ? '' : '');
+                return `${i>0?'<span class="sep">›</span>':''}<span class="${cls}">${s}</span>`;
+            }).join('');
+
+            let bodyHTML = '';
+            let footerHTML = '';
+
+            switch (step) {
+                case 0: // Categoria
+                    bodyHTML = `<h2 style="margin-bottom:1.5rem;font-size:1.5rem;">Escolha uma categoria</h2>
+                <div class="cards-grid">${FF_CATEGORIES.map(c=>`
+                  <div class="card ripple ${AppState.ff.category===c.id?'selected':''}" onclick="selectFFCategory('${c.id}')">
+                    <span class="card-icon">${c.icon}</span>
+                    <h3>${c.name}</h3><p>${c.desc}</p>
+                  </div>`).join('')}</div>`;
+                    footerHTML = `<div></div>
+                <button class="btn-primary" ${!AppState.ff.category?'disabled':''} onclick="flowNext()">Próximo →</button>`;
+                    break;
+
+                case 1: // Produtos
+                    const prods = FF_PRODUCTS[AppState.ff.category] || [];
+                    bodyHTML = `<h2 style="margin-bottom:1.5rem;font-size:1.5rem;">${FF_CATEGORIES.find(c=>c.id===AppState.ff.category)?.name||'Produtos'}</h2>
+                <div class="cards-grid">${prods.map(p=>`
+                  <div class="product-card">
+                    <div class="product-img">${p.img}${p.badge?`<span class="img-badge">${p.badge}</span>`:''}</div>
+                    <div class="product-info">
+                      <h3>${p.name}</h3><p class="desc">${p.desc}</p>
+                      <div class="price-row">
+                        <span class="price">R$ ${p.price.toFixed(2)}</span>
+                        <button class="btn-add ripple" id="btnAdd_${p.id}" onclick="addToCart('${p.id}','${p.name}',${p.price},'${p.img}')">+ Adicionar</button>
+                      </div>
+                    </div>
+                  </div>`).join('')}</div>`;
+                    footerHTML = `<button class="btn-secondary" onclick="flowBack()">← Voltar</button>
+                <span style="color:var(--text-secondary)">${AppState.ff.cart.length} itens no carrinho</span>
+                <button class="btn-primary" onclick="flowNext()">Ver Carrinho →</button>`;
+                    break;
+
+                case 2: // Personalização
+                    const lastItem = AppState.ff.cart[AppState.ff.cart.length - 1];
+                    const customTarget = lastItem || { name: 'Hambúrguer', customs: [] };
+                    if (!customTarget.customs) customTarget.customs = [];
+                    bodyHTML = `<h2 style="margin-bottom:1.5rem;font-size:1.5rem;">🎛️ Personalizar: ${customTarget.name||'Item'}</h2>
+                <div class="custom-options">${BURGER_CUSTOMS.map(c=>`
+                  <div class="custom-option ${customTarget.customs.includes(c.id)?'selected':''}" onclick="toggleCustom('${c.id}')">
+                    <div class="opt-left"><span class="opt-icon">${c.icon}</span>
+                      <div class="opt-info"><h4>${c.name}</h4></div>
+                    </div>
+                    <span class="opt-price">${c.price>0?'+R$ '+c.price.toFixed(2):'Grátis'}</span>
+                    <div class="toggle-switch ${customTarget.customs.includes(c.id)?'active':''}" id="tgl_${c.id}"></div>
+                  </div>`).join('')}</div>
+                <p style="margin-top:1rem;color:var(--text-secondary)">Preço atual: <strong style="color:var(--green);font-size:1.2rem">R$ ${calcCustomPrice().toFixed(2)}</strong></p>`;
+                    footerHTML = `<button class="btn-secondary" onclick="flowBack()">← Voltar</button>
+                <button class="btn-primary" onclick="flowNext()">Continuar →</button>`;
+                    break;
+
+                case 3: // Carrinho
+                    const cartTotal = AppState.ff.cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+                    const discAmt = AppState.ff.discount > 0 ? cartTotal * (AppState.ff.discount / 100) : 0;
+                    const finalTotal = cartTotal - discAmt;
+                    bodyHTML = `<h2 style="margin-bottom:1.5rem;font-size:1.5rem;">🛒 Carrinho</h2>
+                ${AppState.ff.cart.length===0?'<p style="text-align:center;padding:3rem;color:var(--text-secondary)">Carrinho vazio</p>':
+                `<div class="cart-list">${AppState.ff.cart.map((item,i)=>`
+                  <div class="cart-item">
+                    <span class="cart-item-img">${item.img||'🍔'}</span>
+                    <div class="cart-item-info">
+                      <h4>${item.name}</h4>
+                      <span class="customs">${(item.customs||[]).length>0?item.customs.map(c=>BURGER_CUSTOMS.find(bc=>bc.id===c)?.name||c).join(', '):'Sem alterações'}</span>
+                    </div>
+                    <div class="cart-item-qty">
+                      <button class="qty-btn" onclick="changeQty(${i},-1)">−</button>
+                      <span>${item.qty}</span>
+                      <button class="qty-btn" onclick="changeQty(${i},1)">+</button>
+                    </div>
+                    <span class="cart-item-price">R$ ${(item.price*item.qty).toFixed(2)}</span>
+                    <span class="cart-item-remove" onclick="removeFromCart(${i})">🗑️</span>
+                  </div>`).join('')}</div>
+                <div class="cart-summary">
+                  <div class="row"><span>Subtotal</span><span>R$ ${cartTotal.toFixed(2)}</span></div>
+                  ${AppState.ff.discount>0?`<div class="row"><span>Desconto (${AppState.ff.discount}%)</span><span style="color:var(--green)">− R$ ${discAmt.toFixed(2)}</span></div>`:''}
+                  <div class="discount-input">
+                    <input type="text" placeholder="Cupom de desconto" id="discountInput" value="${AppState.ff.discount>0?'PROMO'+AppState.ff.discount:''}">
+                    <button class="ripple" onclick="applyDiscount()">Aplicar</button>
+                  </div>
+                  <div class="row total"><span>Total</span><span style="color:var(--green)">R$ ${finalTotal.toFixed(2)}</span></div>
+                </div>`}</div>`;
+                    footerHTML = `<button class="btn-secondary" onclick="flowBack()">← Continuar comprando</button>
+                <button class="btn-primary" ${AppState.ff.cart.length===0?'disabled':''} onclick="flowNext()">Ir para Pagamento →</button>`;
+                    break;
+
+                case 4: // Pagamento
+                    bodyHTML = `<h2 style="margin-bottom:1.5rem;font-size:1.5rem;">💳 Forma de Pagamento</h2>
+                <div class="payment-methods">
+                  ${['💠 Pix','💳 Crédito','🏧 Débito','🍽️ Vale Refeição','💵 Dinheiro'].map((m,i)=>`
+                    <div class="payment-method ${AppState.ff.paymentMethod===i?'selected':''}" onclick="selectPayment(${i})">
+                      ${m.split(' ')[0]}<span>${m.split(' ').slice(1).join(' ')}</span>
+                    </div>`).join('')}
+                </div>
+                <div id="paymentSimulation" style="margin-top:1.5rem"></div>`;
+                    if (AppState.ff.paymentMethod !== null) {
+                        document.getElementById('ffBody').innerHTML = bodyHTML;
+                        setTimeout(() => simulatePayment(), 100);
+                    }
+                    footerHTML = `<button class="btn-secondary" onclick="flowBack()">← Voltar</button>
+                <button class="btn-primary" ${AppState.ff.paymentMethod===null?'disabled':''} onclick="completeFastFoodOrder()">Finalizar Pedido ✓</button>`;
+                    break;
+
+                case 5: // Confirmação
+                    AppState.ff.orderNumber = 'FF-' + Math.floor(Math.random() * 9000 + 1000);
+                    const waitTime = Math.floor(Math.random() * 15 + 5);
+                    bodyHTML = `
+                <div style="text-align:center;padding:2rem">
+                  <div style="font-size:6rem;animation:attractorPulse 1.5s ease infinite">🎉</div>
+                  <h2 style="font-size:2rem;margin:1rem 0">Pedido Confirmado!</h2>
+                  <div class="ticket" style="margin:1.5rem auto">
+                    <p style="color:var(--text-secondary);font-size:0.9rem">NÚMERO DO PEDIDO</p>
+                    <div class="ticket-number">${AppState.ff.orderNumber}</div>
+                    <p style="margin-top:0.75rem">⏱️ Tempo estimado: <strong>${waitTime} minutos</strong></p>
+                  </div>
+                  <div class="qr-code" style="margin:1.5rem auto">
+                    ${Array.from({length:25},(_,i)=>`<div class="qr-dot${Math.random()>0.45?' empty':''}"></div>`).join('')}
+                  </div>
+                  <p style="color:var(--text-secondary);margin-bottom:1.5rem">Mostre este QR Code no balcão</p>
+                  <button class="btn-primary" onclick="newFastFoodOrder()" style="font-size:1.1rem;padding:1rem 3rem">🔄 Novo Pedido</button>
+                </div>`;
+                    footerHTML = '';
+                    // Lançar confetes!
+                    setTimeout(() => launchConfetti(), 300);
+                    break;
+            }
+
+            body.innerHTML = bodyHTML;
+            footer.innerHTML = footerHTML;
+        }
+
+        function selectFFCategory(catId) {
+            AppState.ff.category = catId;
+            renderFastFoodStep();
+            playClickFeedback();
+        }
+
+        function addToCart(id, name, price, img) {
+            const existing = AppState.ff.cart.find(item => item.id === id && !item.customs.length);
+            if (existing) {
+                existing.qty++;
+            } else {
+                AppState.ff.cart.push({ id, name, price, img, qty: 1, customs: [] });
+            }
+            // Animação no botão
+            const btn = document.getElementById('btnAdd_' + id);
+            if (btn) {
+                btn.textContent = '✓ Adicionado';
+                btn.classList.add('added');
+                setTimeout(() => {
+                    btn.textContent = '+ Adicionar';
+                    btn.classList.remove('added');
+                }, 1200);
+            }
+            showToast(`${name} adicionado ao carrinho!`, 'success');
+            renderFastFoodStep();
+            playClickFeedback();
+        }
+
+        function toggleCustom(customId) {
+            const lastItem = AppState.ff.cart[AppState.ff.cart.length - 1];
+            if (!lastItem) return;
+            if (!lastItem.customs) lastItem.customs = [];
+            const idx = lastItem.customs.indexOf(customId);
+            if (idx >= 0) lastItem.customs.splice(idx, 1);
+            else lastItem.customs.push(customId);
+            // Update price
+            const basePrice = lastItem.basePrice || lastItem.price;
+            lastItem.basePrice = basePrice;
+            const customsTotal = lastItem.customs.reduce((sum, cid) => {
+                const c = BURGER_CUSTOMS.find(bc => bc.id === cid);
+                return sum + (c ? c.price : 0);
+            }, 0);
+            lastItem.price = basePrice + customsTotal;
+            renderFastFoodStep();
+            playClickFeedback();
+        }
+
+        function calcCustomPrice() {
+            const lastItem = AppState.ff.cart[AppState.ff.cart.length - 1];
+            if (!lastItem) return 0;
+            const base = lastItem.basePrice || lastItem.price;
+            const customsTotal = (lastItem.customs || []).reduce((sum, cid) => {
+                const c = BURGER_CUSTOMS.find(bc => bc.id === cid);
+                return sum + (c ? c.price : 0);
+            }, 0);
+            return base + customsTotal;
+        }
+
+        function changeQty(index, delta) {
+            AppState.ff.cart[index].qty += delta;
+            if (AppState.ff.cart[index].qty <= 0) AppState.ff.cart.splice(index, 1);
+            renderFastFoodStep();
+        }
+
+        function removeFromCart(index) {
+            AppState.ff.cart.splice(index, 1);
+            showToast('Item removido do carrinho', 'error');
+            renderFastFoodStep();
+        }
+
+        function applyDiscount() {
+            const input = document.getElementById('discountInput');
+            const val = input.value.toUpperCase();
+            if (val === 'PROMO10') { AppState.ff.discount = 10;
+                showToast('Cupom PROMO10 aplicado! 10% OFF', 'success'); } else if (val === 'PROMO20') { AppState.ff
+                    .discount = 20;
+                showToast('Cupom PROMO20 aplicado! 20% OFF', 'success'); } else if (val === 'PROMO50') { AppState.ff
+                    .discount = 50;
+                showToast('Cupom PROMO50 aplicado! 50% OFF', 'success'); } else { AppState.ff.discount = 0;
+                showToast('Cupom inválido', 'error'); }
+            renderFastFoodStep();
+        }
+
+        function selectPayment(method) {
+            AppState.ff.paymentMethod = method;
+            renderFastFoodStep();
+            playClickFeedback();
+        }
+
+        function simulatePayment() {
+            const simDiv = document.getElementById('paymentSimulation');
+            if (!simDiv) return;
+            if (AppState.ff.paymentMethod === 1 || AppState.ff.paymentMethod === 2) { // Cartão
+                simDiv.innerHTML = `
+              <div class="card-simulation">
+                <div class="card-machine">💳</div>
+                <p style="font-weight:600;margin-top:0.5rem">Inserindo cartão...</p>
+                <div class="progress-bar-container" style="margin-top:1rem;max-width:300px;margin-left:auto;margin-right:auto">
+                  <div class="progress-bar-fill" style="width:0%;animation:fillBar 2s ease forwards"></div>
+                </div>
+              </div>`;
+                setTimeout(() => {
+                    simDiv.innerHTML = `
+                <div class="card-simulation">
+                  <div style="font-size:3rem">🔐</div>
+                  <p style="font-weight:600;margin-top:0.5rem">Senha verificada</p>
+                  <p style="color:var(--green);font-weight:700;font-size:1.2rem;margin-top:0.5rem">✅ Pagamento Autorizado!</p>
+                </div>`;
+                }, 2200);
+            } else if (AppState.ff.paymentMethod === 0) { // Pix
+                simDiv.innerHTML = `
+              <div class="card-simulation">
+                <div style="font-size:4rem">📱</div>
+                <p style="font-weight:600;margin-top:0.5rem">QR Code Pix gerado</p>
+                <div class="qr-code" style="margin:1rem auto">${Array.from({length:25},(_,i)=>`<div class="qr-dot${Math.random()>0.4?' empty':''}"></div>`).join('')}</div>
+                <p style="color:var(--green);font-weight:700;font-size:1.1rem">Pagamento via Pix aprovado! ✅</p>
+              </div>`;
+            } else if (AppState.ff.paymentMethod === 4) { // Dinheiro
+                simDiv.innerHTML = `
+              <div class="card-simulation">
+                <div style="font-size:4rem">💵</div>
+                <p style="font-weight:600;margin-top:0.5rem">Pague no caixa</p>
+                <p style="color:var(--text-secondary)">Apresente o número do pedido</p>
+              </div>`;
+            } else if (AppState.ff.paymentMethod === 3) { // VR
+                simDiv.innerHTML = `
+              <div class="card-simulation">
+                <div class="card-machine">💳</div>
+                <p style="font-weight:600;margin-top:0.5rem">Vale Refeição</p>
+                <p style="color:var(--green);font-weight:700;font-size:1.1rem;margin-top:0.5rem">✅ Autorizado!</p>
+              </div>`;
+            }
+        }
+
+        function completeFastFoodOrder() {
+            flowNext();
+        }
+
+        function newFastFoodOrder() {
+            AppState.ff = { category: null, products: [], cart: [], discount: 0, paymentMethod: null, orderNumber: null };
+            AppState.currentStep = 0;
+            renderFastFoodStep();
+        }
+
+        // ============================================================
+        // VEHICLE FLOW
+        // ============================================================
+        const VH_STEPS = ['Modelo', 'Motor', 'Cor Externa', 'Cor Interna', 'Rodas', 'Pacotes', 'Resumo', 'Produção'];
+        const VH_MODELS = [
+            { id: 'suv', name: 'SUV', icon: '🚙', desc: 'Utilitário esportivo', basePrice: 120000 },
+            { id: 'sedan', name: 'Sedan', icon: '🚗', desc: 'Elegante e confortável', basePrice: 95000 },
+            { id: 'hatch', name: 'Hatch', icon: '🚘', desc: 'Compacto e ágil', basePrice: 75000 },
+            { id: 'sport', name: 'Esportivo', icon: '🏎️', desc: 'Alta performance', basePrice: 250000 },
+            { id: 'pickup', name: 'Picape', icon: '🛻', desc: 'Robusta e versátil', basePrice: 150000 },
+        ];
+        const VH_ENGINES = [
+            { id: 'e10', name: '1.0 Turbo', price: 0, desc: 'Econômico' },
+            { id: 'e16', name: '1.6 Aspirado', price: 5000, desc: 'Equilíbrio' },
+            { id: 'e20', name: '2.0 Turbo', price: 15000, desc: 'Performance' },
+            { id: 'hybrid', name: 'Híbrido', price: 25000, desc: 'Sustentável' },
+            { id: 'electric', name: 'Elétrico', price: 35000, desc: 'Zero emissão' },
+        ];
+        const VH_COLORS = [
+            { name: 'Branco', hex: '#FFFFFF' }, { name: 'Preto', hex: '#1A1A1A' }, { name: 'Prata', hex: '#C0C0C0' },
+            { name: 'Cinza', hex: '#6B7280' }, { name: 'Azul', hex: '#2563EB' }, { name: 'Vermelho', hex: '#DC2626' },
+            { name: 'Verde', hex: '#059669' }, { name: 'Amarelo', hex: '#F59E0B' },
+        ];
+        const VH_INTERIORS = [
+            { name: 'Couro Preto', color: '#1A1A1A', price: 0 }, { name: 'Bege', color: '#D4B896', price: 2000 },
+            { name: 'Marrom', color: '#5C3A21', price: 3000 }, { name: 'Cinza', color: '#9CA3AF', price: 1500 },
+            { name: 'Branco', color: '#F5F5F0', price: 4000 },
+        ];
+        const VH_WHEELS_OPTIONS = ['18"', '19"', '20"', '21"'];
+        const VH_WHEELS_PRICES = { '18"': 0, '19"': 3500, '20"': 7000, '21"': 12000 };
+        const VH_PACKAGES = [
+            { id: 'sunroof', name: 'Teto Solar', price: 5000, icon: '☀️' },
+            { id: 'autopilot', name: 'Piloto Automático', price: 15000, icon: '🤖' },
+            { id: 'elecSeats', name: 'Banco Elétrico', price: 4000, icon: '🪑' },
+            { id: 'premiumSound', name: 'Som Premium', price: 6000, icon: '🔊' },
+            { id: 'heatedSeats', name: 'Bancos Aquecidos', price: 3000, icon: '🔥' },
+            { id: 'parkAssist', name: 'Assistente de Estacionamento', price: 8000, icon: '🅿️' },
+            { id: 'matrixLights', name: 'Faróis Matrix LED', price: 7000, icon: '💡' },
+            { id: 'sportSusp', name: 'Suspensão Esportiva', price: 5000, icon: '🏁' },
+            { id: 'blackKit', name: 'Kit Black Edition', price: 4500, icon: '🖤' },
+            { id: 'windowFilm', name: 'Película de Proteção', price: 2000, icon: '🪟' },
+            { id: 'wirelessCharger', name: 'Carregador Wireless', price: 1500, icon: '📱' },
+            { id: 'towHitch', name: 'Engate de Reboque', price: 3500, icon: '🔗' },
+        ];
+
+        function calcVehiclePrice() {
+            const vh = AppState.vh;
+            let price = VH_MODELS.find(m => m.id === vh.model)?.basePrice || 0;
+            price += VH_ENGINES.find(e => e.id === vh.engine)?.price || 0;
+            price += VH_WHEELS_PRICES[vh.wheels] || 0;
+            price += VH_INTERIORS.find(i => i.name === vh.intColor)?.price || 0;
+            price += vh.packages.reduce((sum, pid) => {
+                const pkg = VH_PACKAGES.find(p => p.id === pid);
+                return sum + (pkg ? pkg.price : 0);
+            }, 0);
+            return price;
+        }
+
+        function renderVehicleStep() {
+            const step = AppState.currentStep;
+            const body = document.getElementById('vhBody');
+            const footer = document.getElementById('vhFooter');
+            const progress = document.getElementById('vhProgress');
+            const breadcrumbs = document.getElementById('vhBreadcrumbs');
+
+            const totalSteps = VH_STEPS.length;
+            progress.style.width = ((step / (totalSteps - 1)) * 100) + '%';
+            breadcrumbs.innerHTML = VH_STEPS.map((s, i) => {
+                const cls = i === step ? 'active' : (i < step ? '' : '');
+                return `${i>0?'<span class="sep">›</span>':''}<span class="${cls}">${s}</span>`;
+            }).join('');
+
+            let bodyHTML = '';
+            let footerHTML = '';
+
+            switch (step) {
+                case 0: // Modelo
+                    bodyHTML = `<h2 style="margin-bottom:1.5rem;font-size:1.5rem;">Escolha o modelo</h2>
+                <div class="cards-grid">${VH_MODELS.map(m=>`
+                  <div class="card ripple ${AppState.vh.model===m.id?'selected':''}" onclick="selectVHModel('${m.id}')">
+                    <span class="card-icon">${m.icon}</span><h3>${m.name}</h3><p>${m.desc}</p>
+                    <div class="card-price">A partir de R$ ${m.basePrice.toLocaleString('pt-BR')}</div>
+                  </div>`).join('')}</div>`;
+                    footerHTML = `<div></div><button class="btn-primary" ${!AppState.vh.model?'disabled':''} onclick="flowNext()">Próximo →</button>`;
+                    break;
+
+                case 1: // Motor
+                    bodyHTML = `<h2 style="margin-bottom:1.5rem;font-size:1.5rem;">Escolha a motorização</h2>
+                <div class="cards-grid">${VH_ENGINES.map(e=>`
+                  <div class="card ripple ${AppState.vh.engine===e.id?'selected':''}" onclick="selectVHEngine('${e.id}')">
+                    <span class="card-icon">⚡</span><h3>${e.name}</h3><p>${e.desc}</p>
+                    <div class="card-price">${e.price>0?'+ R$ '+e.price.toLocaleString('pt-BR'):'Incluso'}</div>
+                  </div>`).join('')}</div>`;
+                    footerHTML = `<button class="btn-secondary" onclick="flowBack()">← Voltar</button>
+                <button class="btn-primary" ${!AppState.vh.engine?'disabled':''} onclick="flowNext()">Próximo →</button>`;
+                    break;
+
+                case 2: // Cor Externa
+                    bodyHTML = `<h2 style="margin-bottom:1.5rem;font-size:1.5rem;">Cor Externa</h2>
+                <div class="vehicle-preview">
+                  <span class="vehicle-svg" style="color:${AppState.vh.extColor};filter:drop-shadow(0 10px 30px ${AppState.vh.extColor}44)">🚗</span>
+                  <p style="margin-top:0.75rem;font-weight:600;font-size:1.1rem">${VH_COLORS.find(c=>c.hex===AppState.vh.extColor)?.name||'Branco'}</p>
+                </div>
+                <div class="color-swatches">${VH_COLORS.map(c=>`
+                  <div class="color-swatch ${AppState.vh.extColor===c.hex?'selected':''}" style="background:${c.hex}${c.hex==='#FFFFFF'?';border:2px solid #E2E8F0':''}" onclick="selectVHColor('${c.hex}')" title="${c.name}">
+                    <span class="check">✓</span>
+                  </div>`).join('')}</div>`;
+                    footerHTML = `<button class="btn-secondary" onclick="flowBack()">← Voltar</button>
+                <button class="btn-primary" onclick="flowNext()">Próximo →</button>`;
+                    break;
+
+                case 3: // Cor Interna
+                    bodyHTML = `<h2 style="margin-bottom:1.5rem;font-size:1.5rem;">Cor Interna</h2>
+                <div class="vehicle-preview">
+                  <span class="vehicle-svg" style="color:${AppState.vh.extColor}">🚗</span>
+                  <div style="width:200px;height:20px;background:${VH_INTERIORS.find(i=>i.name===AppState.vh.intColor)?.color||'#1A1A1A'};margin:0.5rem auto;border-radius:99px"></div>
+                  <p style="font-weight:600;font-size:1.1rem">${AppState.vh.intColor}</p>
+                </div>
+                <div class="cards-grid">${VH_INTERIORS.map(i=>`
+                  <div class="card ripple ${AppState.vh.intColor===i.name?'selected':''}" onclick="selectVHInterior('${i.name}')">
+                    <div style="width:60px;height:60px;background:${i.color};border-radius:50%;margin:0 auto 0.75rem;border:2px solid var(--gray-200)"></div>
+                    <h3>${i.name}</h3>
+                    <div class="card-price">${i.price>0?'+ R$ '+i.price.toLocaleString('pt-BR'):'Incluso'}</div>
+                  </div>`).join('')}</div>`;
+                    footerHTML = `<button class="btn-secondary" onclick="flowBack()">← Voltar</button>
+                <button class="btn-primary" onclick="flowNext()">Próximo →</button>`;
+                    break;
+
+                case 4: // Rodas
+                    bodyHTML = `<h2 style="margin-bottom:1.5rem;font-size:1.5rem;">Escolha as Rodas</h2>
+                <div class="vehicle-preview">
+                  <span class="vehicle-svg" style="color:${AppState.vh.extColor}">🚗</span>
+                  <p style="font-weight:600;font-size:1.1rem;margin-top:0.5rem">Rodas ${AppState.vh.wheels}</p>
+                </div>
+                <div class="cards-grid">${VH_WHEELS_OPTIONS.map(w=>`
+                  <div class="card ripple ${AppState.vh.wheels===w?'selected':''}" onclick="selectVHWheels('${w}')">
+                    <span class="card-icon">🛞</span><h3>Rodas ${w}</h3>
+                    <div class="card-price">${VH_WHEELS_PRICES[w]>0?'+ R$ '+VH_WHEELS_PRICES[w].toLocaleString('pt-BR'):'Incluso'}</div>
+                  </div>`).join('')}</div>`;
+                    footerHTML = `<button class="btn-secondary" onclick="flowBack()">← Voltar</button>
+                <button class="btn-primary" onclick="flowNext()">Próximo →</button>`;
+                    break;
+
+                case 5: // Pacotes
+                    bodyHTML = `<h2 style="margin-bottom:1.5rem;font-size:1.5rem;">Pacotes e Acessórios</h2>
+                <p style="margin-bottom:1rem;color:var(--text-secondary)">Preço atual: <strong style="color:var(--green);font-size:1.2rem">R$ ${calcVehiclePrice().toLocaleString('pt-BR')}</strong></p>
+                <div class="cards-grid">${VH_PACKAGES.map(p=>`
+                  <div class="card ripple ${AppState.vh.packages.includes(p.id)?'selected':''}" onclick="toggleVHPackage('${p.id}')">
+                    <span class="card-icon">${p.icon}</span><h3>${p.name}</h3>
+                    <div class="card-price">+ R$ ${p.price.toLocaleString('pt-BR')}</div>
+                  </div>`).join('')}</div>`;
+                    footerHTML = `<button class="btn-secondary" onclick="flowBack()">← Voltar</button>
+                <button class="btn-primary" onclick="flowNext()">Ver Resumo →</button>`;
+                    break;
+
+                case 6: // Resumo
+                    const totalPrice = calcVehiclePrice();
+                    const deliveryDays = Math.floor(Math.random() * 60 + 30);
+                    bodyHTML = `<h2 style="margin-bottom:1.5rem;font-size:1.5rem;">📋 Resumo do Pedido</h2>
+                <div class="vehicle-preview">
+                  <span class="vehicle-svg" style="color:${AppState.vh.extColor}">🚗</span>
+                </div>
+                <div style="max-width:600px;margin:0 auto">
+                  ${[
+                    ['Modelo',VH_MODELS.find(m=>m.id===AppState.vh.model)?.name||'—'],
+                    ['Motorização',VH_ENGINES.find(e=>e.id===AppState.vh.engine)?.name||'—'],
+                    ['Cor Externa',VH_COLORS.find(c=>c.hex===AppState.vh.extColor)?.name||'—'],
+                    ['Cor Interna',AppState.vh.intColor],
+                    ['Rodas',AppState.vh.wheels],
+                    ['Pacotes',AppState.vh.packages.map(pid=>VH_PACKAGES.find(p=>p.id===pid)?.name).filter(Boolean).join(', ')||'Nenhum'],
+                  ].map(([label,val])=>`
+                    <div style="display:flex;justify-content:space-between;padding:0.75rem 0;border-bottom:1px solid var(--gray-200)">
+                      <span style="color:var(--text-secondary)">${label}</span><span style="font-weight:600">${val}</span>
+                    </div>`).join('')}
+                  <div style="display:flex;justify-content:space-between;padding:1rem 0;font-size:1.3rem;font-weight:800;margin-top:0.5rem">
+                    <span>Preço Total</span><span style="color:var(--green)">R$ ${totalPrice.toLocaleString('pt-BR')}</span>
+                  </div>
+                  <p style="text-align:center;color:var(--text-secondary);margin-top:0.5rem">⏱️ Prazo estimado: <strong>${deliveryDays} dias</strong></p>
+                </div>`;
+                    footerHTML = `<button class="btn-secondary" onclick="flowBack()">← Voltar</button>
+                <button class="btn-primary" onclick="sendToProduction()">🏭 Enviar para Produção</button>`;
+                    break;
+
+                case 7: // Produção
+                    AppState.vh.orderNumber = 'VH-' + Math.floor(Math.random() * 90000 + 10000);
+                    bodyHTML = `
+                <div class="factory-scene">
+                  <h2 style="font-size:1.5rem;margin-bottom:1.5rem">🏭 Linha de Produção</h2>
+                  <div class="factory-line" id="factoryLine">
+                    <span class="factory-step">🔩</span><span>→</span>
+                    <span class="factory-step">⚙️</span><span>→</span>
+                    <span class="factory-step">🔧</span><span>→</span>
+                    <span class="factory-step">🛠️</span><span>→</span>
+                    <span class="factory-step">🚗</span><span>→</span>
+                    <span class="factory-step">✅</span>
+                  </div>
+                  <div class="progress-bar-container" style="margin:1.5rem auto;max-width:400px">
+                    <div class="progress-bar-fill" id="productionProgress" style="width:0%"></div>
+                  </div>
+                  <p style="font-weight:600;font-size:1.1rem" id="productionStatus">Iniciando produção...</p>
+                  <div style="margin-top:1.5rem">
+                    <p style="color:var(--text-secondary)">Número do Pedido</p>
+                    <div class="ticket-number">${AppState.vh.orderNumber}</div>
+                  </div>
+                  <p style="margin-top:1rem;color:var(--green);font-weight:700;font-size:1.1rem">✅ Seu veículo entrou em produção!</p>
+                  <button class="btn-primary" onclick="newVehicleOrder()" style="margin-top:1.5rem">🔄 Novo Veículo</button>
+                </div>`;
+                    footerHTML = '';
+                    setTimeout(() => animateProduction(), 400);
+                    setTimeout(() => launchConfetti(), 2500);
+                    break;
+            }
+
+            body.innerHTML = bodyHTML;
+            footer.innerHTML = footerHTML;
+        }
+
+        function selectVHModel(id) { AppState.vh.model = id;
+            renderVehicleStep();
+            playClickFeedback(); }
+
+        function selectVHEngine(id) { AppState.vh.engine = id;
+            renderVehicleStep();
+            playClickFeedback(); }
+
+        function selectVHColor(hex) { AppState.vh.extColor = hex;
+            renderVehicleStep();
+            playClickFeedback(); }
+
+        function selectVHInterior(name) { AppState.vh.intColor = name;
+            renderVehicleStep();
+            playClickFeedback(); }
+
+        function selectVHWheels(w) { AppState.vh.wheels = w;
+            renderVehicleStep();
+            playClickFeedback(); }
+
+        function toggleVHPackage(id) {
+            const idx = AppState.vh.packages.indexOf(id);
+            if (idx >= 0) AppState.vh.packages.splice(idx, 1);
+            else AppState.vh.packages.push(id);
+            renderVehicleStep();
+            playClickFeedback();
+        }
+
+        function sendToProduction() {
+            flowNext();
+        }
+
+        function newVehicleOrder() {
+            AppState.vh = { model: null, engine: null, extColor: '#FFFFFF', intColor: 'Preto', wheels: '18"', packages: [],
+                orderNumber: null };
+            AppState.currentStep = 0;
+            renderVehicleStep();
+        }
+
+        function animateProduction() {
+            const steps = document.querySelectorAll('#factoryLine .factory-step');
+            const progressBar = document.getElementById('productionProgress');
+            const statusText = document.getElementById('productionStatus');
+            const messages = ['Preparando chassis...', 'Montando motor...', 'Instalando painéis...', 'Pintura...',
+                'Acabamento final...', 'Inspeção de qualidade...'
+            ];
+            let i = 0;
+            const interval = setInterval(() => {
+                if (i < steps.length) {
+                    steps[i].classList.add('done');
+                    if (progressBar) progressBar.style.width = ((i + 1) / steps.length * 100) + '%';
+                    if (statusText && i < messages.length) statusText.textContent = messages[i];
+                    i++;
+                } else {
+                    clearInterval(interval);
+                    if (statusText) statusText.textContent = '✅ Veículo concluído!';
+                }
+            }, 600);
+        }
+
+        // ============================================================
+        // CLINIC FLOW
+        // ============================================================
+        const CL_STEPS = ['Atendimento', 'Senha', 'Sala de Espera', 'Chamada', 'Cadastro', 'Exames', 'Resultado',
+        'Avaliação'];
+        const CL_SERVICES = [
+            { id: 'consulta', name: 'Consulta', icon: '🩺', desc: 'Consulta médica geral' },
+            { id: 'exame', name: 'Exame', icon: '🔬', desc: 'Realizar exames' },
+            { id: 'retorno', name: 'Retorno', icon: '🔄', desc: 'Consulta de retorno' },
+            { id: 'vacina', name: 'Vacinação', icon: '💉', desc: 'Vacinas disponíveis' },
+            { id: 'lab', name: 'Laboratório', icon: '🧪', desc: 'Exames laboratoriais' },
+            { id: 'especialidades', name: 'Especialidades', icon: '🏥', desc: 'Cardio, Neuro, Ortopedia...' },
+        ];
+        const CL_EXAMS_LIST = [
+            { id: 'hemograma', name: 'Hemograma', icon: '🩸' },
+            { id: 'raioX', name: 'Raio X', icon: '🦴' },
+            { id: 'ultrassom', name: 'Ultrassom', icon: '📡' },
+            { id: 'tomografia', name: 'Tomografia', icon: '🖥️' },
+            { id: 'ressonancia', name: 'Ressonância', icon: '🧲' },
+            { id: 'ecg', name: 'ECG', icon: '💓' },
+            { id: 'labExams', name: 'Exames Laboratoriais', icon: '🧪' },
+        ];
+
+        function renderClinicStep() {
+            const step = AppState.currentStep;
+            const body = document.getElementById('clBody');
+            const footer = document.getElementById('clFooter');
+            const progress = document.getElementById('clProgress');
+            const breadcrumbs = document.getElementById('clBreadcrumbs');
+
+            const totalSteps = CL_STEPS.length;
+            progress.style.width = ((step / (totalSteps - 1)) * 100) + '%';
+            breadcrumbs.innerHTML = CL_STEPS.map((s, i) => {
+                const cls = i === step ? 'active' : (i < step ? '' : '');
+                return `${i>0?'<span class="sep">›</span>':''}<span class="${cls}">${s}</span>`;
+            }).join('');
+
+            let bodyHTML = '';
+            let footerHTML = '';
+
+            switch (step) {
+                case 0: // Escolha do serviço
+                    bodyHTML = `<h2 style="margin-bottom:1.5rem;font-size:1.5rem;">Selecione o atendimento</h2>
+                <div class="cards-grid">${CL_SERVICES.map(s=>`
+                  <div class="card ripple ${AppState.cl.serviceType===s.id?'selected':''}" onclick="selectCLService('${s.id}')">
+                    <span class="card-icon">${s.icon}</span><h3>${s.name}</h3><p>${s.desc}</p>
+                  </div>`).join('')}</div>`;
+                    footerHTML = `<div></div><button class="btn-primary" ${!AppState.cl.serviceType?'disabled':''} onclick="generateTicket()">Gerar Senha →</button>`;
+                    break;
+
+                case 1: // Senha gerada
+                    const prefixes = ['A', 'B', 'C', 'D'];
+                    const prefix = prefixes[Math.floor(Math.random() * 4)];
+                    const num = Math.floor(Math.random() * 900 + 100);
+                    AppState.cl.ticketNumber = prefix + num;
+                    bodyHTML = `
+                <div style="text-align:center;padding:2rem">
+                  <h2 style="font-size:1.5rem;margin-bottom:1rem">🖨️ Sua senha foi gerada!</h2>
+                  <div class="ticket">
+                    <p style="color:var(--text-secondary);font-size:0.85rem">SENHA DE ATENDIMENTO</p>
+                    <div class="ticket-number">${AppState.cl.ticketNumber}</div>
+                    <p style="margin-top:0.5rem;color:var(--text-secondary)">${CL_SERVICES.find(s=>s.id===AppState.cl.serviceType)?.name||'Atendimento'}</p>
+                    <p style="font-size:0.8rem;color:var(--text-secondary);margin-top:0.5rem">${new Date().toLocaleDateString('pt-BR')} - ${new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})}</p>
+                  </div>
+                  <p style="margin-top:1.5rem;color:var(--text-secondary)">Aguarde sua senha ser chamada no painel</p>
+                </div>`;
+                    footerHTML = `<button class="btn-secondary" onclick="flowBack()">← Voltar</button>
+                <button class="btn-primary" onclick="flowNext()">Ir para Sala de Espera →</button>`;
+                    break;
+
+                case 2: // Sala de espera
+                    const fakeTickets = [
+                        { num: 'A120', type: 'Consulta', room: '02' },
+                        { num: 'B045', type: 'Exame', room: '05' },
+                        { num: 'C078', type: 'Retorno', room: '01' },
+                        { num: 'D033', type: 'Laboratório', room: '03' },
+                        { num: AppState.cl.ticketNumber, type: CL_SERVICES.find(s => s.id === AppState.cl
+                            .serviceType)?.name || 'Atendimento', room: '—' },
+                        { num: 'A091', type: 'Vacinação', room: '04' },
+                        { num: 'B112', type: 'Especialidades', room: '07' },
+                    ].sort(() => Math.random() - 0.5);
+                    bodyHTML = `
+                <h2 style="margin-bottom:1.5rem;font-size:1.5rem;text-align:center">📋 Painel de Chamadas</h2>
+                <div class="waiting-panel">
+                  <div class="waiting-list" id="waitingList">
+                    ${fakeTickets.map((t,i)=>`
+                      <div class="waiting-item" id="waiting_${i}">
+                        <span>${t.num}</span><span>${t.type}</span><span>Consultório ${t.room}</span>
+                      </div>`).join('')}
+                  </div>
+                </div>
+                <p style="text-align:center;margin-top:1rem;color:var(--text-secondary)">Sua senha: <strong style="font-size:1.2rem">${AppState.cl.ticketNumber}</strong></p>`;
+                    footerHTML = `<div></div><button class="btn-primary" onclick="callTicket()">Avançar (Simular chamada) →</button>`;
+                    // Animar a lista após renderizar
+                    setTimeout(() => animateWaitingList(fakeTickets), 600);
+                    break;
+
+                case 3: // Chamada
+                    bodyHTML = `
+                <div style="text-align:center;padding:3rem">
+                  <div style="font-size:5rem;animation:blinkCall 0.6s ease-in-out 5">🔔</div>
+                  <h2 style="font-size:2rem;margin:1rem 0;animation:blinkCall 0.6s ease-in-out 5">SENHA ${AppState.cl.ticketNumber}</h2>
+                  <p style="font-size:1.3rem;font-weight:600;color:var(--blue)">Dirija-se ao Consultório 03</p>
+                  <p style="color:var(--text-secondary);margin-top:0.5rem">Por favor, compareça ao local indicado</p>
+                </div>`;
+                    footerHTML = `<button class="btn-secondary" onclick="flowBack()">← Voltar</button>
+                <button class="btn-primary" onclick="flowNext()">Confirmar Presença →</button>`;
+                    break;
+
+                case 4: // Cadastro
+                    bodyHTML = `
+                <h2 style="margin-bottom:1.5rem;font-size:1.5rem;">📝 Cadastro do Paciente</h2>
+                <div style="max-width:500px;display:flex;flex-direction:column;gap:1rem">
+                  <input type="text" placeholder="Nome completo" id="clName" value="${AppState.cl.patientName}" style="padding:0.85rem 1rem;border-radius:var(--radius);border:2px solid var(--gray-200);font-size:1rem;background:var(--surface);color:var(--text)">
+                  <input type="text" placeholder="CPF (fictício)" value="***.456.789-**" style="padding:0.85rem 1rem;border-radius:var(--radius);border:2px solid var(--gray-200);font-size:1rem;background:var(--surface);color:var(--text)" readonly>
+                  <select id="clSpecialty" style="padding:0.85rem 1rem;border-radius:var(--radius);border:2px solid var(--gray-200);font-size:1rem;background:var(--surface);color:var(--text)">
+                    <option value="">Selecione especialidade</option>
+                    <option value="Clinico Geral">Clínico Geral</option><option value="Cardiologista">Cardiologista</option>
+                    <option value="Neurologista">Neurologista</option><option value="Ortopedista">Ortopedista</option>
+                    <option value="Dermatologista">Dermatologista</option>
+                  </select>
+                  <input type="text" placeholder="Médico(a)" id="clDoctor" value="${AppState.cl.doctor}" style="padding:0.85rem 1rem;border-radius:var(--radius);border:2px solid var(--gray-200);font-size:1rem;background:var(--surface);color:var(--text)">
+                  <input type="text" placeholder="Convênio" value="Unimed Premium" readonly style="padding:0.85rem 1rem;border-radius:var(--radius);border:2px solid var(--gray-200);font-size:1rem;background:var(--surface);color:var(--text)">
+                  <textarea placeholder="Sintomas / Observações" id="clSymptoms" rows="3" style="padding:0.85rem 1rem;border-radius:var(--radius);border:2px solid var(--gray-200);font-size:1rem;background:var(--surface);color:var(--text);resize:vertical">${AppState.cl.symptoms}</textarea>
+                </div>`;
+                    footerHTML = `<button class="btn-secondary" onclick="flowBack()">← Voltar</button>
+                <button class="btn-primary" onclick="saveClinicData()">Próximo →</button>`;
+                    break;
+
+                case 5: // Exames
+                    bodyHTML = `<h2 style="margin-bottom:1.5rem;font-size:1.5rem;">📋 Solicitação de Exames</h2>
+                <p style="margin-bottom:1rem;color:var(--text-secondary)">Selecione os exames solicitados:</p>
+                <div class="cards-grid">${CL_EXAMS_LIST.map(e=>`
+                  <div class="card ripple ${AppState.cl.exams.includes(e.id)?'selected':''}" onclick="toggleCLExam('${e.id}')">
+                    <span class="card-icon">${e.icon}</span><h3>${e.name}</h3>
+                  </div>`).join('')}</div>`;
+                    footerHTML = `<button class="btn-secondary" onclick="flowBack()">← Voltar</button>
+                <button class="btn-primary" onclick="flowNext()">Ver Resultados →</button>`;
+                    break;
+
+                case 6: // Resultado
+                    bodyHTML = `
+                <h2 style="margin-bottom:1.5rem;font-size:1.5rem;">📊 Resultados</h2>
+                <div style="max-width:600px;margin:0 auto">
+                  <div style="text-align:center;padding:1.5rem;background:rgba(16,185,129,0.08);border-radius:var(--radius-lg);margin-bottom:1.5rem">
+                    <span style="font-size:3rem">✅</span>
+                    <p style="font-weight:700;font-size:1.2rem;color:var(--green);margin-top:0.5rem">Exames Concluídos!</p>
+                  </div>
+                  ${AppState.cl.exams.length>0?AppState.cl.exams.map(eid=>{
+                    const ex = CL_EXAMS_LIST.find(e=>e.id===eid);
+                    return `<div style="display:flex;justify-content:space-between;align-items:center;padding:0.75rem 1rem;background:var(--surface);border-radius:var(--radius);margin-bottom:0.5rem;box-shadow:var(--shadow-sm)">
+                      <span>${ex?.icon||'📋'} ${ex?.name||eid}</span>
+                      <span style="color:var(--green);font-weight:600">Disponível 📥</span>
+                    </div>`;
+                  }).join(''):'<p style="text-align:center;color:var(--text-secondary)">Nenhum exame solicitado</p>'}
+                  <div style="margin-top:1.5rem;padding:1rem;background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow-sm);border-left:4px solid var(--purple)">
+                    <p style="font-weight:700;margin-bottom:0.25rem">📄 Receita Médica</p>
+                    <p style="color:var(--text-secondary);font-size:0.9rem">Dipirona 500mg - 6/6h por 3 dias<br>Repouso por 48h<br>Retornar em 15 dias</p>
+                  </div>
+                </div>`;
+                    footerHTML = `<button class="btn-secondary" onclick="flowBack()">← Voltar</button>
+                <button class="btn-primary" onclick="flowNext()">Avaliar Atendimento →</button>`;
+                    break;
+
+                case 7: // Avaliação
+                    bodyHTML = `
+                <div style="text-align:center;padding:2rem">
+                  <h2 style="font-size:1.5rem;margin-bottom:1rem">🙏 Obrigado pela visita!</h2>
+                  <p style="color:var(--text-secondary);margin-bottom:1.5rem">Como foi seu atendimento hoje?</p>
+                  <div class="star-rating" id="starRating">
+                    ${[1,2,3,4,5].map(i=>`<span class="star ${i<=AppState.cl.rating?'active':''}" onclick="rateClinic(${i})">★</span>`).join('')}
+                  </div>
+                  <p style="margin-top:0.75rem;font-weight:600;color:var(--blue)">
+                    ${AppState.cl.rating===5?'Excelente! 😍':AppState.cl.rating===4?'Muito Bom! 😊':AppState.cl.rating===3?'Bom 👍':AppState.cl.rating===2?'Regular 😐':AppState.cl.rating===1?'Ruim 😞':'Toque nas estrelas'}
+                  </p>
+                </div>`;
+                    footerHTML = `<div></div>
+                <button class="btn-primary" onclick="finishClinic()" ${AppState.cl.rating===0?'disabled':''}>Finalizar ✓</button>`;
+                    break;
+            }
+
+            body.innerHTML = bodyHTML;
+            footer.innerHTML = footerHTML;
+        }
+
+        function selectCLService(id) { AppState.cl.serviceType = id;
+            renderClinicStep();
+            playClickFeedback(); }
+
+        function generateTicket() { flowNext(); }
+
+        function animateWaitingList(tickets) {
+            const items = document.querySelectorAll('#waitingList .waiting-item');
+            let callIdx = 0;
+            const interval = setInterval(() => {
+                if (callIdx >= items.length) {
+                    clearInterval(interval);
+                    return;
+                }
+                // Reset all
+                items.forEach(it => it.classList.remove('called'));
+                // Mark current
+                if (items[callIdx]) items[callIdx].classList.add('called');
+                callIdx++;
+            }, 1500);
+        }
+
+        function callTicket() {
+            // Highlight user's ticket
+            const items = document.querySelectorAll('#waitingList .waiting-item');
+            items.forEach(it => {
+                if (it.textContent.includes(AppState.cl.ticketNumber)) {
+                    it.classList.add('called');
+                    it.style.background = 'var(--blue)';
+                    it.style.color = 'white';
+                    it.style.fontWeight = '700';
+                    it.style.transform = 'scale(1.05)';
+                }
+            });
+            setTimeout(() => flowNext(), 2000);
+        }
+
+        function saveClinicData() {
+            AppState.cl.patientName = document.getElementById('clName')?.value || '';
+            AppState.cl.specialty = document.getElementById('clSpecialty')?.value || '';
+            AppState.cl.doctor = document.getElementById('clDoctor')?.value || '';
+            AppState.cl.symptoms = document.getElementById('clSymptoms')?.value || '';
+            flowNext();
+        }
+
+        function toggleCLExam(id) {
+            const idx = AppState.cl.exams.indexOf(id);
+            if (idx >= 0) AppState.cl.exams.splice(idx, 1);
+            else AppState.cl.exams.push(id);
+            renderClinicStep();
+            playClickFeedback();
+        }
+
+        function rateClinic(rating) {
+            AppState.cl.rating = rating;
+            renderClinicStep();
+            playClickFeedback();
+        }
+
+        function finishClinic() {
+            launchConfetti();
+            showToast('Atendimento finalizado com sucesso!', 'success');
+            setTimeout(() => {
+                AppState.cl = { serviceType: null, ticketNumber: null, patientName: '', specialty: '', doctor: '',
+                    symptoms: '', exams: [], rating: 0 };
+                AppState.currentStep = 0;
+                goHome();
+            }, 2000);
+        }
+
+        // ============================================================
+        // CONFETTI
+        // ============================================================
+        function launchConfetti() {
+            const colors = ['#2563EB', '#7C3AED', '#10B981', '#F97316', '#FBBF24', '#EC4899', '#06B6D4', '#EF4444',
+                '#FF6B6B', '#4ECDC4'
+            ];
+            for (let i = 0; i < 80; i++) {
+                const piece = document.createElement('div');
+                piece.className = 'confetti-piece';
+                piece.style.left = Math.random() * 100 + '%';
+                piece.style.top = -(Math.random() * 60 + 10) + 'px';
+                piece.style.width = (Math.random() * 12 + 6) + 'px';
+                piece.style.height = (Math.random() * 12 + 6) + 'px';
+                piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+                piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+                piece.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                piece.style.animationDelay = Math.random() * 1.5 + 's';
+                piece.style.transform = `rotate(${Math.random()*360}deg)`;
+                document.body.appendChild(piece);
+                setTimeout(() => piece.remove(), 4000);
+            }
+        }
+
+        // ============================================================
+        // TOAST NOTIFICATIONS
+        // ============================================================
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `<span>${type==='success'?'✅':'❌'}</span> ${message}`;
+            container.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        // ============================================================
+        // RIPPLE EFFECT
+        // ============================================================
+        document.addEventListener('click', function(e) {
+            const rippleEl = e.target.closest('.ripple');
+            if (!rippleEl) return;
+            const ripple = document.createElement('span');
+            ripple.className = 'ripple-effect';
+            const rect = rippleEl.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+            ripple.style.width = ripple.style.height = size + 'px';
+            ripple.style.left = (e.clientX - rect.left - size / 2) + 'px';
+            ripple.style.top = (e.clientY - rect.top - size / 2) + 'px';
+            rippleEl.appendChild(ripple);
+            setTimeout(() => ripple.remove(), 600);
+        });
+
+        // ============================================================
+        // DARK MODE
+        // ============================================================
+        document.getElementById('btnDarkMode').addEventListener('click', () => {
+            const html = document.documentElement;
+            const isDark = html.getAttribute('data-theme') === 'dark';
+            html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+            document.getElementById('btnDarkMode').textContent = isDark ? '🌙' : '☀️';
+            localStorage.setItem('theme', isDark ? 'light' : 'dark');
+            playClickFeedback();
+        });
+        // Load saved theme
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        document.getElementById('btnDarkMode').textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+
+        // ============================================================
+        // HOME BUTTON
+        // ============================================================
+        document.getElementById('btnHome').addEventListener('click', goHome);
+
+        // ============================================================
+        // ATTRACTOR MODE (TELA DE DESCANSO)
+        // ============================================================
+        function startAttractorMode() {
+            document.getElementById('attractorOverlay').classList.add('active');
+            spawnAttractorParticles();
+        }
+
+        function stopAttractorMode() {
+            document.getElementById('attractorOverlay').classList.remove('active');
+            resetInactivityTimer();
+        }
+
+        document.getElementById('attractorOverlay').addEventListener('click', stopAttractorMode);
+
+        function spawnAttractorParticles() {
+            const container = document.getElementById('attractorParticles');
+            container.innerHTML = '';
+            const colors = ['#2563EB', '#7C3AED', '#10B981', '#F97316', '#FBBF24', '#EC4899'];
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'attractor-particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.width = (Math.random() * 8 + 4) + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                particle.style.animationDelay = Math.random() * 5 + 's';
+                container.appendChild(particle);
+            }
+        }
+
+        function resetInactivityTimer() {
+            clearTimeout(AppState.inactivityTimeout);
+            clearTimeout(AppState.attractorTimeout);
+            stopAttractorMode();
+            AppState.attractorTimeout = setTimeout(startAttractorMode, ATTRACTOR_DELAY);
+            AppState.inactivityTimeout = setTimeout(() => {
+                goHome();
+                startAttractorMode();
+            }, RESET_DELAY);
+        }
+
+        // ============================================================
+        // SOUND FEEDBACK (LIGHT CLICK)
+        // ============================================================
+        function playClickFeedback() {
+            // Using Web Audio API for a subtle click
+            try {
+                const ctx = new(window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.frequency.value = 800;
+                gain.gain.value = 0.05;
+                osc.start();
+                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.08);
+                osc.stop(ctx.currentTime + 0.08);
+            } catch (e) { /* Silently ignore if audio not supported */ }
+        }
+
+        // ============================================================
+        // INITIALIZATION
+        // ============================================================
+        function initApp() {
+            resetInactivityTimer();
+            // Add click feedback for all interactive elements
+            document.addEventListener('click', (e) => {
+                if (e.target.closest('button') || e.target.closest('.card') || e.target.closest('.home-card') ||
+                    e.target.closest('.custom-option') || e.target.closest('.payment-method') || e.target.closest(
+                        '.color-swatch') || e.target.closest('.star')) {
+                    if (!e.target.closest('#attractorOverlay')) {
+                        playClickFeedback();
+                        resetInactivityTimer();
+                    }
+                }
+            });
+        }
+
+        initApp();
+        console.log('🚀 MyHub Totem - Autoatendimento Interativo');
+        console.log('✅ Fast Food | ✅ Veículos | ✅ Clínica');
+        console.log('💡 Toque na tela para começar!');
+    </script>
+</body>
+</html>
