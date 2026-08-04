@@ -67,9 +67,7 @@
             --white: #1E293B;
         }
 
-        /* ============================================================
-           RESET & BASE
-           ============================================================ */
+        /* RESET & BASE */
         *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
         html{font-size:16px;scroll-behavior:smooth}
         body{
@@ -88,9 +86,7 @@
         button{cursor:pointer;font-family:var(--font);border:none;outline:none}
         input,select,textarea{font-family:var(--font)}
 
-        /* ============================================================
-           ATTRACTOR MODE (TELA DE DESCANSO)
-           ============================================================ */
+        /* ATTRACTOR MODE */
         .attractor-overlay{
             position:fixed;inset:0;z-index:9999;
             background:linear-gradient(135deg,#0F172A 0%,#1E293B 40%,#0F172A 100%);
@@ -101,61 +97,30 @@
             transition:opacity 0.8s ease;
         }
         .attractor-overlay.active{opacity:1;pointer-events:all}
-        .attractor-logo{
-            font-size:5rem;animation:attractorPulse 2s ease-in-out infinite;
-        }
-        .attractor-title{
-            font-size:2.5rem;font-weight:700;color:white;
-            letter-spacing:-0.04em;
-            animation:attractorFadeInUp 0.8s ease;
-        }
-        .attractor-subtitle{
-            font-size:1.25rem;color:rgba(255,255,255,0.6);
-            animation:attractorFadeInUp 0.8s ease 0.2s both;
-        }
-        .attractor-tap{
-            font-size:1rem;color:rgba(255,255,255,0.5);
-            animation:attractorBounce 2s ease-in-out infinite;
-            margin-top:2rem;
-        }
+        .attractor-logo{font-size:5rem;animation:attractorPulse 2s ease-in-out infinite}
+        .attractor-title{font-size:2.5rem;font-weight:700;color:white;letter-spacing:-0.04em}
+        .attractor-subtitle{font-size:1.25rem;color:rgba(255,255,255,0.6)}
+        .attractor-tap{font-size:1rem;color:rgba(255,255,255,0.5);animation:attractorBounce 2s ease-in-out infinite;margin-top:2rem}
         .attractor-particles{position:absolute;inset:0;overflow:hidden;pointer-events:none}
-        .attractor-particle{
-            position:absolute;border-radius:50%;
-            animation:attractorFloat linear infinite;
-        }
+        .attractor-particle{position:absolute;border-radius:50%;animation:attractorFloat linear infinite}
 
-        @keyframes attractorPulse{
-            0%,100%{transform:scale(1);opacity:0.9}
-            50%{transform:scale(1.08);opacity:1}
-        }
-        @keyframes attractorFadeInUp{
-            from{opacity:0;transform:translateY(20px)}
-            to{opacity:1;transform:translateY(0)}
-        }
-        @keyframes attractorBounce{
-            0%,100%{transform:translateY(0)}
-            50%{transform:translateY(-8px)}
-        }
+        @keyframes attractorPulse{0%,100%{transform:scale(1);opacity:0.9}50%{transform:scale(1.08);opacity:1}}
+        @keyframes attractorBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
         @keyframes attractorFloat{
             0%{transform:translateY(100vh) rotate(0deg);opacity:0}
-            10%{opacity:1}
-            90%{opacity:1}
+            10%{opacity:1}90%{opacity:1}
             100%{transform:translateY(-10vh) rotate(720deg);opacity:0}
         }
 
-        /* ============================================================
-           MAIN CONTAINER
-           ============================================================ */
-        .app-container{
-            max-width:1920px;margin:0 auto;min-height:100vh;
-            display:flex;flex-direction:column;
-        }
+        /* APP CONTAINER */
+        .app-container{max-width:1920px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column}
         .screen{
             display:none;flex-direction:column;
             padding:1.5rem 2rem;flex:1;
-            animation:screenEnter 0.45s cubic-bezier(0.4,0,0.2,1);
         }
-        .screen.active{display:flex}
+        .screen.active{display:flex;animation:screenEnter 0.45s cubic-bezier(0.4,0,0.2,1)}
+        .screen.active.exiting{animation:screenExit 0.3s cubic-bezier(0.4,0,0.2,1) forwards}
+
         @keyframes screenEnter{
             from{opacity:0;transform:translateY(16px) scale(0.99)}
             to{opacity:1;transform:translateY(0) scale(1)}
@@ -164,11 +129,8 @@
             from{opacity:1;transform:translateY(0) scale(1)}
             to{opacity:0;transform:translateY(-16px) scale(0.99)}
         }
-        .screen.exiting{animation:screenExit 0.3s cubic-bezier(0.4,0,0.2,1) forwards}
 
-        /* ============================================================
-           HEADER & NAV
-           ============================================================ */
+        /* HEADER */
         .app-header{
             display:flex;align-items:center;justify-content:space-between;
             padding:1rem 2rem;
@@ -182,8 +144,7 @@
             font-size:1.5rem;font-weight:800;
             background:linear-gradient(135deg,var(--blue),var(--purple));
             -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-            background-clip:text;
-            letter-spacing:-0.03em;
+            background-clip:text;letter-spacing:-0.03em;
         }
         .header-actions{display:flex;gap:0.75rem;align-items:center}
         .btn-icon{
@@ -198,13 +159,8 @@
         .btn-icon:hover{background:var(--gray-100);transform:translateY(-1px);box-shadow:var(--shadow)}
         .btn-icon:active{transform:scale(0.94)}
 
-        /* ============================================================
-           HOME SCREEN
-           ============================================================ */
-        .home-content{
-            flex:1;display:flex;align-items:center;justify-content:center;
-            padding:2rem;
-        }
+        /* HOME */
+        .home-content{flex:1;display:flex;align-items:center;justify-content:center;padding:2rem}
         .home-grid{
             display:grid;grid-template-columns:repeat(3,1fr);
             gap:2rem;max-width:1400px;width:100%;
@@ -213,11 +169,8 @@
         .home-card{
             background:var(--surface-glass);
             backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
-            border-radius:var(--radius-xl);
-            padding:3rem 2rem;
-            text-align:center;
-            cursor:pointer;
-            box-shadow:var(--shadow-md);
+            border-radius:var(--radius-xl);padding:3rem 2rem;text-align:center;
+            cursor:pointer;box-shadow:var(--shadow-md);
             transition:all var(--transition);
             border:1px solid rgba(255,255,255,0.1);
             position:relative;overflow:hidden;
@@ -227,34 +180,21 @@
             background:linear-gradient(135deg,transparent,rgba(255,255,255,0.05));
             opacity:0;transition:opacity var(--transition);
         }
-        .home-card:hover{
-            transform:translateY(-8px);
-            box-shadow:var(--shadow-xl);
-        }
+        .home-card:hover{transform:translateY(-8px);box-shadow:var(--shadow-xl)}
         .home-card:hover::before{opacity:1}
         .home-card:active{transform:translateY(-2px) scale(0.98)}
-        .home-card-icon{font-size:4.5rem;margin-bottom:1.5rem;display:block;
-            animation:floatIcon 3s ease-in-out infinite;
-        }
+        .home-card-icon{font-size:4.5rem;margin-bottom:1.5rem;display:block;animation:floatIcon 3s ease-in-out infinite}
         .home-card:nth-child(2) .home-card-icon{animation-delay:0.5s}
         .home-card:nth-child(3) .home-card-icon{animation-delay:1s}
-        @keyframes floatIcon{
-            0%,100%{transform:translateY(0)}
-            50%{transform:translateY(-10px)}
-        }
+        @keyframes floatIcon{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
         .home-card h2{font-size:1.75rem;font-weight:700;margin-bottom:0.5rem;letter-spacing:-0.02em}
         .home-card p{color:var(--text-secondary);font-size:1rem;line-height:1.5}
-        .home-card .card-accent{
-            position:absolute;bottom:0;left:0;right:0;height:4px;
-            border-radius:0 0 var(--radius-xl) var(--radius-xl);
-        }
+        .home-card .card-accent{position:absolute;bottom:0;left:0;right:0;height:4px;border-radius:0 0 var(--radius-xl) var(--radius-xl)}
         .card-accent.blue{background:var(--blue)}
         .card-accent.purple{background:var(--purple)}
         .card-accent.green{background:var(--green)}
 
-        /* ============================================================
-           FLOW SCREENS (SHARED)
-           ============================================================ */
+        /* FLOW SCREENS */
         .flow-container{flex:1;display:flex;flex-direction:column;max-width:1400px;margin:0 auto;width:100%}
         .flow-header{
             display:flex;align-items:center;gap:1rem;padding:1.5rem 0;
@@ -281,7 +221,7 @@
             background:linear-gradient(90deg,var(--blue),var(--purple));
             transition:width 0.5s cubic-bezier(0.4,0,0.2,1);
         }
-        .flow-body{flex:1;overflow-y:auto;padding:0.5rem 0}
+        .flow-body{flex:1;overflow-y:auto;padding:0.5rem 0;min-height:0}
         .flow-footer{
             display:flex;justify-content:space-between;align-items:center;
             padding:1.25rem 0;gap:1rem;
@@ -308,9 +248,7 @@
         .btn-secondary:hover{border-color:var(--blue);color:var(--blue);box-shadow:var(--shadow)}
         .btn-secondary:active{transform:scale(0.96)}
 
-        /* ============================================================
-           CARDS GRID
-           ============================================================ */
+        /* CARDS */
         .cards-grid{
             display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
             gap:1.5rem;
@@ -334,9 +272,7 @@
         .card p{font-size:0.85rem;color:var(--text-secondary);line-height:1.4}
         .card-price{font-size:1.25rem;font-weight:800;color:var(--blue);margin-top:0.75rem}
 
-        /* ============================================================
-           PRODUCT CARDS (FAST FOOD)
-           ============================================================ */
+        /* PRODUCT CARDS */
         .product-card{
             background:var(--surface-glass);
             backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
@@ -348,8 +284,7 @@
         .product-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
         .product-img{
             height:160px;display:flex;align-items:center;justify-content:center;
-            font-size:5rem;background:var(--gray-100);position:relative;
-            overflow:hidden;
+            font-size:5rem;background:var(--gray-100);position:relative;overflow:hidden;
         }
         .product-img .img-badge{
             position:absolute;top:10px;right:10px;
@@ -359,10 +294,7 @@
         .product-info{padding:1.25rem;flex:1;display:flex;flex-direction:column}
         .product-info h3{font-size:1.1rem;font-weight:700;margin-bottom:0.25rem}
         .product-info .desc{font-size:0.85rem;color:var(--text-secondary);flex:1}
-        .product-info .price-row{
-            display:flex;align-items:center;justify-content:space-between;
-            margin-top:1rem;
-        }
+        .product-info .price-row{display:flex;align-items:center;justify-content:space-between;margin-top:1rem}
         .product-info .price{font-size:1.4rem;font-weight:800;color:var(--green)}
         .btn-add{
             padding:0.6rem 1.2rem;border-radius:99px;
@@ -371,18 +303,10 @@
         }
         .btn-add:hover{background:var(--blue-dark);transform:scale(1.04)}
         .btn-add:active{transform:scale(0.92)}
-        .btn-add.added{
-            background:var(--green);animation:popAdd 0.4s ease;
-        }
-        @keyframes popAdd{
-            0%{transform:scale(1)}
-            50%{transform:scale(1.25)}
-            100%{transform:scale(1)}
-        }
+        .btn-add.added{background:var(--green);animation:popAdd 0.4s ease}
+        @keyframes popAdd{0%{transform:scale(1)}50%{transform:scale(1.25)}100%{transform:scale(1)}}
 
-        /* ============================================================
-           CUSTOMIZATION OPTIONS
-           ============================================================ */
+        /* CUSTOM OPTIONS */
         .custom-options{display:flex;flex-direction:column;gap:0.75rem}
         .custom-option{
             display:flex;align-items:center;justify-content:space-between;
@@ -411,9 +335,7 @@
         }
         .toggle-switch.active::after{transform:translateX(24px)}
 
-        /* ============================================================
-           CART
-           ============================================================ */
+        /* CART */
         .cart-list{display:flex;flex-direction:column;gap:1rem}
         .cart-item{
             display:flex;align-items:center;gap:1.25rem;
@@ -425,9 +347,7 @@
         .cart-item-info{flex:1}
         .cart-item-info h4{font-weight:600;margin-bottom:0.15rem}
         .cart-item-info .customs{font-size:0.8rem;color:var(--text-secondary)}
-        .cart-item-qty{
-            display:flex;align-items:center;gap:0.5rem;
-        }
+        .cart-item-qty{display:flex;align-items:center;gap:0.5rem}
         .qty-btn{
             width:32px;height:32px;border-radius:50%;
             background:var(--gray-100);display:flex;align-items:center;
@@ -450,9 +370,7 @@
         }
         .cart-summary .row{display:flex;justify-content:space-between;padding:0.4rem 0;font-size:0.95rem}
         .cart-summary .row.total{font-size:1.4rem;font-weight:800;border-top:2px dashed var(--gray-200);margin-top:0.5rem;padding-top:1rem}
-        .discount-input{
-            display:flex;gap:0.5rem;margin:0.75rem 0;
-        }
+        .discount-input{display:flex;gap:0.5rem;margin:0.75rem 0}
         .discount-input input{
             flex:1;padding:0.7rem 1rem;border-radius:99px;
             border:2px solid var(--gray-200);font-size:0.9rem;
@@ -465,9 +383,7 @@
             background:var(--green);color:white;font-weight:700;font-size:0.9rem;
         }
 
-        /* ============================================================
-           PAYMENT
-           ============================================================ */
+        /* PAYMENT */
         .payment-methods{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem}
         .payment-method{
             padding:2rem 1.5rem;text-align:center;border-radius:var(--radius-lg);
@@ -490,9 +406,7 @@
             100%{transform:translateY(60px);opacity:0}
         }
 
-        /* ============================================================
-           VEHICLE CONFIGURATOR
-           ============================================================ */
+        /* VEHICLE */
         .vehicle-preview{
             background:var(--surface-glass);backdrop-filter:blur(12px);
             border-radius:var(--radius-xl);padding:2rem;text-align:center;
@@ -516,15 +430,14 @@
         }
         .color-swatch.selected .check{opacity:1}
 
-        /* ============================================================
-           CLINIC / TICKET
-           ============================================================ */
+        /* CLINIC / TICKET */
         .ticket{
             background:white;border-radius:var(--radius-lg);
             padding:2rem;text-align:center;box-shadow:var(--shadow-lg);
             border:3px dashed var(--gray-300);max-width:400px;margin:0 auto;
             position:relative;overflow:hidden;
         }
+        [data-theme="dark"] .ticket{background:var(--surface)}
         .ticket::before,.ticket::after{
             content:'';position:absolute;width:30px;height:30px;
             background:var(--bg);border-radius:50%;top:50%;
@@ -553,14 +466,9 @@
             background:var(--blue);color:white;font-weight:700;
             animation:blinkCall 0.8s ease-in-out 3;
         }
-        @keyframes blinkCall{
-            0%,100%{opacity:1}
-            50%{opacity:0.4}
-        }
+        @keyframes blinkCall{0%,100%{opacity:1}50%{opacity:0.4}}
 
-        /* ============================================================
-           MODALS & TOASTS
-           ============================================================ */
+        /* MODALS & TOASTS */
         .modal-overlay{
             position:fixed;inset:0;z-index:200;
             background:rgba(0,0,0,0.5);backdrop-filter:blur(4px);
@@ -596,9 +504,7 @@
         @keyframes toastIn{from{transform:translateX(120%);opacity:0}to{transform:translateX(0);opacity:1}}
         @keyframes toastOut{from{transform:translateX(0);opacity:1}to{transform:translateX(120%);opacity:0}}
 
-        /* ============================================================
-           CONFETTI
-           ============================================================ */
+        /* CONFETTI */
         .confetti-piece{
             position:fixed;z-index:250;pointer-events:none;
             animation:confettiFall linear forwards;
@@ -609,9 +515,7 @@
             100%{transform:translateY(110vh) rotate(720deg);opacity:0}
         }
 
-        /* ============================================================
-           RIPPLE EFFECT
-           ============================================================ */
+        /* RIPPLE */
         .ripple{position:relative;overflow:hidden}
         .ripple-effect{
             position:absolute;border-radius:50%;
@@ -621,9 +525,7 @@
         }
         @keyframes rippleAnim{to{transform:scale(4);opacity:0}}
 
-        /* ============================================================
-           SKELETON LOADING
-           ============================================================ */
+        /* SKELETON */
         .skeleton{
             background:linear-gradient(90deg,var(--gray-200) 25%,var(--gray-100) 50%,var(--gray-200) 75%);
             background-size:200% 100%;animation:skeletonShimmer 1.5s infinite;
@@ -631,53 +533,22 @@
         }
         @keyframes skeletonShimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
 
-        /* ============================================================
-           STAR RATING
-           ============================================================ */
+        /* STAR RATING */
         .star-rating{display:flex;gap:0.35rem;justify-content:center;font-size:2.5rem}
         .star-rating .star{cursor:pointer;transition:all var(--transition-fast);color:var(--gray-300)}
         .star-rating .star.active{color:#FBBF24;transform:scale(1.15)}
         .star-rating .star:hover{transform:scale(1.2)}
 
-        /* ============================================================
-           PRODUCTION ANIMATION
-           ============================================================ */
-        .factory-scene{
-            text-align:center;padding:2rem;
-        }
+        /* PRODUCTION */
+        .factory-scene{text-align:center;padding:2rem}
         .factory-line{
             display:flex;align-items:center;justify-content:center;
             gap:0.5rem;flex-wrap:wrap;font-size:2rem;
         }
-        .factory-step{
-            opacity:0.3;transition:opacity 0.8s ease;
-        }
+        .factory-step{opacity:0.3;transition:opacity 0.8s ease}
         .factory-step.done{opacity:1}
 
-        /* ============================================================
-           SCROLLBAR
-           ============================================================ */
-        ::-webkit-scrollbar{width:8px}
-        ::-webkit-scrollbar-track{background:transparent}
-        ::-webkit-scrollbar-thumb{background:var(--gray-300);border-radius:99px}
-        ::-webkit-scrollbar-thumb:hover{background:var(--gray-400)}
-
-        /* ============================================================
-           RESPONSIVE
-           ============================================================ */
-        @media(max-width:768px){
-            .screen{padding:1rem}
-            .home-grid{grid-template-columns:1fr}
-            .cards-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}
-            .flow-footer{flex-direction:column}
-            .btn-primary,.btn-secondary{width:100%;text-align:center}
-            .vehicle-svg{font-size:6rem}
-            .payment-methods{grid-template-columns:repeat(2,1fr)}
-        }
-
-        /* ============================================================
-           QR CODE (FAKE)
-           ============================================================ */
+        /* QR */
         .qr-code{
             width:150px;height:150px;margin:1rem auto;
             background:white;border-radius:var(--radius);
@@ -687,7 +558,7 @@
         .qr-dot{background:#000;border-radius:2px}
         .qr-dot.empty{background:transparent}
 
-        /* Checkbox custom */
+        /* CHECKBOX */
         .checkbox-custom{
             width:24px;height:24px;border-radius:6px;
             border:2px solid var(--gray-300);display:flex;
@@ -696,13 +567,28 @@
             font-size:0.8rem;color:transparent;
         }
         .checkbox-custom.checked{background:var(--blue);border-color:var(--blue);color:white}
+
+        /* SCROLLBAR */
+        ::-webkit-scrollbar{width:8px}
+        ::-webkit-scrollbar-track{background:transparent}
+        ::-webkit-scrollbar-thumb{background:var(--gray-300);border-radius:99px}
+        ::-webkit-scrollbar-thumb:hover{background:var(--gray-400)}
+
+        /* RESPONSIVE */
+        @media(max-width:768px){
+            .screen{padding:1rem}
+            .home-grid{grid-template-columns:1fr}
+            .cards-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}
+            .flow-footer{flex-direction:column}
+            .btn-primary,.btn-secondary{width:100%;text-align:center}
+            .vehicle-svg{font-size:6rem}
+            .payment-methods{grid-template-columns:repeat(2,1fr)}
+        }
     </style>
 </head>
 <body>
 
-    <!-- ============================================================
-    ATTRACTOR OVERLAY (TELA DE DESCANSO)
-    ============================================================ -->
+    <!-- ATTRACTOR OVERLAY -->
     <div class="attractor-overlay" id="attractorOverlay">
         <div class="attractor-particles" id="attractorParticles"></div>
         <div class="attractor-logo">🖥️</div>
@@ -711,21 +597,15 @@
         <div class="attractor-tap">👆 Toque na tela para começar</div>
     </div>
 
-    <!-- ============================================================
-    TOAST CONTAINER
-    ============================================================ -->
+    <!-- TOAST CONTAINER -->
     <div class="toast-container" id="toastContainer"></div>
 
-    <!-- ============================================================
-    MODAL OVERLAY
-    ============================================================ -->
+    <!-- MODAL OVERLAY -->
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal" id="modalContent"></div>
     </div>
 
-    <!-- ============================================================
-    APP CONTAINER
-    ============================================================ -->
+    <!-- APP CONTAINER -->
     <div class="app-container" id="appContainer">
 
         <!-- HEADER -->
@@ -737,9 +617,7 @@
             </div>
         </header>
 
-        <!-- ============================================================
-        SCREEN: HOME
-        ============================================================ -->
+        <!-- SCREEN: HOME -->
         <div class="screen active" id="screenHome">
             <div class="home-content">
                 <div class="home-grid">
@@ -765,16 +643,12 @@
             </div>
         </div>
 
-        <!-- ============================================================
-        SCREEN: FAST FOOD FLOW
-        ============================================================ -->
+        <!-- SCREEN: FAST FOOD -->
         <div class="screen" id="screenFastFood">
             <div class="flow-container">
                 <div class="flow-header">
                     <button class="btn-back ripple" onclick="flowBack()">← Voltar</button>
-                    <div class="breadcrumbs" id="ffBreadcrumbs">
-                        <span class="active">Categoria</span>
-                    </div>
+                    <div class="breadcrumbs" id="ffBreadcrumbs"><span class="active">Categoria</span></div>
                     <div class="progress-bar-container">
                         <div class="progress-bar-fill" id="ffProgress" style="width:0%"></div>
                     </div>
@@ -784,16 +658,12 @@
             </div>
         </div>
 
-        <!-- ============================================================
-        SCREEN: VEHICLE FLOW
-        ============================================================ -->
+        <!-- SCREEN: VEHICLE -->
         <div class="screen" id="screenVehicle">
             <div class="flow-container">
                 <div class="flow-header">
                     <button class="btn-back ripple" onclick="flowBack()">← Voltar</button>
-                    <div class="breadcrumbs" id="vhBreadcrumbs">
-                        <span class="active">Modelo</span>
-                    </div>
+                    <div class="breadcrumbs" id="vhBreadcrumbs"><span class="active">Modelo</span></div>
                     <div class="progress-bar-container">
                         <div class="progress-bar-fill" id="vhProgress" style="width:0%"></div>
                     </div>
@@ -803,16 +673,12 @@
             </div>
         </div>
 
-        <!-- ============================================================
-        SCREEN: CLINIC FLOW
-        ============================================================ -->
+        <!-- SCREEN: CLINIC -->
         <div class="screen" id="screenClinic">
             <div class="flow-container">
                 <div class="flow-header">
                     <button class="btn-back ripple" onclick="flowBack()">← Voltar</button>
-                    <div class="breadcrumbs" id="clBreadcrumbs">
-                        <span class="active">Atendimento</span>
-                    </div>
+                    <div class="breadcrumbs" id="clBreadcrumbs"><span class="active">Atendimento</span></div>
                     <div class="progress-bar-container">
                         <div class="progress-bar-fill" id="clProgress" style="width:0%"></div>
                     </div>
@@ -826,85 +692,57 @@
 
     <script>
         // ============================================================
-        // APP STATE MANAGER
+        // APP STATE
         // ============================================================
         const AppState = {
-            currentFlow: null, // 'fastfood' | 'vehicle' | 'clinic'
+            currentFlow: null,
             currentStep: 0,
-            // Fast Food State
-            ff: {
-                category: null,
-                products: [], // {id, name, price, qty, customs:[], img}
-                cart: [], // {productId, qty, customs, subtotal}
-                discount: 0,
-                paymentMethod: null,
-                orderNumber: null,
-            },
-            // Vehicle State
-            vh: {
-                model: null,
-                engine: null,
-                extColor: '#FFFFFF',
-                intColor: 'Preto',
-                wheels: '18"',
-                packages: [],
-                orderNumber: null,
-            },
-            // Clinic State
-            cl: {
-                serviceType: null,
-                ticketNumber: null,
-                patientName: '',
-                specialty: '',
-                doctor: '',
-                symptoms: '',
-                exams: [],
-                rating: 0,
-            },
-            // Attractor timeout
+            ff: { category: null, products: [], cart: [], discount: 0, paymentMethod: null, orderNumber: null },
+            vh: { model: null, engine: null, extColor: '#FFFFFF', intColor: 'Preto', wheels: '18"', packages: [], orderNumber: null },
+            cl: { serviceType: null, ticketNumber: null, patientName: '', specialty: '', doctor: '', symptoms: '', exams: [], rating: 0 },
             attractorTimeout: null,
             inactivityTimeout: null,
         };
 
-        const ATTRACTOR_DELAY = 60000; // 60 segundos para tela de descanso
-        const RESET_DELAY = 180000; // 3 minutos para reset
+        const ATTRACTOR_DELAY = 60000;
+        const RESET_DELAY = 180000;
 
         // ============================================================
-        // SCREEN NAVIGATION
+        // NAVIGATION
         // ============================================================
-        function showScreen(screenId) {
-            document.querySelectorAll('.screen').forEach(s => {
-                s.classList.add('exiting');
+        function showScreen(screenId, onActiveCallback) {
+            const active = document.querySelector('.screen.active');
+            if (active) {
+                active.classList.add('exiting');
                 setTimeout(() => {
-                    s.classList.remove('active', 'exiting');
+                    active.classList.remove('active', 'exiting');
                 }, 300);
-            });
+            }
             setTimeout(() => {
                 const screen = document.getElementById(screenId);
-                if (screen) screen.classList.add('active');
-            }, 310);
-            resetInactivityTimer();
+                if (!screen) {
+                    console.error('Tela não encontrada:', screenId);
+                    return;
+                }
+                screen.classList.remove('exiting');
+                screen.classList.add('active');
+                if (typeof onActiveCallback === 'function') onActiveCallback();
+            }, 320);
         }
 
         function startFlow(flowType) {
             AppState.currentFlow = flowType;
             AppState.currentStep = 0;
-            // Reset flow state
+
             if (flowType === 'fastfood') {
-                AppState.ff = { category: null, products: [], cart: [], discount: 0, paymentMethod: null,
-                orderNumber: null };
-                showScreen('screenFastFood');
-                renderFastFoodStep();
+                AppState.ff = { category: null, products: [], cart: [], discount: 0, paymentMethod: null, orderNumber: null };
+                showScreen('screenFastFood', () => renderFastFoodStep());
             } else if (flowType === 'vehicle') {
-                AppState.vh = { model: null, engine: null, extColor: '#FFFFFF', intColor: 'Preto', wheels: '18"',
-                    packages: [], orderNumber: null };
-                showScreen('screenVehicle');
-                renderVehicleStep();
+                AppState.vh = { model: null, engine: null, extColor: '#FFFFFF', intColor: 'Preto', wheels: '18"', packages: [], orderNumber: null };
+                showScreen('screenVehicle', () => renderVehicleStep());
             } else if (flowType === 'clinic') {
-                AppState.cl = { serviceType: null, ticketNumber: null, patientName: '', specialty: '', doctor: '',
-                    symptoms: '', exams: [], rating: 0 };
-                showScreen('screenClinic');
-                renderClinicStep();
+                AppState.cl = { serviceType: null, ticketNumber: null, patientName: '', specialty: '', doctor: '', symptoms: '', exams: [], rating: 0 };
+                showScreen('screenClinic', () => renderClinicStep());
             }
             resetInactivityTimer();
         }
@@ -919,9 +757,7 @@
         function flowBack() {
             if (AppState.currentStep > 0) {
                 AppState.currentStep--;
-                if (AppState.currentFlow === 'fastfood') renderFastFoodStep();
-                else if (AppState.currentFlow === 'vehicle') renderVehicleStep();
-                else if (AppState.currentFlow === 'clinic') renderClinicStep();
+                renderCurrentStep();
             } else {
                 goHome();
             }
@@ -930,22 +766,18 @@
 
         function flowNext() {
             AppState.currentStep++;
-            if (AppState.currentFlow === 'fastfood') renderFastFoodStep();
-            else if (AppState.currentFlow === 'vehicle') renderVehicleStep();
-            else if (AppState.currentFlow === 'clinic') renderClinicStep();
+            renderCurrentStep();
             resetInactivityTimer();
         }
 
-        function goToStep(step) {
-            AppState.currentStep = step;
+        function renderCurrentStep() {
             if (AppState.currentFlow === 'fastfood') renderFastFoodStep();
             else if (AppState.currentFlow === 'vehicle') renderVehicleStep();
             else if (AppState.currentFlow === 'clinic') renderClinicStep();
-            resetInactivityTimer();
         }
 
         // ============================================================
-        // FAST FOOD FLOW
+        // FAST FOOD DATA
         // ============================================================
         const FF_STEPS = ['Categoria', 'Produtos', 'Personalização', 'Carrinho', 'Pagamento', 'Confirmação'];
         const FF_CATEGORIES = [
@@ -959,8 +791,7 @@
         ];
         const FF_PRODUCTS = {
             burgers: [
-                { id: 'b1', name: 'Classic Burger', desc: 'Carne 180g, queijo, alface, tomate', price: 28.90,
-                    img: '🍔' },
+                { id: 'b1', name: 'Classic Burger', desc: 'Carne 180g, queijo, alface, tomate', price: 28.90, img: '🍔' },
                 { id: 'b2', name: 'Bacon Supreme', desc: 'Carne 200g, bacon crispy, cheddar', price: 35.90, img: '🥓' },
                 { id: 'b3', name: 'Duplo Cheddar', desc: 'Duas carnes, cheddar cremoso', price: 39.90, img: '🧀' },
                 { id: 'b4', name: 'Veggie Burger', desc: 'Hambúrguer de grão-de-bico', price: 32.90, img: '🥬' },
@@ -1001,7 +832,17 @@
             { id: 'doubleMeat', name: 'Carne Dupla', price: 12.00, icon: '🥩' },
             { id: 'veggie', name: 'Opção Vegetariana', price: 0, icon: '🥬' },
         ];
+        const PAYMENT_METHODS = [
+            { icon: '💠', name: 'Pix' },
+            { icon: '💳', name: 'Crédito' },
+            { icon: '🏧', name: 'Débito' },
+            { icon: '🍽️', name: 'Vale Refeição' },
+            { icon: '💵', name: 'Dinheiro' },
+        ];
 
+        // ============================================================
+        // FAST FOOD RENDERER
+        // ============================================================
         function renderFastFoodStep() {
             const step = AppState.currentStep;
             const body = document.getElementById('ffBody');
@@ -1009,143 +850,145 @@
             const progress = document.getElementById('ffProgress');
             const breadcrumbs = document.getElementById('ffBreadcrumbs');
 
-            // Update progress & breadcrumbs
+            if (!body || !footer || !progress || !breadcrumbs) {
+                console.error('Elementos do fluxo Fast Food não encontrados');
+                return;
+            }
+
             const totalSteps = FF_STEPS.length;
             progress.style.width = ((step / (totalSteps - 1)) * 100) + '%';
             breadcrumbs.innerHTML = FF_STEPS.map((s, i) => {
-                const cls = i === step ? 'active' : (i < step ? '' : '');
-                return `${i>0?'<span class="sep">›</span>':''}<span class="${cls}">${s}</span>`;
+                const cls = i === step ? 'active' : '';
+                return `${i > 0 ? '<span class="sep">›</span>' : ''}<span class="${cls}">${s}</span>`;
             }).join('');
 
             let bodyHTML = '';
             let footerHTML = '';
 
             switch (step) {
-                case 0: // Categoria
+                case 0:
                     bodyHTML = `<h2 style="margin-bottom:1.5rem;font-size:1.5rem;">Escolha uma categoria</h2>
-                <div class="cards-grid">${FF_CATEGORIES.map(c=>`
-                  <div class="card ripple ${AppState.ff.category===c.id?'selected':''}" onclick="selectFFCategory('${c.id}')">
-                    <span class="card-icon">${c.icon}</span>
-                    <h3>${c.name}</h3><p>${c.desc}</p>
-                  </div>`).join('')}</div>`;
+                        <div class="cards-grid">${FF_CATEGORIES.map(c => `
+                            <div class="card ripple ${AppState.ff.category === c.id ? 'selected' : ''}" onclick="selectFFCategory('${c.id}')">
+                                <span class="card-icon">${c.icon}</span>
+                                <h3>${c.name}</h3>
+                                <p>${c.desc}</p>
+                            </div>`).join('')}</div>`;
                     footerHTML = `<div></div>
-                <button class="btn-primary" ${!AppState.ff.category?'disabled':''} onclick="flowNext()">Próximo →</button>`;
+                        <button class="btn-primary" ${!AppState.ff.category ? 'disabled' : ''} onclick="flowNext()">Próximo →</button>`;
                     break;
 
-                case 1: // Produtos
+                case 1:
                     const prods = FF_PRODUCTS[AppState.ff.category] || [];
-                    bodyHTML = `<h2 style="margin-bottom:1.5rem;font-size:1.5rem;">${FF_CATEGORIES.find(c=>c.id===AppState.ff.category)?.name||'Produtos'}</h2>
-                <div class="cards-grid">${prods.map(p=>`
-                  <div class="product-card">
-                    <div class="product-img">${p.img}${p.badge?`<span class="img-badge">${p.badge}</span>`:''}</div>
-                    <div class="product-info">
-                      <h3>${p.name}</h3><p class="desc">${p.desc}</p>
-                      <div class="price-row">
-                        <span class="price">R$ ${p.price.toFixed(2)}</span>
-                        <button class="btn-add ripple" id="btnAdd_${p.id}" onclick="addToCart('${p.id}','${p.name}',${p.price},'${p.img}')">+ Adicionar</button>
-                      </div>
-                    </div>
-                  </div>`).join('')}</div>`;
+                    bodyHTML = `<h2 style="margin-bottom:1.5rem;font-size:1.5rem;">${FF_CATEGORIES.find(c => c.id === AppState.ff.category)?.name || 'Produtos'}</h2>
+                        <div class="cards-grid">${prods.map(p => `
+                            <div class="product-card">
+                                <div class="product-img">${p.img}${p.badge ? `<span class="img-badge">${p.badge}</span>` : ''}</div>
+                                <div class="product-info">
+                                    <h3>${p.name}</h3>
+                                    <p class="desc">${p.desc}</p>
+                                    <div class="price-row">
+                                        <span class="price">R$ ${p.price.toFixed(2)}</span>
+                                        <button class="btn-add ripple" id="btnAdd_${p.id}" onclick="addToCart('${p.id}','${p.name}',${p.price},'${p.img}')">+ Adicionar</button>
+                                    </div>
+                                </div>
+                            </div>`).join('')}</div>`;
                     footerHTML = `<button class="btn-secondary" onclick="flowBack()">← Voltar</button>
-                <span style="color:var(--text-secondary)">${AppState.ff.cart.length} itens no carrinho</span>
-                <button class="btn-primary" onclick="flowNext()">Ver Carrinho →</button>`;
+                        <span style="color:var(--text-secondary)">${AppState.ff.cart.length} itens no carrinho</span>
+                        <button class="btn-primary" onclick="flowNext()">Ver Carrinho →</button>`;
                     break;
 
-                case 2: // Personalização
+                case 2:
                     const lastItem = AppState.ff.cart[AppState.ff.cart.length - 1];
-                    const customTarget = lastItem || { name: 'Hambúrguer', customs: [] };
-                    if (!customTarget.customs) customTarget.customs = [];
-                    bodyHTML = `<h2 style="margin-bottom:1.5rem;font-size:1.5rem;">🎛️ Personalizar: ${customTarget.name||'Item'}</h2>
-                <div class="custom-options">${BURGER_CUSTOMS.map(c=>`
-                  <div class="custom-option ${customTarget.customs.includes(c.id)?'selected':''}" onclick="toggleCustom('${c.id}')">
-                    <div class="opt-left"><span class="opt-icon">${c.icon}</span>
-                      <div class="opt-info"><h4>${c.name}</h4></div>
-                    </div>
-                    <span class="opt-price">${c.price>0?'+R$ '+c.price.toFixed(2):'Grátis'}</span>
-                    <div class="toggle-switch ${customTarget.customs.includes(c.id)?'active':''}" id="tgl_${c.id}"></div>
-                  </div>`).join('')}</div>
-                <p style="margin-top:1rem;color:var(--text-secondary)">Preço atual: <strong style="color:var(--green);font-size:1.2rem">R$ ${calcCustomPrice().toFixed(2)}</strong></p>`;
+                    const itemName = lastItem ? lastItem.name : 'Item';
+                    const itemCustoms = lastItem ? (lastItem.customs || []) : [];
+                    bodyHTML = `<h2 style="margin-bottom:1.5rem;font-size:1.5rem;">🎛️ Personalizar: ${itemName}</h2>
+                        <div class="custom-options">${BURGER_CUSTOMS.map(c => `
+                            <div class="custom-option ${itemCustoms.includes(c.id) ? 'selected' : ''}" onclick="toggleCustom('${c.id}')">
+                                <div class="opt-left">
+                                    <span class="opt-icon">${c.icon}</span>
+                                    <div class="opt-info"><h4>${c.name}</h4></div>
+                                </div>
+                                <span class="opt-price">${c.price > 0 ? '+R$ ' + c.price.toFixed(2) : 'Grátis'}</span>
+                                <div class="toggle-switch ${itemCustoms.includes(c.id) ? 'active' : ''}" id="tgl_${c.id}"></div>
+                            </div>`).join('')}</div>
+                        <p style="margin-top:1rem;color:var(--text-secondary)">Preço atual: <strong style="color:var(--green);font-size:1.2rem">R$ ${calcCustomPrice().toFixed(2)}</strong></p>`;
                     footerHTML = `<button class="btn-secondary" onclick="flowBack()">← Voltar</button>
-                <button class="btn-primary" onclick="flowNext()">Continuar →</button>`;
+                        <button class="btn-primary" onclick="flowNext()">Continuar →</button>`;
                     break;
 
-                case 3: // Carrinho
+                case 3:
                     const cartTotal = AppState.ff.cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
                     const discAmt = AppState.ff.discount > 0 ? cartTotal * (AppState.ff.discount / 100) : 0;
                     const finalTotal = cartTotal - discAmt;
                     bodyHTML = `<h2 style="margin-bottom:1.5rem;font-size:1.5rem;">🛒 Carrinho</h2>
-                ${AppState.ff.cart.length===0?'<p style="text-align:center;padding:3rem;color:var(--text-secondary)">Carrinho vazio</p>':
-                `<div class="cart-list">${AppState.ff.cart.map((item,i)=>`
-                  <div class="cart-item">
-                    <span class="cart-item-img">${item.img||'🍔'}</span>
-                    <div class="cart-item-info">
-                      <h4>${item.name}</h4>
-                      <span class="customs">${(item.customs||[]).length>0?item.customs.map(c=>BURGER_CUSTOMS.find(bc=>bc.id===c)?.name||c).join(', '):'Sem alterações'}</span>
-                    </div>
-                    <div class="cart-item-qty">
-                      <button class="qty-btn" onclick="changeQty(${i},-1)">−</button>
-                      <span>${item.qty}</span>
-                      <button class="qty-btn" onclick="changeQty(${i},1)">+</button>
-                    </div>
-                    <span class="cart-item-price">R$ ${(item.price*item.qty).toFixed(2)}</span>
-                    <span class="cart-item-remove" onclick="removeFromCart(${i})">🗑️</span>
-                  </div>`).join('')}</div>
-                <div class="cart-summary">
-                  <div class="row"><span>Subtotal</span><span>R$ ${cartTotal.toFixed(2)}</span></div>
-                  ${AppState.ff.discount>0?`<div class="row"><span>Desconto (${AppState.ff.discount}%)</span><span style="color:var(--green)">− R$ ${discAmt.toFixed(2)}</span></div>`:''}
-                  <div class="discount-input">
-                    <input type="text" placeholder="Cupom de desconto" id="discountInput" value="${AppState.ff.discount>0?'PROMO'+AppState.ff.discount:''}">
-                    <button class="ripple" onclick="applyDiscount()">Aplicar</button>
-                  </div>
-                  <div class="row total"><span>Total</span><span style="color:var(--green)">R$ ${finalTotal.toFixed(2)}</span></div>
-                </div>`}</div>`;
+                        ${AppState.ff.cart.length === 0 ? '<p style="text-align:center;padding:3rem;color:var(--text-secondary)">Carrinho vazio</p>' :
+                        `<div class="cart-list">${AppState.ff.cart.map((item, i) => `
+                            <div class="cart-item">
+                                <span class="cart-item-img">${item.img || '🍔'}</span>
+                                <div class="cart-item-info">
+                                    <h4>${item.name}</h4>
+                                    <span class="customs">${(item.customs || []).length > 0 ? item.customs.map(c => BURGER_CUSTOMS.find(bc => bc.id === c)?.name || c).join(', ') : 'Sem alterações'}</span>
+                                </div>
+                                <div class="cart-item-qty">
+                                    <button class="qty-btn" onclick="changeQty(${i},-1)">−</button>
+                                    <span>${item.qty}</span>
+                                    <button class="qty-btn" onclick="changeQty(${i},1)">+</button>
+                                </div>
+                                <span class="cart-item-price">R$ ${(item.price * item.qty).toFixed(2)}</span>
+                                <span class="cart-item-remove" onclick="removeFromCart(${i})">🗑️</span>
+                            </div>`).join('')}</div>
+                        <div class="cart-summary">
+                            <div class="row"><span>Subtotal</span><span>R$ ${cartTotal.toFixed(2)}</span></div>
+                            ${AppState.ff.discount > 0 ? `<div class="row"><span>Desconto (${AppState.ff.discount}%)</span><span style="color:var(--green)">− R$ ${discAmt.toFixed(2)}</span></div>` : ''}
+                            <div class="discount-input">
+                                <input type="text" placeholder="Cupom de desconto" id="discountInput" value="${AppState.ff.discount > 0 ? 'PROMO' + AppState.ff.discount : ''}">
+                                <button class="ripple" onclick="applyDiscount()">Aplicar</button>
+                            </div>
+                            <div class="row total"><span>Total</span><span style="color:var(--green)">R$ ${finalTotal.toFixed(2)}</span></div>
+                        </div>`}</div>`;
                     footerHTML = `<button class="btn-secondary" onclick="flowBack()">← Continuar comprando</button>
-                <button class="btn-primary" ${AppState.ff.cart.length===0?'disabled':''} onclick="flowNext()">Ir para Pagamento →</button>`;
+                        <button class="btn-primary" ${AppState.ff.cart.length === 0 ? 'disabled' : ''} onclick="flowNext()">Ir para Pagamento →</button>`;
                     break;
 
-                case 4: // Pagamento
+                case 4:
                     bodyHTML = `<h2 style="margin-bottom:1.5rem;font-size:1.5rem;">💳 Forma de Pagamento</h2>
-                <div class="payment-methods">
-                  ${['💠 Pix','💳 Crédito','🏧 Débito','🍽️ Vale Refeição','💵 Dinheiro'].map((m,i)=>`
-                    <div class="payment-method ${AppState.ff.paymentMethod===i?'selected':''}" onclick="selectPayment(${i})">
-                      ${m.split(' ')[0]}<span>${m.split(' ').slice(1).join(' ')}</span>
-                    </div>`).join('')}
-                </div>
-                <div id="paymentSimulation" style="margin-top:1.5rem"></div>`;
-                    if (AppState.ff.paymentMethod !== null) {
-                        document.getElementById('ffBody').innerHTML = bodyHTML;
-                        setTimeout(() => simulatePayment(), 100);
-                    }
+                        <div class="payment-methods">${PAYMENT_METHODS.map((m, i) => `
+                            <div class="payment-method ${AppState.ff.paymentMethod === i ? 'selected' : ''}" onclick="selectPayment(${i})">
+                                ${m.icon}<span>${m.name}</span>
+                            </div>`).join('')}</div>
+                        <div id="paymentSimulation" style="margin-top:1.5rem"></div>`;
                     footerHTML = `<button class="btn-secondary" onclick="flowBack()">← Voltar</button>
-                <button class="btn-primary" ${AppState.ff.paymentMethod===null?'disabled':''} onclick="completeFastFoodOrder()">Finalizar Pedido ✓</button>`;
+                        <button class="btn-primary" ${AppState.ff.paymentMethod === null ? 'disabled' : ''} onclick="completeFastFoodOrder()">Finalizar Pedido ✓</button>`;
                     break;
 
-                case 5: // Confirmação
+                case 5:
                     AppState.ff.orderNumber = 'FF-' + Math.floor(Math.random() * 9000 + 1000);
                     const waitTime = Math.floor(Math.random() * 15 + 5);
                     bodyHTML = `
-                <div style="text-align:center;padding:2rem">
-                  <div style="font-size:6rem;animation:attractorPulse 1.5s ease infinite">🎉</div>
-                  <h2 style="font-size:2rem;margin:1rem 0">Pedido Confirmado!</h2>
-                  <div class="ticket" style="margin:1.5rem auto">
-                    <p style="color:var(--text-secondary);font-size:0.9rem">NÚMERO DO PEDIDO</p>
-                    <div class="ticket-number">${AppState.ff.orderNumber}</div>
-                    <p style="margin-top:0.75rem">⏱️ Tempo estimado: <strong>${waitTime} minutos</strong></p>
-                  </div>
-                  <div class="qr-code" style="margin:1.5rem auto">
-                    ${Array.from({length:25},(_,i)=>`<div class="qr-dot${Math.random()>0.45?' empty':''}"></div>`).join('')}
-                  </div>
-                  <p style="color:var(--text-secondary);margin-bottom:1.5rem">Mostre este QR Code no balcão</p>
-                  <button class="btn-primary" onclick="newFastFoodOrder()" style="font-size:1.1rem;padding:1rem 3rem">🔄 Novo Pedido</button>
-                </div>`;
+                        <div style="text-align:center;padding:2rem">
+                            <div style="font-size:6rem;animation:attractorPulse 1.5s ease infinite">🎉</div>
+                            <h2 style="font-size:2rem;margin:1rem 0">Pedido Confirmado!</h2>
+                            <div class="ticket" style="margin:1.5rem auto">
+                                <p style="color:var(--text-secondary);font-size:0.9rem">NÚMERO DO PEDIDO</p>
+                                <div class="ticket-number">${AppState.ff.orderNumber}</div>
+                                <p style="margin-top:0.75rem">⏱️ Tempo estimado: <strong>${waitTime} minutos</strong></p>
+                            </div>
+                            <div class="qr-code" style="margin:1.5rem auto">${Array.from({length:25}, (_, i) => `<div class="qr-dot${Math.random() > 0.45 ? ' empty' : ''}"></div>`).join('')}</div>
+                            <p style="color:var(--text-secondary);margin-bottom:1.5rem">Mostre este QR Code no balcão</p>
+                            <button class="btn-primary" onclick="newFastFoodOrder()" style="font-size:1.1rem;padding:1rem 3rem">🔄 Novo Pedido</button>
+                        </div>`;
                     footerHTML = '';
-                    // Lançar confetes!
                     setTimeout(() => launchConfetti(), 300);
                     break;
             }
 
             body.innerHTML = bodyHTML;
             footer.innerHTML = footerHTML;
+
+            if (step === 4 && AppState.ff.paymentMethod !== null) {
+                setTimeout(() => simulatePayment(), 100);
+            }
         }
 
         function selectFFCategory(catId) {
@@ -1155,13 +998,12 @@
         }
 
         function addToCart(id, name, price, img) {
-            const existing = AppState.ff.cart.find(item => item.id === id && !item.customs.length);
+            const existing = AppState.ff.cart.find(item => item.id === id && (!item.customs || item.customs.length === 0));
             if (existing) {
                 existing.qty++;
             } else {
-                AppState.ff.cart.push({ id, name, price, img, qty: 1, customs: [] });
+                AppState.ff.cart.push({ id, name, price, basePrice: price, img, qty: 1, customs: [] });
             }
-            // Animação no botão
             const btn = document.getElementById('btnAdd_' + id);
             if (btn) {
                 btn.textContent = '✓ Adicionado';
@@ -1183,7 +1025,7 @@
             const idx = lastItem.customs.indexOf(customId);
             if (idx >= 0) lastItem.customs.splice(idx, 1);
             else lastItem.customs.push(customId);
-            // Update price
+
             const basePrice = lastItem.basePrice || lastItem.price;
             lastItem.basePrice = basePrice;
             const customsTotal = lastItem.customs.reduce((sum, cid) => {
@@ -1191,19 +1033,14 @@
                 return sum + (c ? c.price : 0);
             }, 0);
             lastItem.price = basePrice + customsTotal;
+
             renderFastFoodStep();
             playClickFeedback();
         }
 
         function calcCustomPrice() {
             const lastItem = AppState.ff.cart[AppState.ff.cart.length - 1];
-            if (!lastItem) return 0;
-            const base = lastItem.basePrice || lastItem.price;
-            const customsTotal = (lastItem.customs || []).reduce((sum, cid) => {
-                const c = BURGER_CUSTOMS.find(bc => bc.id === cid);
-                return sum + (c ? c.price : 0);
-            }, 0);
-            return base + customsTotal;
+            return lastItem ? lastItem.price : 0;
         }
 
         function changeQty(index, delta) {
@@ -1220,14 +1057,12 @@
 
         function applyDiscount() {
             const input = document.getElementById('discountInput');
-            const val = input.value.toUpperCase();
-            if (val === 'PROMO10') { AppState.ff.discount = 10;
-                showToast('Cupom PROMO10 aplicado! 10% OFF', 'success'); } else if (val === 'PROMO20') { AppState.ff
-                    .discount = 20;
-                showToast('Cupom PROMO20 aplicado! 20% OFF', 'success'); } else if (val === 'PROMO50') { AppState.ff
-                    .discount = 50;
-                showToast('Cupom PROMO50 aplicado! 50% OFF', 'success'); } else { AppState.ff.discount = 0;
-                showToast('Cupom inválido', 'error'); }
+            const val = input ? input.value.toUpperCase() : '';
+            if (val === 'PROMO10') AppState.ff.discount = 10;
+            else if (val === 'PROMO20') AppState.ff.discount = 20;
+            else if (val === 'PROMO50') AppState.ff.discount = 50;
+            else AppState.ff.discount = 0;
+            showToast(AppState.ff.discount > 0 ? `Cupom ${val} aplicado!` : 'Cupom inválido', AppState.ff.discount > 0 ? 'success' : 'error');
             renderFastFoodStep();
         }
 
@@ -1240,45 +1075,46 @@
         function simulatePayment() {
             const simDiv = document.getElementById('paymentSimulation');
             if (!simDiv) return;
-            if (AppState.ff.paymentMethod === 1 || AppState.ff.paymentMethod === 2) { // Cartão
+            const method = AppState.ff.paymentMethod;
+            if (method === 1 || method === 2) {
                 simDiv.innerHTML = `
-              <div class="card-simulation">
-                <div class="card-machine">💳</div>
-                <p style="font-weight:600;margin-top:0.5rem">Inserindo cartão...</p>
-                <div class="progress-bar-container" style="margin-top:1rem;max-width:300px;margin-left:auto;margin-right:auto">
-                  <div class="progress-bar-fill" style="width:0%;animation:fillBar 2s ease forwards"></div>
-                </div>
-              </div>`;
+                    <div class="card-simulation">
+                        <div class="card-machine">💳</div>
+                        <p style="font-weight:600;margin-top:0.5rem">Inserindo cartão...</p>
+                        <div class="progress-bar-container" style="margin-top:1rem;max-width:300px;margin-left:auto;margin-right:auto">
+                            <div class="progress-bar-fill" style="width:0%;animation:fillBar 2s ease forwards"></div>
+                        </div>
+                    </div>`;
                 setTimeout(() => {
                     simDiv.innerHTML = `
-                <div class="card-simulation">
-                  <div style="font-size:3rem">🔐</div>
-                  <p style="font-weight:600;margin-top:0.5rem">Senha verificada</p>
-                  <p style="color:var(--green);font-weight:700;font-size:1.2rem;margin-top:0.5rem">✅ Pagamento Autorizado!</p>
-                </div>`;
+                        <div class="card-simulation">
+                            <div style="font-size:3rem">🔐</div>
+                            <p style="font-weight:600;margin-top:0.5rem">Senha verificada</p>
+                            <p style="color:var(--green);font-weight:700;font-size:1.2rem;margin-top:0.5rem">✅ Pagamento Autorizado!</p>
+                        </div>`;
                 }, 2200);
-            } else if (AppState.ff.paymentMethod === 0) { // Pix
+            } else if (method === 0) {
                 simDiv.innerHTML = `
-              <div class="card-simulation">
-                <div style="font-size:4rem">📱</div>
-                <p style="font-weight:600;margin-top:0.5rem">QR Code Pix gerado</p>
-                <div class="qr-code" style="margin:1rem auto">${Array.from({length:25},(_,i)=>`<div class="qr-dot${Math.random()>0.4?' empty':''}"></div>`).join('')}</div>
-                <p style="color:var(--green);font-weight:700;font-size:1.1rem">Pagamento via Pix aprovado! ✅</p>
-              </div>`;
-            } else if (AppState.ff.paymentMethod === 4) { // Dinheiro
+                    <div class="card-simulation">
+                        <div style="font-size:4rem">📱</div>
+                        <p style="font-weight:600;margin-top:0.5rem">QR Code Pix gerado</p>
+                        <div class="qr-code" style="margin:1rem auto">${Array.from({length:25}, (_, i) => `<div class="qr-dot${Math.random() > 0.4 ? ' empty' : ''}"></div>`).join('')}</div>
+                        <p style="color:var(--green);font-weight:700;font-size:1.1rem">Pagamento via Pix aprovado! ✅</p>
+                    </div>`;
+            } else if (method === 4) {
                 simDiv.innerHTML = `
-              <div class="card-simulation">
-                <div style="font-size:4rem">💵</div>
-                <p style="font-weight:600;margin-top:0.5rem">Pague no caixa</p>
-                <p style="color:var(--text-secondary)">Apresente o número do pedido</p>
-              </div>`;
-            } else if (AppState.ff.paymentMethod === 3) { // VR
+                    <div class="card-simulation">
+                        <div style="font-size:4rem">💵</div>
+                        <p style="font-weight:600;margin-top:0.5rem">Pague no caixa</p>
+                        <p style="color:var(--text-secondary)">Apresente o número do pedido</p>
+                    </div>`;
+            } else if (method === 3) {
                 simDiv.innerHTML = `
-              <div class="card-simulation">
-                <div class="card-machine">💳</div>
-                <p style="font-weight:600;margin-top:0.5rem">Vale Refeição</p>
-                <p style="color:var(--green);font-weight:700;font-size:1.1rem;margin-top:0.5rem">✅ Autorizado!</p>
-              </div>`;
+                    <div class="card-simulation">
+                        <div class="card-machine">💳</div>
+                        <p style="font-weight:600;margin-top:0.5rem">Vale Refeição</p>
+                        <p style="color:var(--green);font-weight:700;font-size:1.1rem;margin-top:0.5rem">✅ Autorizado!</p>
+                    </div>`;
             }
         }
 
@@ -1293,7 +1129,7 @@
         }
 
         // ============================================================
-        // VEHICLE FLOW
+        // VEHICLE DATA
         // ============================================================
         const VH_STEPS = ['Modelo', 'Motor', 'Cor Externa', 'Cor Interna', 'Rodas', 'Pacotes', 'Resumo', 'Produção'];
         const VH_MODELS = [
@@ -1350,6 +1186,9 @@
             return price;
         }
 
+        // ============================================================
+        // VEHICLE RENDERER
+        // ============================================================
         function renderVehicleStep() {
             const step = AppState.currentStep;
             const body = document.getElementById('vhBody');
@@ -1357,148 +1196,150 @@
             const progress = document.getElementById('vhProgress');
             const breadcrumbs = document.getElementById('vhBreadcrumbs');
 
+            if (!body || !footer || !progress || !breadcrumbs) return;
+
             const totalSteps = VH_STEPS.length;
             progress.style.width = ((step / (totalSteps - 1)) * 100) + '%';
             breadcrumbs.innerHTML = VH_STEPS.map((s, i) => {
-                const cls = i === step ? 'active' : (i < step ? '' : '');
-                return `${i>0?'<span class="sep">›</span>':''}<span class="${cls}">${s}</span>`;
+                const cls = i === step ? 'active' : '';
+                return `${i > 0 ? '<span class="sep">›</span>' : ''}<span class="${cls}">${s}</span>`;
             }).join('');
 
             let bodyHTML = '';
             let footerHTML = '';
 
             switch (step) {
-                case 0: // Modelo
+                case 0:
                     bodyHTML = `<h2 style="margin-bottom:1.5rem;font-size:1.5rem;">Escolha o modelo</h2>
-                <div class="cards-grid">${VH_MODELS.map(m=>`
-                  <div class="card ripple ${AppState.vh.model===m.id?'selected':''}" onclick="selectVHModel('${m.id}')">
-                    <span class="card-icon">${m.icon}</span><h3>${m.name}</h3><p>${m.desc}</p>
-                    <div class="card-price">A partir de R$ ${m.basePrice.toLocaleString('pt-BR')}</div>
-                  </div>`).join('')}</div>`;
-                    footerHTML = `<div></div><button class="btn-primary" ${!AppState.vh.model?'disabled':''} onclick="flowNext()">Próximo →</button>`;
+                        <div class="cards-grid">${VH_MODELS.map(m => `
+                            <div class="card ripple ${AppState.vh.model === m.id ? 'selected' : ''}" onclick="selectVHModel('${m.id}')">
+                                <span class="card-icon">${m.icon}</span><h3>${m.name}</h3><p>${m.desc}</p>
+                                <div class="card-price">A partir de R$ ${m.basePrice.toLocaleString('pt-BR')}</div>
+                            </div>`).join('')}</div>`;
+                    footerHTML = `<div></div><button class="btn-primary" ${!AppState.vh.model ? 'disabled' : ''} onclick="flowNext()">Próximo →</button>`;
                     break;
 
-                case 1: // Motor
+                case 1:
                     bodyHTML = `<h2 style="margin-bottom:1.5rem;font-size:1.5rem;">Escolha a motorização</h2>
-                <div class="cards-grid">${VH_ENGINES.map(e=>`
-                  <div class="card ripple ${AppState.vh.engine===e.id?'selected':''}" onclick="selectVHEngine('${e.id}')">
-                    <span class="card-icon">⚡</span><h3>${e.name}</h3><p>${e.desc}</p>
-                    <div class="card-price">${e.price>0?'+ R$ '+e.price.toLocaleString('pt-BR'):'Incluso'}</div>
-                  </div>`).join('')}</div>`;
+                        <div class="cards-grid">${VH_ENGINES.map(e => `
+                            <div class="card ripple ${AppState.vh.engine === e.id ? 'selected' : ''}" onclick="selectVHEngine('${e.id}')">
+                                <span class="card-icon">⚡</span><h3>${e.name}</h3><p>${e.desc}</p>
+                                <div class="card-price">${e.price > 0 ? '+ R$ ' + e.price.toLocaleString('pt-BR') : 'Incluso'}</div>
+                            </div>`).join('')}</div>`;
                     footerHTML = `<button class="btn-secondary" onclick="flowBack()">← Voltar</button>
-                <button class="btn-primary" ${!AppState.vh.engine?'disabled':''} onclick="flowNext()">Próximo →</button>`;
+                        <button class="btn-primary" ${!AppState.vh.engine ? 'disabled' : ''} onclick="flowNext()">Próximo →</button>`;
                     break;
 
-                case 2: // Cor Externa
+                case 2:
                     bodyHTML = `<h2 style="margin-bottom:1.5rem;font-size:1.5rem;">Cor Externa</h2>
-                <div class="vehicle-preview">
-                  <span class="vehicle-svg" style="color:${AppState.vh.extColor};filter:drop-shadow(0 10px 30px ${AppState.vh.extColor}44)">🚗</span>
-                  <p style="margin-top:0.75rem;font-weight:600;font-size:1.1rem">${VH_COLORS.find(c=>c.hex===AppState.vh.extColor)?.name||'Branco'}</p>
-                </div>
-                <div class="color-swatches">${VH_COLORS.map(c=>`
-                  <div class="color-swatch ${AppState.vh.extColor===c.hex?'selected':''}" style="background:${c.hex}${c.hex==='#FFFFFF'?';border:2px solid #E2E8F0':''}" onclick="selectVHColor('${c.hex}')" title="${c.name}">
-                    <span class="check">✓</span>
-                  </div>`).join('')}</div>`;
+                        <div class="vehicle-preview">
+                            <span class="vehicle-svg" style="color:${AppState.vh.extColor};filter:drop-shadow(0 10px 30px ${AppState.vh.extColor}44)">🚗</span>
+                            <p style="margin-top:0.75rem;font-weight:600;font-size:1.1rem">${VH_COLORS.find(c => c.hex === AppState.vh.extColor)?.name || 'Branco'}</p>
+                        </div>
+                        <div class="color-swatches">${VH_COLORS.map(c => `
+                            <div class="color-swatch ${AppState.vh.extColor === c.hex ? 'selected' : ''}" style="background:${c.hex}${c.hex === '#FFFFFF' ? ';border:2px solid #E2E8F0' : ''}" onclick="selectVHColor('${c.hex}')" title="${c.name}">
+                                <span class="check">✓</span>
+                            </div>`).join('')}</div>`;
                     footerHTML = `<button class="btn-secondary" onclick="flowBack()">← Voltar</button>
-                <button class="btn-primary" onclick="flowNext()">Próximo →</button>`;
+                        <button class="btn-primary" onclick="flowNext()">Próximo →</button>`;
                     break;
 
-                case 3: // Cor Interna
+                case 3:
                     bodyHTML = `<h2 style="margin-bottom:1.5rem;font-size:1.5rem;">Cor Interna</h2>
-                <div class="vehicle-preview">
-                  <span class="vehicle-svg" style="color:${AppState.vh.extColor}">🚗</span>
-                  <div style="width:200px;height:20px;background:${VH_INTERIORS.find(i=>i.name===AppState.vh.intColor)?.color||'#1A1A1A'};margin:0.5rem auto;border-radius:99px"></div>
-                  <p style="font-weight:600;font-size:1.1rem">${AppState.vh.intColor}</p>
-                </div>
-                <div class="cards-grid">${VH_INTERIORS.map(i=>`
-                  <div class="card ripple ${AppState.vh.intColor===i.name?'selected':''}" onclick="selectVHInterior('${i.name}')">
-                    <div style="width:60px;height:60px;background:${i.color};border-radius:50%;margin:0 auto 0.75rem;border:2px solid var(--gray-200)"></div>
-                    <h3>${i.name}</h3>
-                    <div class="card-price">${i.price>0?'+ R$ '+i.price.toLocaleString('pt-BR'):'Incluso'}</div>
-                  </div>`).join('')}</div>`;
+                        <div class="vehicle-preview">
+                            <span class="vehicle-svg" style="color:${AppState.vh.extColor}">🚗</span>
+                            <div style="width:200px;height:20px;background:${VH_INTERIORS.find(i => i.name === AppState.vh.intColor)?.color || '#1A1A1A'};margin:0.5rem auto;border-radius:99px"></div>
+                            <p style="font-weight:600;font-size:1.1rem">${AppState.vh.intColor}</p>
+                        </div>
+                        <div class="cards-grid">${VH_INTERIORS.map(i => `
+                            <div class="card ripple ${AppState.vh.intColor === i.name ? 'selected' : ''}" onclick="selectVHInterior('${i.name}')">
+                                <div style="width:60px;height:60px;background:${i.color};border-radius:50%;margin:0 auto 0.75rem;border:2px solid var(--gray-200)"></div>
+                                <h3>${i.name}</h3>
+                                <div class="card-price">${i.price > 0 ? '+ R$ ' + i.price.toLocaleString('pt-BR') : 'Incluso'}</div>
+                            </div>`).join('')}</div>`;
                     footerHTML = `<button class="btn-secondary" onclick="flowBack()">← Voltar</button>
-                <button class="btn-primary" onclick="flowNext()">Próximo →</button>`;
+                        <button class="btn-primary" onclick="flowNext()">Próximo →</button>`;
                     break;
 
-                case 4: // Rodas
+                case 4:
                     bodyHTML = `<h2 style="margin-bottom:1.5rem;font-size:1.5rem;">Escolha as Rodas</h2>
-                <div class="vehicle-preview">
-                  <span class="vehicle-svg" style="color:${AppState.vh.extColor}">🚗</span>
-                  <p style="font-weight:600;font-size:1.1rem;margin-top:0.5rem">Rodas ${AppState.vh.wheels}</p>
-                </div>
-                <div class="cards-grid">${VH_WHEELS_OPTIONS.map(w=>`
-                  <div class="card ripple ${AppState.vh.wheels===w?'selected':''}" onclick="selectVHWheels('${w}')">
-                    <span class="card-icon">🛞</span><h3>Rodas ${w}</h3>
-                    <div class="card-price">${VH_WHEELS_PRICES[w]>0?'+ R$ '+VH_WHEELS_PRICES[w].toLocaleString('pt-BR'):'Incluso'}</div>
-                  </div>`).join('')}</div>`;
+                        <div class="vehicle-preview">
+                            <span class="vehicle-svg" style="color:${AppState.vh.extColor}">🚗</span>
+                            <p style="font-weight:600;font-size:1.1rem;margin-top:0.5rem">Rodas ${AppState.vh.wheels}</p>
+                        </div>
+                        <div class="cards-grid">${VH_WHEELS_OPTIONS.map(w => `
+                            <div class="card ripple ${AppState.vh.wheels === w ? 'selected' : ''}" onclick="selectVHWheels('${w}')">
+                                <span class="card-icon">🛞</span><h3>Rodas ${w}</h3>
+                                <div class="card-price">${VH_WHEELS_PRICES[w] > 0 ? '+ R$ ' + VH_WHEELS_PRICES[w].toLocaleString('pt-BR') : 'Incluso'}</div>
+                            </div>`).join('')}</div>`;
                     footerHTML = `<button class="btn-secondary" onclick="flowBack()">← Voltar</button>
-                <button class="btn-primary" onclick="flowNext()">Próximo →</button>`;
+                        <button class="btn-primary" onclick="flowNext()">Próximo →</button>`;
                     break;
 
-                case 5: // Pacotes
+                case 5:
                     bodyHTML = `<h2 style="margin-bottom:1.5rem;font-size:1.5rem;">Pacotes e Acessórios</h2>
-                <p style="margin-bottom:1rem;color:var(--text-secondary)">Preço atual: <strong style="color:var(--green);font-size:1.2rem">R$ ${calcVehiclePrice().toLocaleString('pt-BR')}</strong></p>
-                <div class="cards-grid">${VH_PACKAGES.map(p=>`
-                  <div class="card ripple ${AppState.vh.packages.includes(p.id)?'selected':''}" onclick="toggleVHPackage('${p.id}')">
-                    <span class="card-icon">${p.icon}</span><h3>${p.name}</h3>
-                    <div class="card-price">+ R$ ${p.price.toLocaleString('pt-BR')}</div>
-                  </div>`).join('')}</div>`;
+                        <p style="margin-bottom:1rem;color:var(--text-secondary)">Preço atual: <strong style="color:var(--green);font-size:1.2rem">R$ ${calcVehiclePrice().toLocaleString('pt-BR')}</strong></p>
+                        <div class="cards-grid">${VH_PACKAGES.map(p => `
+                            <div class="card ripple ${AppState.vh.packages.includes(p.id) ? 'selected' : ''}" onclick="toggleVHPackage('${p.id}')">
+                                <span class="card-icon">${p.icon}</span><h3>${p.name}</h3>
+                                <div class="card-price">+ R$ ${p.price.toLocaleString('pt-BR')}</div>
+                            </div>`).join('')}</div>`;
                     footerHTML = `<button class="btn-secondary" onclick="flowBack()">← Voltar</button>
-                <button class="btn-primary" onclick="flowNext()">Ver Resumo →</button>`;
+                        <button class="btn-primary" onclick="flowNext()">Ver Resumo →</button>`;
                     break;
 
-                case 6: // Resumo
+                case 6:
                     const totalPrice = calcVehiclePrice();
                     const deliveryDays = Math.floor(Math.random() * 60 + 30);
                     bodyHTML = `<h2 style="margin-bottom:1.5rem;font-size:1.5rem;">📋 Resumo do Pedido</h2>
-                <div class="vehicle-preview">
-                  <span class="vehicle-svg" style="color:${AppState.vh.extColor}">🚗</span>
-                </div>
-                <div style="max-width:600px;margin:0 auto">
-                  ${[
-                    ['Modelo',VH_MODELS.find(m=>m.id===AppState.vh.model)?.name||'—'],
-                    ['Motorização',VH_ENGINES.find(e=>e.id===AppState.vh.engine)?.name||'—'],
-                    ['Cor Externa',VH_COLORS.find(c=>c.hex===AppState.vh.extColor)?.name||'—'],
-                    ['Cor Interna',AppState.vh.intColor],
-                    ['Rodas',AppState.vh.wheels],
-                    ['Pacotes',AppState.vh.packages.map(pid=>VH_PACKAGES.find(p=>p.id===pid)?.name).filter(Boolean).join(', ')||'Nenhum'],
-                  ].map(([label,val])=>`
-                    <div style="display:flex;justify-content:space-between;padding:0.75rem 0;border-bottom:1px solid var(--gray-200)">
-                      <span style="color:var(--text-secondary)">${label}</span><span style="font-weight:600">${val}</span>
-                    </div>`).join('')}
-                  <div style="display:flex;justify-content:space-between;padding:1rem 0;font-size:1.3rem;font-weight:800;margin-top:0.5rem">
-                    <span>Preço Total</span><span style="color:var(--green)">R$ ${totalPrice.toLocaleString('pt-BR')}</span>
-                  </div>
-                  <p style="text-align:center;color:var(--text-secondary);margin-top:0.5rem">⏱️ Prazo estimado: <strong>${deliveryDays} dias</strong></p>
-                </div>`;
+                        <div class="vehicle-preview">
+                            <span class="vehicle-svg" style="color:${AppState.vh.extColor}">🚗</span>
+                        </div>
+                        <div style="max-width:600px;margin:0 auto">
+                            ${[
+                                ['Modelo', VH_MODELS.find(m => m.id === AppState.vh.model)?.name || '—'],
+                                ['Motorização', VH_ENGINES.find(e => e.id === AppState.vh.engine)?.name || '—'],
+                                ['Cor Externa', VH_COLORS.find(c => c.hex === AppState.vh.extColor)?.name || '—'],
+                                ['Cor Interna', AppState.vh.intColor],
+                                ['Rodas', AppState.vh.wheels],
+                                ['Pacotes', AppState.vh.packages.map(pid => VH_PACKAGES.find(p => p.id === pid)?.name).filter(Boolean).join(', ') || 'Nenhum'],
+                            ].map(([label, val]) => `
+                                <div style="display:flex;justify-content:space-between;padding:0.75rem 0;border-bottom:1px solid var(--gray-200)">
+                                    <span style="color:var(--text-secondary)">${label}</span><span style="font-weight:600">${val}</span>
+                                </div>`).join('')}
+                            <div style="display:flex;justify-content:space-between;padding:1rem 0;font-size:1.3rem;font-weight:800;margin-top:0.5rem">
+                                <span>Preço Total</span><span style="color:var(--green)">R$ ${totalPrice.toLocaleString('pt-BR')}</span>
+                            </div>
+                            <p style="text-align:center;color:var(--text-secondary);margin-top:0.5rem">⏱️ Prazo estimado: <strong>${deliveryDays} dias</strong></p>
+                        </div>`;
                     footerHTML = `<button class="btn-secondary" onclick="flowBack()">← Voltar</button>
-                <button class="btn-primary" onclick="sendToProduction()">🏭 Enviar para Produção</button>`;
+                        <button class="btn-primary" onclick="sendToProduction()">🏭 Enviar para Produção</button>`;
                     break;
 
-                case 7: // Produção
+                case 7:
                     AppState.vh.orderNumber = 'VH-' + Math.floor(Math.random() * 90000 + 10000);
                     bodyHTML = `
-                <div class="factory-scene">
-                  <h2 style="font-size:1.5rem;margin-bottom:1.5rem">🏭 Linha de Produção</h2>
-                  <div class="factory-line" id="factoryLine">
-                    <span class="factory-step">🔩</span><span>→</span>
-                    <span class="factory-step">⚙️</span><span>→</span>
-                    <span class="factory-step">🔧</span><span>→</span>
-                    <span class="factory-step">🛠️</span><span>→</span>
-                    <span class="factory-step">🚗</span><span>→</span>
-                    <span class="factory-step">✅</span>
-                  </div>
-                  <div class="progress-bar-container" style="margin:1.5rem auto;max-width:400px">
-                    <div class="progress-bar-fill" id="productionProgress" style="width:0%"></div>
-                  </div>
-                  <p style="font-weight:600;font-size:1.1rem" id="productionStatus">Iniciando produção...</p>
-                  <div style="margin-top:1.5rem">
-                    <p style="color:var(--text-secondary)">Número do Pedido</p>
-                    <div class="ticket-number">${AppState.vh.orderNumber}</div>
-                  </div>
-                  <p style="margin-top:1rem;color:var(--green);font-weight:700;font-size:1.1rem">✅ Seu veículo entrou em produção!</p>
-                  <button class="btn-primary" onclick="newVehicleOrder()" style="margin-top:1.5rem">🔄 Novo Veículo</button>
-                </div>`;
+                        <div class="factory-scene">
+                            <h2 style="font-size:1.5rem;margin-bottom:1.5rem">🏭 Linha de Produção</h2>
+                            <div class="factory-line" id="factoryLine">
+                                <span class="factory-step">🔩</span><span>→</span>
+                                <span class="factory-step">⚙️</span><span>→</span>
+                                <span class="factory-step">🔧</span><span>→</span>
+                                <span class="factory-step">🛠️</span><span>→</span>
+                                <span class="factory-step">🚗</span><span>→</span>
+                                <span class="factory-step">✅</span>
+                            </div>
+                            <div class="progress-bar-container" style="margin:1.5rem auto;max-width:400px">
+                                <div class="progress-bar-fill" id="productionProgress" style="width:0%"></div>
+                            </div>
+                            <p style="font-weight:600;font-size:1.1rem" id="productionStatus">Iniciando produção...</p>
+                            <div style="margin-top:1.5rem">
+                                <p style="color:var(--text-secondary)">Número do Pedido</p>
+                                <div class="ticket-number">${AppState.vh.orderNumber}</div>
+                            </div>
+                            <p style="margin-top:1rem;color:var(--green);font-weight:700;font-size:1.1rem">✅ Seu veículo entrou em produção!</p>
+                            <button class="btn-primary" onclick="newVehicleOrder()" style="margin-top:1.5rem">🔄 Novo Veículo</button>
+                        </div>`;
                     footerHTML = '';
                     setTimeout(() => animateProduction(), 400);
                     setTimeout(() => launchConfetti(), 2500);
@@ -1509,26 +1350,11 @@
             footer.innerHTML = footerHTML;
         }
 
-        function selectVHModel(id) { AppState.vh.model = id;
-            renderVehicleStep();
-            playClickFeedback(); }
-
-        function selectVHEngine(id) { AppState.vh.engine = id;
-            renderVehicleStep();
-            playClickFeedback(); }
-
-        function selectVHColor(hex) { AppState.vh.extColor = hex;
-            renderVehicleStep();
-            playClickFeedback(); }
-
-        function selectVHInterior(name) { AppState.vh.intColor = name;
-            renderVehicleStep();
-            playClickFeedback(); }
-
-        function selectVHWheels(w) { AppState.vh.wheels = w;
-            renderVehicleStep();
-            playClickFeedback(); }
-
+        function selectVHModel(id) { AppState.vh.model = id; renderVehicleStep(); playClickFeedback(); }
+        function selectVHEngine(id) { AppState.vh.engine = id; renderVehicleStep(); playClickFeedback(); }
+        function selectVHColor(hex) { AppState.vh.extColor = hex; renderVehicleStep(); playClickFeedback(); }
+        function selectVHInterior(name) { AppState.vh.intColor = name; renderVehicleStep(); playClickFeedback(); }
+        function selectVHWheels(w) { AppState.vh.wheels = w; renderVehicleStep(); playClickFeedback(); }
         function toggleVHPackage(id) {
             const idx = AppState.vh.packages.indexOf(id);
             if (idx >= 0) AppState.vh.packages.splice(idx, 1);
@@ -1536,25 +1362,17 @@
             renderVehicleStep();
             playClickFeedback();
         }
-
-        function sendToProduction() {
-            flowNext();
-        }
-
+        function sendToProduction() { flowNext(); }
         function newVehicleOrder() {
-            AppState.vh = { model: null, engine: null, extColor: '#FFFFFF', intColor: 'Preto', wheels: '18"', packages: [],
-                orderNumber: null };
+            AppState.vh = { model: null, engine: null, extColor: '#FFFFFF', intColor: 'Preto', wheels: '18"', packages: [], orderNumber: null };
             AppState.currentStep = 0;
             renderVehicleStep();
         }
-
         function animateProduction() {
             const steps = document.querySelectorAll('#factoryLine .factory-step');
             const progressBar = document.getElementById('productionProgress');
             const statusText = document.getElementById('productionStatus');
-            const messages = ['Preparando chassis...', 'Montando motor...', 'Instalando painéis...', 'Pintura...',
-                'Acabamento final...', 'Inspeção de qualidade...'
-            ];
+            const messages = ['Preparando chassis...', 'Montando motor...', 'Instalando painéis...', 'Pintura...', 'Acabamento final...', 'Inspeção de qualidade...'];
             let i = 0;
             const interval = setInterval(() => {
                 if (i < steps.length) {
@@ -1570,10 +1388,9 @@
         }
 
         // ============================================================
-        // CLINIC FLOW
+        // CLINIC DATA
         // ============================================================
-        const CL_STEPS = ['Atendimento', 'Senha', 'Sala de Espera', 'Chamada', 'Cadastro', 'Exames', 'Resultado',
-        'Avaliação'];
+        const CL_STEPS = ['Atendimento', 'Senha', 'Sala de Espera', 'Chamada', 'Cadastro', 'Exames', 'Resultado', 'Avaliação'];
         const CL_SERVICES = [
             { id: 'consulta', name: 'Consulta', icon: '🩺', desc: 'Consulta médica geral' },
             { id: 'exame', name: 'Exame', icon: '🔬', desc: 'Realizar exames' },
@@ -1592,6 +1409,9 @@
             { id: 'labExams', name: 'Exames Laboratoriais', icon: '🧪' },
         ];
 
+        // ============================================================
+        // CLINIC RENDERER
+        // ============================================================
         function renderClinicStep() {
             const step = AppState.currentStep;
             const body = document.getElementById('clBody');
@@ -1599,154 +1419,156 @@
             const progress = document.getElementById('clProgress');
             const breadcrumbs = document.getElementById('clBreadcrumbs');
 
+            if (!body || !footer || !progress || !breadcrumbs) return;
+
             const totalSteps = CL_STEPS.length;
             progress.style.width = ((step / (totalSteps - 1)) * 100) + '%';
             breadcrumbs.innerHTML = CL_STEPS.map((s, i) => {
-                const cls = i === step ? 'active' : (i < step ? '' : '');
-                return `${i>0?'<span class="sep">›</span>':''}<span class="${cls}">${s}</span>`;
+                const cls = i === step ? 'active' : '';
+                return `${i > 0 ? '<span class="sep">›</span>' : ''}<span class="${cls}">${s}</span>`;
             }).join('');
 
             let bodyHTML = '';
             let footerHTML = '';
 
             switch (step) {
-                case 0: // Escolha do serviço
+                case 0:
                     bodyHTML = `<h2 style="margin-bottom:1.5rem;font-size:1.5rem;">Selecione o atendimento</h2>
-                <div class="cards-grid">${CL_SERVICES.map(s=>`
-                  <div class="card ripple ${AppState.cl.serviceType===s.id?'selected':''}" onclick="selectCLService('${s.id}')">
-                    <span class="card-icon">${s.icon}</span><h3>${s.name}</h3><p>${s.desc}</p>
-                  </div>`).join('')}</div>`;
-                    footerHTML = `<div></div><button class="btn-primary" ${!AppState.cl.serviceType?'disabled':''} onclick="generateTicket()">Gerar Senha →</button>`;
+                        <div class="cards-grid">${CL_SERVICES.map(s => `
+                            <div class="card ripple ${AppState.cl.serviceType === s.id ? 'selected' : ''}" onclick="selectCLService('${s.id}')">
+                                <span class="card-icon">${s.icon}</span><h3>${s.name}</h3><p>${s.desc}</p>
+                            </div>`).join('')}</div>`;
+                    footerHTML = `<div></div><button class="btn-primary" ${!AppState.cl.serviceType ? 'disabled' : ''} onclick="generateTicket()">Gerar Senha →</button>`;
                     break;
 
-                case 1: // Senha gerada
+                case 1:
                     const prefixes = ['A', 'B', 'C', 'D'];
                     const prefix = prefixes[Math.floor(Math.random() * 4)];
                     const num = Math.floor(Math.random() * 900 + 100);
                     AppState.cl.ticketNumber = prefix + num;
                     bodyHTML = `
-                <div style="text-align:center;padding:2rem">
-                  <h2 style="font-size:1.5rem;margin-bottom:1rem">🖨️ Sua senha foi gerada!</h2>
-                  <div class="ticket">
-                    <p style="color:var(--text-secondary);font-size:0.85rem">SENHA DE ATENDIMENTO</p>
-                    <div class="ticket-number">${AppState.cl.ticketNumber}</div>
-                    <p style="margin-top:0.5rem;color:var(--text-secondary)">${CL_SERVICES.find(s=>s.id===AppState.cl.serviceType)?.name||'Atendimento'}</p>
-                    <p style="font-size:0.8rem;color:var(--text-secondary);margin-top:0.5rem">${new Date().toLocaleDateString('pt-BR')} - ${new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})}</p>
-                  </div>
-                  <p style="margin-top:1.5rem;color:var(--text-secondary)">Aguarde sua senha ser chamada no painel</p>
-                </div>`;
+                        <div style="text-align:center;padding:2rem">
+                            <h2 style="font-size:1.5rem;margin-bottom:1rem">🖨️ Sua senha foi gerada!</h2>
+                            <div class="ticket">
+                                <p style="color:var(--text-secondary);font-size:0.85rem">SENHA DE ATENDIMENTO</p>
+                                <div class="ticket-number">${AppState.cl.ticketNumber}</div>
+                                <p style="margin-top:0.5rem;color:var(--text-secondary)">${CL_SERVICES.find(s => s.id === AppState.cl.serviceType)?.name || 'Atendimento'}</p>
+                                <p style="font-size:0.8rem;color:var(--text-secondary);margin-top:0.5rem">${new Date().toLocaleDateString('pt-BR')} - ${new Date().toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'})}</p>
+                            </div>
+                            <p style="margin-top:1.5rem;color:var(--text-secondary)">Aguarde sua senha ser chamada no painel</p>
+                        </div>`;
                     footerHTML = `<button class="btn-secondary" onclick="flowBack()">← Voltar</button>
-                <button class="btn-primary" onclick="flowNext()">Ir para Sala de Espera →</button>`;
+                        <button class="btn-primary" onclick="flowNext()">Ir para Sala de Espera →</button>`;
                     break;
 
-                case 2: // Sala de espera
+                case 2:
                     const fakeTickets = [
                         { num: 'A120', type: 'Consulta', room: '02' },
                         { num: 'B045', type: 'Exame', room: '05' },
                         { num: 'C078', type: 'Retorno', room: '01' },
                         { num: 'D033', type: 'Laboratório', room: '03' },
-                        { num: AppState.cl.ticketNumber, type: CL_SERVICES.find(s => s.id === AppState.cl
-                            .serviceType)?.name || 'Atendimento', room: '—' },
+                        { num: AppState.cl.ticketNumber, type: CL_SERVICES.find(s => s.id === AppState.cl.serviceType)?.name || 'Atendimento', room: '—' },
                         { num: 'A091', type: 'Vacinação', room: '04' },
                         { num: 'B112', type: 'Especialidades', room: '07' },
                     ].sort(() => Math.random() - 0.5);
                     bodyHTML = `
-                <h2 style="margin-bottom:1.5rem;font-size:1.5rem;text-align:center">📋 Painel de Chamadas</h2>
-                <div class="waiting-panel">
-                  <div class="waiting-list" id="waitingList">
-                    ${fakeTickets.map((t,i)=>`
-                      <div class="waiting-item" id="waiting_${i}">
-                        <span>${t.num}</span><span>${t.type}</span><span>Consultório ${t.room}</span>
-                      </div>`).join('')}
-                  </div>
-                </div>
-                <p style="text-align:center;margin-top:1rem;color:var(--text-secondary)">Sua senha: <strong style="font-size:1.2rem">${AppState.cl.ticketNumber}</strong></p>`;
+                        <h2 style="margin-bottom:1.5rem;font-size:1.5rem;text-align:center">📋 Painel de Chamadas</h2>
+                        <div class="waiting-panel">
+                            <div class="waiting-list" id="waitingList">
+                                ${fakeTickets.map((t, i) => `
+                                    <div class="waiting-item" id="waiting_${i}">
+                                        <span>${t.num}</span><span>${t.type}</span><span>Consultório ${t.room}</span>
+                                    </div>`).join('')}
+                            </div>
+                        </div>
+                        <p style="text-align:center;margin-top:1rem;color:var(--text-secondary)">Sua senha: <strong style="font-size:1.2rem">${AppState.cl.ticketNumber}</strong></p>`;
                     footerHTML = `<div></div><button class="btn-primary" onclick="callTicket()">Avançar (Simular chamada) →</button>`;
-                    // Animar a lista após renderizar
                     setTimeout(() => animateWaitingList(fakeTickets), 600);
                     break;
 
-                case 3: // Chamada
+                case 3:
                     bodyHTML = `
-                <div style="text-align:center;padding:3rem">
-                  <div style="font-size:5rem;animation:blinkCall 0.6s ease-in-out 5">🔔</div>
-                  <h2 style="font-size:2rem;margin:1rem 0;animation:blinkCall 0.6s ease-in-out 5">SENHA ${AppState.cl.ticketNumber}</h2>
-                  <p style="font-size:1.3rem;font-weight:600;color:var(--blue)">Dirija-se ao Consultório 03</p>
-                  <p style="color:var(--text-secondary);margin-top:0.5rem">Por favor, compareça ao local indicado</p>
-                </div>`;
+                        <div style="text-align:center;padding:3rem">
+                            <div style="font-size:5rem;animation:blinkCall 0.6s ease-in-out 5">🔔</div>
+                            <h2 style="font-size:2rem;margin:1rem 0;animation:blinkCall 0.6s ease-in-out 5">SENHA ${AppState.cl.ticketNumber}</h2>
+                            <p style="font-size:1.3rem;font-weight:600;color:var(--blue)">Dirija-se ao Consultório 03</p>
+                            <p style="color:var(--text-secondary);margin-top:0.5rem">Por favor, compareça ao local indicado</p>
+                        </div>`;
                     footerHTML = `<button class="btn-secondary" onclick="flowBack()">← Voltar</button>
-                <button class="btn-primary" onclick="flowNext()">Confirmar Presença →</button>`;
+                        <button class="btn-primary" onclick="flowNext()">Confirmar Presença →</button>`;
                     break;
 
-                case 4: // Cadastro
+                case 4:
                     bodyHTML = `
-                <h2 style="margin-bottom:1.5rem;font-size:1.5rem;">📝 Cadastro do Paciente</h2>
-                <div style="max-width:500px;display:flex;flex-direction:column;gap:1rem">
-                  <input type="text" placeholder="Nome completo" id="clName" value="${AppState.cl.patientName}" style="padding:0.85rem 1rem;border-radius:var(--radius);border:2px solid var(--gray-200);font-size:1rem;background:var(--surface);color:var(--text)">
-                  <input type="text" placeholder="CPF (fictício)" value="***.456.789-**" style="padding:0.85rem 1rem;border-radius:var(--radius);border:2px solid var(--gray-200);font-size:1rem;background:var(--surface);color:var(--text)" readonly>
-                  <select id="clSpecialty" style="padding:0.85rem 1rem;border-radius:var(--radius);border:2px solid var(--gray-200);font-size:1rem;background:var(--surface);color:var(--text)">
-                    <option value="">Selecione especialidade</option>
-                    <option value="Clinico Geral">Clínico Geral</option><option value="Cardiologista">Cardiologista</option>
-                    <option value="Neurologista">Neurologista</option><option value="Ortopedista">Ortopedista</option>
-                    <option value="Dermatologista">Dermatologista</option>
-                  </select>
-                  <input type="text" placeholder="Médico(a)" id="clDoctor" value="${AppState.cl.doctor}" style="padding:0.85rem 1rem;border-radius:var(--radius);border:2px solid var(--gray-200);font-size:1rem;background:var(--surface);color:var(--text)">
-                  <input type="text" placeholder="Convênio" value="Unimed Premium" readonly style="padding:0.85rem 1rem;border-radius:var(--radius);border:2px solid var(--gray-200);font-size:1rem;background:var(--surface);color:var(--text)">
-                  <textarea placeholder="Sintomas / Observações" id="clSymptoms" rows="3" style="padding:0.85rem 1rem;border-radius:var(--radius);border:2px solid var(--gray-200);font-size:1rem;background:var(--surface);color:var(--text);resize:vertical">${AppState.cl.symptoms}</textarea>
-                </div>`;
+                        <h2 style="margin-bottom:1.5rem;font-size:1.5rem;">📝 Cadastro do Paciente</h2>
+                        <div style="max-width:500px;display:flex;flex-direction:column;gap:1rem">
+                            <input type="text" placeholder="Nome completo" id="clName" value="${AppState.cl.patientName}" style="padding:0.85rem 1rem;border-radius:var(--radius);border:2px solid var(--gray-200);font-size:1rem;background:var(--surface);color:var(--text)">
+                            <input type="text" placeholder="CPF (fictício)" value="***.456.789-**" style="padding:0.85rem 1rem;border-radius:var(--radius);border:2px solid var(--gray-200);font-size:1rem;background:var(--surface);color:var(--text)" readonly>
+                            <select id="clSpecialty" style="padding:0.85rem 1rem;border-radius:var(--radius);border:2px solid var(--gray-200);font-size:1rem;background:var(--surface);color:var(--text)">
+                                <option value="">Selecione especialidade</option>
+                                <option value="Clinico Geral" ${AppState.cl.specialty === 'Clinico Geral' ? 'selected' : ''}>Clínico Geral</option>
+                                <option value="Cardiologista" ${AppState.cl.specialty === 'Cardiologista' ? 'selected' : ''}>Cardiologista</option>
+                                <option value="Neurologista" ${AppState.cl.specialty === 'Neurologista' ? 'selected' : ''}>Neurologista</option>
+                                <option value="Ortopedista" ${AppState.cl.specialty === 'Ortopedista' ? 'selected' : ''}>Ortopedista</option>
+                                <option value="Dermatologista" ${AppState.cl.specialty === 'Dermatologista' ? 'selected' : ''}>Dermatologista</option>
+                            </select>
+                            <input type="text" placeholder="Médico(a)" id="clDoctor" value="${AppState.cl.doctor}" style="padding:0.85rem 1rem;border-radius:var(--radius);border:2px solid var(--gray-200);font-size:1rem;background:var(--surface);color:var(--text)">
+                            <input type="text" placeholder="Convênio" value="Unimed Premium" readonly style="padding:0.85rem 1rem;border-radius:var(--radius);border:2px solid var(--gray-200);font-size:1rem;background:var(--surface);color:var(--text)">
+                            <textarea placeholder="Sintomas / Observações" id="clSymptoms" rows="3" style="padding:0.85rem 1rem;border-radius:var(--radius);border:2px solid var(--gray-200);font-size:1rem;background:var(--surface);color:var(--text);resize:vertical">${AppState.cl.symptoms}</textarea>
+                        </div>`;
                     footerHTML = `<button class="btn-secondary" onclick="flowBack()">← Voltar</button>
-                <button class="btn-primary" onclick="saveClinicData()">Próximo →</button>`;
+                        <button class="btn-primary" onclick="saveClinicData()">Próximo →</button>`;
                     break;
 
-                case 5: // Exames
+                case 5:
                     bodyHTML = `<h2 style="margin-bottom:1.5rem;font-size:1.5rem;">📋 Solicitação de Exames</h2>
-                <p style="margin-bottom:1rem;color:var(--text-secondary)">Selecione os exames solicitados:</p>
-                <div class="cards-grid">${CL_EXAMS_LIST.map(e=>`
-                  <div class="card ripple ${AppState.cl.exams.includes(e.id)?'selected':''}" onclick="toggleCLExam('${e.id}')">
-                    <span class="card-icon">${e.icon}</span><h3>${e.name}</h3>
-                  </div>`).join('')}</div>`;
+                        <p style="margin-bottom:1rem;color:var(--text-secondary)">Selecione os exames solicitados:</p>
+                        <div class="cards-grid">${CL_EXAMS_LIST.map(e => `
+                            <div class="card ripple ${AppState.cl.exams.includes(e.id) ? 'selected' : ''}" onclick="toggleCLExam('${e.id}')">
+                                <span class="card-icon">${e.icon}</span><h3>${e.name}</h3>
+                            </div>`).join('')}</div>`;
                     footerHTML = `<button class="btn-secondary" onclick="flowBack()">← Voltar</button>
-                <button class="btn-primary" onclick="flowNext()">Ver Resultados →</button>`;
+                        <button class="btn-primary" onclick="flowNext()">Ver Resultados →</button>`;
                     break;
 
-                case 6: // Resultado
+                case 6:
                     bodyHTML = `
-                <h2 style="margin-bottom:1.5rem;font-size:1.5rem;">📊 Resultados</h2>
-                <div style="max-width:600px;margin:0 auto">
-                  <div style="text-align:center;padding:1.5rem;background:rgba(16,185,129,0.08);border-radius:var(--radius-lg);margin-bottom:1.5rem">
-                    <span style="font-size:3rem">✅</span>
-                    <p style="font-weight:700;font-size:1.2rem;color:var(--green);margin-top:0.5rem">Exames Concluídos!</p>
-                  </div>
-                  ${AppState.cl.exams.length>0?AppState.cl.exams.map(eid=>{
-                    const ex = CL_EXAMS_LIST.find(e=>e.id===eid);
-                    return `<div style="display:flex;justify-content:space-between;align-items:center;padding:0.75rem 1rem;background:var(--surface);border-radius:var(--radius);margin-bottom:0.5rem;box-shadow:var(--shadow-sm)">
-                      <span>${ex?.icon||'📋'} ${ex?.name||eid}</span>
-                      <span style="color:var(--green);font-weight:600">Disponível 📥</span>
-                    </div>`;
-                  }).join(''):'<p style="text-align:center;color:var(--text-secondary)">Nenhum exame solicitado</p>'}
-                  <div style="margin-top:1.5rem;padding:1rem;background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow-sm);border-left:4px solid var(--purple)">
-                    <p style="font-weight:700;margin-bottom:0.25rem">📄 Receita Médica</p>
-                    <p style="color:var(--text-secondary);font-size:0.9rem">Dipirona 500mg - 6/6h por 3 dias<br>Repouso por 48h<br>Retornar em 15 dias</p>
-                  </div>
-                </div>`;
+                        <h2 style="margin-bottom:1.5rem;font-size:1.5rem;">📊 Resultados</h2>
+                        <div style="max-width:600px;margin:0 auto">
+                            <div style="text-align:center;padding:1.5rem;background:rgba(16,185,129,0.08);border-radius:var(--radius-lg);margin-bottom:1.5rem">
+                                <span style="font-size:3rem">✅</span>
+                                <p style="font-weight:700;font-size:1.2rem;color:var(--green);margin-top:0.5rem">Exames Concluídos!</p>
+                            </div>
+                            ${AppState.cl.exams.length > 0 ? AppState.cl.exams.map(eid => {
+                                const ex = CL_EXAMS_LIST.find(e => e.id === eid);
+                                return `<div style="display:flex;justify-content:space-between;align-items:center;padding:0.75rem 1rem;background:var(--surface);border-radius:var(--radius);margin-bottom:0.5rem;box-shadow:var(--shadow-sm)">
+                                    <span>${ex?.icon || '📋'} ${ex?.name || eid}</span>
+                                    <span style="color:var(--green);font-weight:600">Disponível 📥</span>
+                                </div>`;
+                            }).join('') : '<p style="text-align:center;color:var(--text-secondary)">Nenhum exame solicitado</p>'}
+                            <div style="margin-top:1.5rem;padding:1rem;background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow-sm);border-left:4px solid var(--purple)">
+                                <p style="font-weight:700;margin-bottom:0.25rem">📄 Receita Médica</p>
+                                <p style="color:var(--text-secondary);font-size:0.9rem">Dipirona 500mg - 6/6h por 3 dias<br>Repouso por 48h<br>Retornar em 15 dias</p>
+                            </div>
+                        </div>`;
                     footerHTML = `<button class="btn-secondary" onclick="flowBack()">← Voltar</button>
-                <button class="btn-primary" onclick="flowNext()">Avaliar Atendimento →</button>`;
+                        <button class="btn-primary" onclick="flowNext()">Avaliar Atendimento →</button>`;
                     break;
 
-                case 7: // Avaliação
+                case 7:
                     bodyHTML = `
-                <div style="text-align:center;padding:2rem">
-                  <h2 style="font-size:1.5rem;margin-bottom:1rem">🙏 Obrigado pela visita!</h2>
-                  <p style="color:var(--text-secondary);margin-bottom:1.5rem">Como foi seu atendimento hoje?</p>
-                  <div class="star-rating" id="starRating">
-                    ${[1,2,3,4,5].map(i=>`<span class="star ${i<=AppState.cl.rating?'active':''}" onclick="rateClinic(${i})">★</span>`).join('')}
-                  </div>
-                  <p style="margin-top:0.75rem;font-weight:600;color:var(--blue)">
-                    ${AppState.cl.rating===5?'Excelente! 😍':AppState.cl.rating===4?'Muito Bom! 😊':AppState.cl.rating===3?'Bom 👍':AppState.cl.rating===2?'Regular 😐':AppState.cl.rating===1?'Ruim 😞':'Toque nas estrelas'}
-                  </p>
-                </div>`;
+                        <div style="text-align:center;padding:2rem">
+                            <h2 style="font-size:1.5rem;margin-bottom:1rem">🙏 Obrigado pela visita!</h2>
+                            <p style="color:var(--text-secondary);margin-bottom:1.5rem">Como foi seu atendimento hoje?</p>
+                            <div class="star-rating" id="starRating">
+                                ${[1,2,3,4,5].map(i => `<span class="star ${i <= AppState.cl.rating ? 'active' : ''}" onclick="rateClinic(${i})">★</span>`).join('')}
+                            </div>
+                            <p style="margin-top:0.75rem;font-weight:600;color:var(--blue)">
+                                ${AppState.cl.rating === 5 ? 'Excelente! 😍' : AppState.cl.rating === 4 ? 'Muito Bom! 😊' : AppState.cl.rating === 3 ? 'Bom 👍' : AppState.cl.rating === 2 ? 'Regular 😐' : AppState.cl.rating === 1 ? 'Ruim 😞' : 'Toque nas estrelas'}
+                            </p>
+                        </div>`;
                     footerHTML = `<div></div>
-                <button class="btn-primary" onclick="finishClinic()" ${AppState.cl.rating===0?'disabled':''}>Finalizar ✓</button>`;
+                        <button class="btn-primary" onclick="finishClinic()" ${AppState.cl.rating === 0 ? 'disabled' : ''}>Finalizar ✓</button>`;
                     break;
             }
 
@@ -1754,10 +1576,7 @@
             footer.innerHTML = footerHTML;
         }
 
-        function selectCLService(id) { AppState.cl.serviceType = id;
-            renderClinicStep();
-            playClickFeedback(); }
-
+        function selectCLService(id) { AppState.cl.serviceType = id; renderClinicStep(); playClickFeedback(); }
         function generateTicket() { flowNext(); }
 
         function animateWaitingList(tickets) {
@@ -1768,16 +1587,13 @@
                     clearInterval(interval);
                     return;
                 }
-                // Reset all
                 items.forEach(it => it.classList.remove('called'));
-                // Mark current
                 if (items[callIdx]) items[callIdx].classList.add('called');
                 callIdx++;
             }, 1500);
         }
 
         function callTicket() {
-            // Highlight user's ticket
             const items = document.querySelectorAll('#waitingList .waiting-item');
             items.forEach(it => {
                 if (it.textContent.includes(AppState.cl.ticketNumber)) {
@@ -1817,8 +1633,7 @@
             launchConfetti();
             showToast('Atendimento finalizado com sucesso!', 'success');
             setTimeout(() => {
-                AppState.cl = { serviceType: null, ticketNumber: null, patientName: '', specialty: '', doctor: '',
-                    symptoms: '', exams: [], rating: 0 };
+                AppState.cl = { serviceType: null, ticketNumber: null, patientName: '', specialty: '', doctor: '', symptoms: '', exams: [], rating: 0 };
                 AppState.currentStep = 0;
                 goHome();
             }, 2000);
@@ -1828,9 +1643,7 @@
         // CONFETTI
         // ============================================================
         function launchConfetti() {
-            const colors = ['#2563EB', '#7C3AED', '#10B981', '#F97316', '#FBBF24', '#EC4899', '#06B6D4', '#EF4444',
-                '#FF6B6B', '#4ECDC4'
-            ];
+            const colors = ['#2563EB', '#7C3AED', '#10B981', '#F97316', '#FBBF24', '#EC4899', '#06B6D4', '#EF4444', '#FF6B6B', '#4ECDC4'];
             for (let i = 0; i < 80; i++) {
                 const piece = document.createElement('div');
                 piece.className = 'confetti-piece';
@@ -1842,26 +1655,26 @@
                 piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
                 piece.style.animationDuration = (Math.random() * 2 + 2) + 's';
                 piece.style.animationDelay = Math.random() * 1.5 + 's';
-                piece.style.transform = `rotate(${Math.random()*360}deg)`;
+                piece.style.transform = `rotate(${Math.random() * 360}deg)`;
                 document.body.appendChild(piece);
                 setTimeout(() => piece.remove(), 4000);
             }
         }
 
         // ============================================================
-        // TOAST NOTIFICATIONS
+        // TOASTS
         // ============================================================
         function showToast(message, type = 'success') {
             const container = document.getElementById('toastContainer');
             const toast = document.createElement('div');
             toast.className = `toast ${type}`;
-            toast.innerHTML = `<span>${type==='success'?'✅':'❌'}</span> ${message}`;
+            toast.innerHTML = `<span>${type === 'success' ? '✅' : '❌'}</span> ${message}`;
             container.appendChild(toast);
             setTimeout(() => toast.remove(), 3000);
         }
 
         // ============================================================
-        // RIPPLE EFFECT
+        // RIPPLE
         // ============================================================
         document.addEventListener('click', function(e) {
             const rippleEl = e.target.closest('.ripple');
@@ -1885,13 +1698,14 @@
             const isDark = html.getAttribute('data-theme') === 'dark';
             html.setAttribute('data-theme', isDark ? 'light' : 'dark');
             document.getElementById('btnDarkMode').textContent = isDark ? '🌙' : '☀️';
-            localStorage.setItem('theme', isDark ? 'light' : 'dark');
+            try { localStorage.setItem('theme', isDark ? 'light' : 'dark'); } catch(e) {}
             playClickFeedback();
         });
-        // Load saved theme
-        const savedTheme = localStorage.getItem('theme') || 'light';
-        document.documentElement.setAttribute('data-theme', savedTheme);
-        document.getElementById('btnDarkMode').textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+        try {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            document.getElementById('btnDarkMode').textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+        } catch(e) {}
 
         // ============================================================
         // HOME BUTTON
@@ -1899,7 +1713,7 @@
         document.getElementById('btnHome').addEventListener('click', goHome);
 
         // ============================================================
-        // ATTRACTOR MODE (TELA DE DESCANSO)
+        // ATTRACTOR MODE
         // ============================================================
         function startAttractorMode() {
             document.getElementById('attractorOverlay').classList.add('active');
@@ -1942,12 +1756,11 @@
         }
 
         // ============================================================
-        // SOUND FEEDBACK (LIGHT CLICK)
+        // CLICK SOUND
         // ============================================================
         function playClickFeedback() {
-            // Using Web Audio API for a subtle click
             try {
-                const ctx = new(window.AudioContext || window.webkitAudioContext)();
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
                 const osc = ctx.createOscillator();
                 const gain = ctx.createGain();
                 osc.connect(gain);
@@ -1957,31 +1770,33 @@
                 osc.start();
                 gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.08);
                 osc.stop(ctx.currentTime + 0.08);
-            } catch (e) { /* Silently ignore if audio not supported */ }
+            } catch (e) {}
         }
 
         // ============================================================
-        // INITIALIZATION
+        // GLOBAL ERROR HANDLER
+        // ============================================================
+        window.onerror = function(msg, url, line) {
+            console.error('Erro no totem:', msg, 'linha:', line);
+            showToast('Ocorreu um erro. Tente novamente.', 'error');
+        };
+
+        // ============================================================
+        // INIT
         // ============================================================
         function initApp() {
             resetInactivityTimer();
-            // Add click feedback for all interactive elements
             document.addEventListener('click', (e) => {
                 if (e.target.closest('button') || e.target.closest('.card') || e.target.closest('.home-card') ||
-                    e.target.closest('.custom-option') || e.target.closest('.payment-method') || e.target.closest(
-                        '.color-swatch') || e.target.closest('.star')) {
-                    if (!e.target.closest('#attractorOverlay')) {
-                        playClickFeedback();
-                        resetInactivityTimer();
-                    }
+                    e.target.closest('.custom-option') || e.target.closest('.payment-method') || e.target.closest('.color-swatch') ||
+                    e.target.closest('.star')) {
+                    if (!e.target.closest('#attractorOverlay')) resetInactivityTimer();
                 }
             });
         }
 
         initApp();
-        console.log('🚀 MyHub Totem - Autoatendimento Interativo');
-        console.log('✅ Fast Food | ✅ Veículos | ✅ Clínica');
-        console.log('💡 Toque na tela para começar!');
+        console.log('🚀 MyHub Totem iniciado');
     </script>
 </body>
 </html>
